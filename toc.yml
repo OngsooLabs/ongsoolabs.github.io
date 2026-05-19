@@ -1,19 +1,4 @@
-- name: Integration Guide
-  href: OSL Integration/OSL_Development_Guideline_v1.1.md
-- name: EasyPatcher
-  href: OSL Integration/Assets/OSL/EasyPatcher/
-  items:
-    - name: README
-      href: OSL Integration/Assets/OSL/EasyPatcher/README.md
-    - name: Changelog
-      href: OSL Integration/Assets/OSL/EasyPatcher/CHANGELOG.md
-    - name: License
-      href: OSL Integration/Assets/OSL/EasyPatcher/LICENSE.md
-- name: IapClient
-  href: OSL Integration/Assets/OSL/IapClient/Documentation/README.md
-- name: SecureSave
-  href: OSL Integration/Assets/OSL/SecureSave/Documentation/README.md
-- name: SocialLogin
-  href: OSL Integration/Assets/OSL/SocialLogin/Docs/README.md
+- name: Manuals
+  href: OSL Integration/
 - name: API Reference
   href: api/
