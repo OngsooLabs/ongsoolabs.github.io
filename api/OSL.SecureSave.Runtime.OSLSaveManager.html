@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class OSLSaveManager </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class OSLSaveManager ">
+      
+      <meta name="description" content="Client-side facade for the OSL Secure Save system. All write operations are routed through the &#39;osl_master_save&#39; Cloud Code endpoint, which performs authoritative validation. NOTE:  This wrapper assumes UnityServices.InitializeAsync() and AuthenticationService sign-in have already been performed by the host application before any OSLSaveManager call is made. The compile guard OSL_UGS_CLOUDCODE is expected to be defined once the UGS Cloud Code package (com.unity.services.cloudcode) is present in the project.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/new/main/apiSpec/new?filename=OSL_SecureSave_Runtime_OSLSaveManager.md&amp;value=---%0Auid%3A%20OSL.SecureSave.Runtime.OSLSaveManager%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="OSL.SecureSave.Runtime.OSLSaveManager">
+
+
+
+  <h1 id="OSL_SecureSave_Runtime_OSLSaveManager" data-uid="OSL.SecureSave.Runtime.OSLSaveManager" class="text-break">
+Class OSLSaveManager  <a class="header-action link-secondary" title="View source" href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/SecureSave/Runtime/OSLSaveManager.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="OSL.html">OSL</a>.<a class="xref" href="OSL.SecureSave.html">SecureSave</a>.<a class="xref" href="OSL.SecureSave.Runtime.html">Runtime</a></dd></dl>
+  
+  </div>
+
+  <div class="markdown summary"><p>Client-side facade for the OSL Secure Save system.
+All write operations are routed through the 'osl_master_save'
+Cloud Code endpoint, which performs authoritative validation.</p>
+<p>NOTE:</p>
+<ul>
+<li>This wrapper assumes UnityServices.InitializeAsync() and
+AuthenticationService sign-in have already been performed by the
+host application before any OSLSaveManager call is made.</li>
+<li>The compile guard OSL_UGS_CLOUDCODE is expected to be defined
+once the UGS Cloud Code package (com.unity.services.cloudcode)
+is present in the project.</li>
+</ul>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class OSLSaveManager</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">OSLSaveManager</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="OSL_SecureSave_Runtime_OSLSaveManager_Instance_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.Instance*"></a>
+
+  <h3 id="OSL_SecureSave_Runtime_OSLSaveManager_Instance" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.Instance">
+  Instance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/SecureSave/Runtime/OSLSaveManager.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static OSLSaveManager Instance { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="OSL.SecureSave.Runtime.OSLSaveManager.html">OSLSaveManager</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="OSL_SecureSave_Runtime_OSLSaveManager_AddFloat_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.AddFloat*"></a>
+
+  <h3 id="OSL_SecureSave_Runtime_OSLSaveManager_AddFloat_System_String_System_Single_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.AddFloat(System.String,System.Single)">
+  AddFloat(string, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/SecureSave/Runtime/OSLSaveManager.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds a specific amount to a float key (Requires AddOnly or Both rule).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;OSLSaveResult&gt; AddFloat(string key, float value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="OSL.SecureSave.Runtime.OSLSaveResult.html">OSLSaveResult</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="OSL_SecureSave_Runtime_OSLSaveManager_AddInt_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.AddInt*"></a>
+
+  <h3 id="OSL_SecureSave_Runtime_OSLSaveManager_AddInt_System_String_System_Int32_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.AddInt(System.String,System.Int32)">
+  AddInt(string, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/SecureSave/Runtime/OSLSaveManager.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds a specific amount to an integer key (Requires AddOnly or Both rule).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;OSLSaveResult&gt; AddInt(string key, int value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="OSL.SecureSave.Runtime.OSLSaveResult.html">OSLSaveResult</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="OSL_SecureSave_Runtime_OSLSaveManager_GetAsync_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.GetAsync*"></a>
+
+  <h3 id="OSL_SecureSave_Runtime_OSLSaveManager_GetAsync__1_System_String___0_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.GetAsync``1(System.String,``0)">
+  GetAsync&lt;T&gt;(string, T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/SecureSave/Runtime/OSLSaveManager.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Convenience method to retrieve a single value cast to type T.
+Uses the Cloud Save SDK's typed deserializer so that both primitives and
+complex JSON-backed types (lists, custom POCOs) round-trip correctly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;T&gt; GetAsync&lt;T&gt;(string key, T defaultValue = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The key to retrieve.</p>
+</dd>
+    <dt><code>defaultValue</code> <span class="xref">T</span></dt>
+    <dd><p>Value returned if the key is not found or fails to load.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;T&gt;</dt>
+    <dd><p>The loaded value or the default value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The expected type of the saved data.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="OSL_SecureSave_Runtime_OSLSaveManager_LoadAllAsync_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.LoadAllAsync*"></a>
+
+  <h3 id="OSL_SecureSave_Runtime_OSLSaveManager_LoadAllAsync" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.LoadAllAsync">
+  LoadAllAsync()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/SecureSave/Runtime/OSLSaveManager.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads all default player data. Returns a dictionary of key to raw value mapping.
+Returns null on failure.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;Dictionary&lt;string, object&gt;&gt; LoadAllAsync()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="OSL_SecureSave_Runtime_OSLSaveManager_LoadAsync_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.LoadAsync*"></a>
+
+  <h3 id="OSL_SecureSave_Runtime_OSLSaveManager_LoadAsync_System_Collections_Generic_IEnumerable_System_String__" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.LoadAsync(System.Collections.Generic.IEnumerable{System.String})">
+  LoadAsync(IEnumerable&lt;string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/SecureSave/Runtime/OSLSaveManager.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads specific keys from default player data.
+Returns a dictionary mapping keys to their loaded values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;Dictionary&lt;string, object&gt;&gt; LoadAsync(IEnumerable&lt;string&gt; keys)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>keys</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>The set of keys to load.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</dt>
+    <dd><p>Null on failure.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="OSL_SecureSave_Runtime_OSLSaveManager_SetBool_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.SetBool*"></a>
+
+  <h3 id="OSL_SecureSave_Runtime_OSLSaveManager_SetBool_System_String_System_Boolean_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.SetBool(System.String,System.Boolean)">
+  SetBool(string, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/SecureSave/Runtime/OSLSaveManager.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Replaces the value of a boolean key (Requires Replace or Both rule).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;OSLSaveResult&gt; SetBool(string key, bool value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="OSL.SecureSave.Runtime.OSLSaveResult.html">OSLSaveResult</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="OSL_SecureSave_Runtime_OSLSaveManager_SetFloat_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.SetFloat*"></a>
+
+  <h3 id="OSL_SecureSave_Runtime_OSLSaveManager_SetFloat_System_String_System_Single_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.SetFloat(System.String,System.Single)">
+  SetFloat(string, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/SecureSave/Runtime/OSLSaveManager.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Replaces the value of a float key (Requires Replace or Both rule).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;OSLSaveResult&gt; SetFloat(string key, float value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="OSL.SecureSave.Runtime.OSLSaveResult.html">OSLSaveResult</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="OSL_SecureSave_Runtime_OSLSaveManager_SetInt_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.SetInt*"></a>
+
+  <h3 id="OSL_SecureSave_Runtime_OSLSaveManager_SetInt_System_String_System_Int32_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.SetInt(System.String,System.Int32)">
+  SetInt(string, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/SecureSave/Runtime/OSLSaveManager.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Replaces the value of an integer key (Requires Replace or Both rule).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;OSLSaveResult&gt; SetInt(string key, int value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="OSL.SecureSave.Runtime.OSLSaveResult.html">OSLSaveResult</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="OSL_SecureSave_Runtime_OSLSaveManager_SetString_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.SetString*"></a>
+
+  <h3 id="OSL_SecureSave_Runtime_OSLSaveManager_SetString_System_String_System_String_" data-uid="OSL.SecureSave.Runtime.OSLSaveManager.SetString(System.String,System.String)">
+  SetString(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/SecureSave/Runtime/OSLSaveManager.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Replaces the value of a string key (Requires Replace or Both rule).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;OSLSaveResult&gt; SetString(string key, string value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="OSL.SecureSave.Runtime.OSLSaveResult.html">OSLSaveResult</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/SecureSave/Runtime/OSLSaveManager.cs/#L31" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
