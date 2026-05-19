@@ -1,0 +1,60 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": ["OSL Integration/Assets/OSL/**/Scripts/**/*.cs"],
+          "src": "integration",
+          "exclude": [
+            "**/Editor/**",
+            "**/Tests/**",
+            "**/Samples/**",
+            "**/*.Tests.cs"
+          ]
+        }
+      ],
+      "dest": "api",
+      "outputFormat": "mref",
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": ["**/*.md", "**/toc.yml"],
+        "src": "integration/OSL Integration",
+        "dest": "OSL Integration",
+        "exclude": ["**/obj/**", "**/bin/**"]
+      },
+      {
+        "files": ["toc.yml", "index.md"]
+      },
+      {
+        "files": ["api/**.yml", "api/index.md"]
+      }
+    ],
+    "resource": [
+      {
+        "files": ["**/*.{png,jpg,gif,svg}"],
+        "src": "integration/OSL Integration",
+        "dest": "OSL Integration",
+        "exclude": ["**/obj/**"]
+      },
+      {
+        "files": ["favicon.ico", "logo.svg"]
+      }
+    ],
+    "output": "_site",
+    "template": ["default", "modern"],
+    "globalMetadata": {
+      "_appName": "Ongsoo Labs Docs",
+      "_appTitle": "Ongsoo Labs",
+      "_enableSearch": true,
+      "_appFaviconPath": "favicon.ico",
+      "_appLogoPath": "logo.svg",
+      "_appFooter": "© Ongsoo Labs. All rights reserved.",
+      "_enableNewTab": true
+    }
+  }
+}

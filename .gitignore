@@ -1,0 +1,9 @@
+# DocFX build output
+_site/
+
+# Checked-out Integration repository (populated by CI)
+integration/
+
+# DocFX intermediate files
+obj/
+api/
