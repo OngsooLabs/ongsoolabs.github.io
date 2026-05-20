@@ -7,3 +7,7 @@ integration/
 # DocFX intermediate files
 obj/
 api/
+!api/
+api/*
+!api/index.md
+!api/toc.yml
