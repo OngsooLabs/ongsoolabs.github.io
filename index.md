@@ -17,6 +17,17 @@ Browse the asset guides below by category.
 - [IapClient](articles/iapclient.md): In-app purchase client module
 - [SecureSave](articles/securesave.md): Local data encryption and secure storage
 
+## Repository Management
+
+Use the links below to manage documentation updates, issue tracking, release history, and project operations.
+
+- [GitHub Repository](https://github.com/OngsooLabs/ongsoolabs.github.io): Repository overview and source access
+- [GitHub Issues](https://github.com/OngsooLabs/ongsoolabs.github.io/issues): Bug reports and documentation requests
+- [GitHub Discussions](https://github.com/OngsooLabs/ongsoolabs.github.io/discussions): Community Q&A and announcements
+- [GitHub Projects](https://github.com/orgs/OngsooLabs/projects): Ongoing work and release planning
+- [GitHub Actions](https://github.com/OngsooLabs/ongsoolabs.github.io/actions): Build and deployment workflow status
+- [Changelog & Releases](https://github.com/OngsooLabs/ongsoolabs.github.io/releases): Published release notes and artifacts
+
 ## System Requirements
 - Unity 2021.3 LTS or later (recommended)
 - .NET Standard 2.1 compatible environment

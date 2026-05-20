@@ -4,9 +4,17 @@
   href: articles/
 - name: API Reference
   href: api/
-- name: Support & Community
+- name: Repository Management
   items:
+    - name: GitHub Repository
+      href: https://github.com/OngsooLabs/ongsoolabs.github.io
     - name: GitHub Issues
       href: https://github.com/OngsooLabs/ongsoolabs.github.io/issues
+    - name: GitHub Discussions
+      href: https://github.com/OngsooLabs/ongsoolabs.github.io/discussions
+    - name: GitHub Projects
+      href: https://github.com/orgs/OngsooLabs/projects
+    - name: GitHub Actions
+      href: https://github.com/OngsooLabs/ongsoolabs.github.io/actions
     - name: Changelog & Releases
       href: https://github.com/OngsooLabs/ongsoolabs.github.io/releases
