@@ -28,10 +28,13 @@
         "exclude": ["**/obj/**", "**/bin/**"]
       },
       {
+        "files": ["articles/**/*.md", "articles/toc.yml"]
+      },
+      {
         "files": ["toc.yml", "index.md"]
       },
       {
-        "files": ["api/**.yml", "api/index.md"]
+        "files": ["api/**.yml", "api/index.md", "api/toc.yml"]
       }
     ],
     "resource": [

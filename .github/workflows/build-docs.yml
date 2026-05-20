@@ -25,7 +25,20 @@ jobs:
       - name: Checkout docs repository
         uses: actions/checkout@v4
 
+      - name: Check Integration repository access
+        id: integration_access
+        env:
+          INTEGRATION_READ_TOKEN: ${{ secrets.INTEGRATION_READ_TOKEN }}
+        run: |
+          if [ -n "$INTEGRATION_READ_TOKEN" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::INTEGRATION_READ_TOKEN is not configured. Building repository-local docs only."
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout Integration repository
+        if: steps.integration_access.outputs.available == 'true'
         uses: actions/checkout@v4
         with:
           repository: OngsooLabs/Integration
@@ -44,6 +57,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Generate API metadata from C# sources
+        if: steps.integration_access.outputs.available == 'true'
         run: docfx metadata docfx.json
         continue-on-error: true  # Unity 에셋은 외부 빌드 환경에서 컴파일 실패 가능
 
