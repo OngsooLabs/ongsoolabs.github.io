@@ -21,11 +21,8 @@ Browse the asset guides below by category.
 
 Use the links below to manage documentation updates, issue tracking, release history, and project operations.
 
-- [GitHub Repository](https://github.com/OngsooLabs/ongsoolabs.github.io): Repository overview and source access
 - [GitHub Issues](https://github.com/OngsooLabs/ongsoolabs.github.io/issues): Bug reports and documentation requests
 - [GitHub Community](https://github.com/OngsooLabs/ongsoolabs.github.io/issues): Questions, bug reports, and documentation requests
-- [GitHub Milestones](https://github.com/OngsooLabs/ongsoolabs.github.io/milestones): Ongoing work and release planning
-- [GitHub Actions](https://github.com/OngsooLabs/ongsoolabs.github.io/actions): Build and deployment workflow status
 - [Changelog & Releases](https://github.com/OngsooLabs/ongsoolabs.github.io/releases): Published release notes and artifacts
 
 ## System Requirements
