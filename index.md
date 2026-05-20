@@ -23,8 +23,8 @@ Use the links below to manage documentation updates, issue tracking, release his
 
 - [GitHub Repository](https://github.com/OngsooLabs/ongsoolabs.github.io): Repository overview and source access
 - [GitHub Issues](https://github.com/OngsooLabs/ongsoolabs.github.io/issues): Bug reports and documentation requests
-- [GitHub Discussions](https://github.com/OngsooLabs/ongsoolabs.github.io/discussions): Community Q&A and announcements
-- [GitHub Projects](https://github.com/orgs/OngsooLabs/projects): Ongoing work and release planning
+- [GitHub Community](https://github.com/OngsooLabs/ongsoolabs.github.io/issues): Questions, bug reports, and documentation requests
+- [GitHub Milestones](https://github.com/OngsooLabs/ongsoolabs.github.io/milestones): Ongoing work and release planning
 - [GitHub Actions](https://github.com/OngsooLabs/ongsoolabs.github.io/actions): Build and deployment workflow status
 - [Changelog & Releases](https://github.com/OngsooLabs/ongsoolabs.github.io/releases): Published release notes and artifacts
 
