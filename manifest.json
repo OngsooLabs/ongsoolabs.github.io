@@ -1,133 +1,147 @@
 {
-  "source_base_path": "/home/runner/work/Integration/Integration",
+  "source_base_path": "/home/runner/work/ongsoolabs.github.io/ongsoolabs.github.io",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/CHANGELOG.md",
+      "source_relative_path": "api/index.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/Deterministic/CHANGELOG.html"
+          "relative_path": "api/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "api/toc.json"
+        },
+        ".html": {
+          "relative_path": "api/toc.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/Documentation~/QuickStart.md",
+      "source_relative_path": "articles/core_concepts.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/Deterministic/Documentation~/QuickStart.html"
+          "relative_path": "articles/core_concepts.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/LICENSE.md",
+      "source_relative_path": "articles/deterministic.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/Deterministic/LICENSE.html"
+          "relative_path": "articles/deterministic.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/README.md",
+      "source_relative_path": "articles/easypatcher.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/Deterministic/README.html"
+          "relative_path": "articles/easypatcher.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/Samples/LockstepDemo/README_DEMO.md",
+      "source_relative_path": "articles/iapclient.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/Deterministic/Samples/LockstepDemo/README_DEMO.html"
+          "relative_path": "articles/iapclient.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/EasyPatcher/CHANGELOG.md",
+      "source_relative_path": "articles/quick_start.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/EasyPatcher/CHANGELOG.html"
+          "relative_path": "articles/quick_start.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/EasyPatcher/LICENSE.md",
+      "source_relative_path": "articles/securesave.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/EasyPatcher/LICENSE.html"
+          "relative_path": "articles/securesave.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/EasyPatcher/README.md",
+      "source_relative_path": "articles/sociallogin.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/EasyPatcher/README.html"
+          "relative_path": "articles/sociallogin.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "articles/toc.json"
+        },
+        ".html": {
+          "relative_path": "articles/toc.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "favicon.ico"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/IapClient/Documentation/README.md",
+      "source_relative_path": "index.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/IapClient/Documentation/README.html"
+          "relative_path": "index.html"
         }
       },
       "version": ""
     },
     {
-      "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/SecureSave/Documentation/README.md",
+      "type": "Resource",
+      "source_relative_path": "logo.svg",
       "output": {
-        ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/SecureSave/Documentation/README.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/SecureSave/LICENSE.md",
-      "output": {
-        ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/SecureSave/LICENSE.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/SocialLogin/Docs/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/SocialLogin/Docs/README.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "OSL Integration/OSL_Development_Guideline_v1.1.md",
-      "output": {
-        ".html": {
-          "relative_path": "OSL Integration/OSL_Development_Guideline_v1.1.html"
+        "resource": {
+          "relative_path": "logo.svg"
         }
       },
       "version": ""
