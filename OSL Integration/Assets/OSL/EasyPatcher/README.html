@@ -141,8 +141,11 @@ Upload your patch files from the Editor, and let players automatically download 
 <hr>
 <h2 id="installation">Installation</h2>
 <ol>
-<li>Copy the <code>Assets/OSL/EasyPatcher/</code> folder into your Unity project.</li>
-<li>Unity will compile the assembly definitions automatically.</li>
+<li>Open the <a href="https://assetstore.unity.com/packages/slug/378832">Unity Asset Store (OSL Easy Patcher)</a> and search for <strong>OSL Easy Patcher</strong>, or open it directly via your browser.</li>
+<li>Click <strong>Add to My Assets</strong>.</li>
+<li>Open Unity and navigate to <strong>Window &gt; Package Manager</strong>.</li>
+<li>Select <strong>Packages: My Assets</strong> from the dropdown.</li>
+<li>Locate <strong>OSL Easy Patcher</strong>, download it, and click <strong>Import</strong>.</li>
 <li><em>(Optional)</em> If you use TextMeshPro, the <code>OSL_TMP_PRESENT</code> scripting define is set automatically through the assembly definition's <code>versionDefines</code>. No manual action is needed.</li>
 </ol>
 <hr>
@@ -609,13 +612,9 @@ public class MyCustomLoader : IOSLLoader
 <li>Save as <code>OSL_EasyPatcher_&lt;version&gt;.unitypackage</code>.</li>
 <li>The Sample scene and <code>PatchTestRunner</code> are exported alongside the runtime/editor assemblies, so buyers can open <code>Sample/DemoScene.unity</code> immediately after import.</li>
 </ol>
-<h3 id="option-b--upm-git-url-or-local-path">Option B — UPM (Git URL or local path)</h3>
+<h3 id="option-b--upm-local-path">Option B — UPM (Local path)</h3>
 <p>The package root is <code>Assets/OSL/EasyPatcher/</code> and contains a valid <code>package.json</code>.</p>
 <ul>
-<li><strong>Git URL:</strong> in <strong>Window → Package Manager → + → Add package from git URL…</strong>, enter:
-<pre><code>https://github.com/OngsooLabs/EasyPatcherRepo.git?path=EasyPatcher/Assets/OSL/EasyPatcher
-</code></pre>
-</li>
 <li><strong>Local path:</strong> in <strong>Package Manager → + → Add package from disk…</strong>, select the <code>package.json</code> inside <code>Assets/OSL/EasyPatcher/</code>.</li>
 </ul>
 <p>When installed via UPM, the <code>Sample/</code> folder ships as a regular runtime folder so the demo scene remains directly browsable. If you prefer the official UPM <code>Samples~</code> convention (samples imported on demand), rename <code>Sample</code> to <code>Samples~</code> and add a <code>samples</code> array to <code>package.json</code>.</p>
