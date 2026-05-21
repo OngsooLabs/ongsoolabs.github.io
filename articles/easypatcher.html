@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>OSL Easy Patcher | Ongsoo Labs </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="OSL Easy Patcher | Ongsoo Labs ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/ongsoolabs.github.io/blob/copilot/fix-page-access-issue/articles/easypatcher.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Ongsoo Labs Docs">
+            Ongsoo Labs Docs
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="osl-easy-patcher">OSL Easy Patcher</h1>
+
+<p>A lightweight patch distribution system for Unity games.
+Upload your patch files from the Editor, and let players automatically download only the changed files at runtime — no Addressables, no third-party SDK required.</p>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#editor--uploader-window">Editor — Uploader Window</a>
+<ul>
+<li><a href="#upload-tab">Upload Tab</a></li>
+<li><a href="#download-tab">Download Tab</a></li>
+<li><a href="#versions-tab">Versions Tab</a></li>
+</ul>
+</li>
+<li><a href="#upload-backends--detailed-setup">Upload Backends — Detailed Setup</a>
+<ul>
+<li><a href="#1-local-folder">Local Folder</a></li>
+<li><a href="#2-google-cloud-storage">Google Cloud Storage</a></li>
+<li><a href="#3-aws-s3">AWS S3</a></li>
+<li><a href="#4-unity-ccd">Unity CCD</a></li>
+</ul>
+</li>
+<li><a href="#runtime-setup">Runtime Setup</a></li>
+<li><a href="#security--encryption--hmac">Security — Encryption &amp; HMAC</a></li>
+<li><a href="#custom-loader-ioslloder">Custom Loader (IOSLLoader)</a></li>
+<li><a href="#publishing--installation-options">Publishing &amp; Installation Options</a></li>
+<li><a href="#frequently-asked-questions">Frequently Asked Questions</a></li>
+</ol>
+<hr>
+<h2 id="overview">Overview</h2>
+<pre><code>[Editor] Build patch files
+     └─▶ OSL Uploader Window
+             └─▶ Generate version.json manifest
+                     └─▶ Upload to server (Local / GCS / S3 / CCD)
+
+[Runtime] Game starts
+     └─▶ OSLPatchUIController
+             └─▶ OSLPatchManager
+                     ├─▶ Fetch version.json from server
+                     ├─▶ Compare with local version
+                     ├─▶ Download changed files
+                     └─▶ IOSLLoader.InitializeAsync()
+</code></pre>
+<hr>
+<h2 id="requirements">Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unity</td>
+<td>2021.3 LTS or later (tested on 6000.x)</td>
+</tr>
+<tr>
+<td>.NET Standard</td>
+<td>2.1</td>
+</tr>
+<tr>
+<td>TextMeshPro <em>(optional)</em></td>
+<td>Any — auto-detected via <code>OSL_TMP_PRESENT</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="installation">Installation</h2>
+<ol>
+<li>Copy the <code>Assets/OSL/EasyPatcher/</code> folder into your Unity project.</li>
+<li>Unity will compile the assembly definitions automatically.</li>
+<li><em>(Optional)</em> If you use TextMeshPro, the <code>OSL_TMP_PRESENT</code> scripting define is set automatically through the assembly definition's <code>versionDefines</code>. No manual action is needed.</li>
+</ol>
+<hr>
+<h2 id="quick-start">Quick Start</h2>
+<blockquote>
+<p>Goal: test the full flow locally in 5 minutes.</p>
+</blockquote>
+<ol>
+<li><strong>Build your patch files</strong> into any folder on your PC (e.g. <code>C:/MyPatchBuild</code>).</li>
+<li>Open <strong>Tools &gt; OSL &gt; Easy Patcher Uploader</strong> from the Unity menu bar.</li>
+<li>In the <strong>Upload</strong> tab:
+<ul>
+<li>Set <strong>Patch Folder</strong> to <code>C:/MyPatchBuild</code>.</li>
+<li>Click <strong>↺</strong> to scan files.</li>
+<li>Choose <strong>Local Folder</strong> backend and set <strong>Destination Folder</strong> (e.g. <code>C:/PatchServer</code>).</li>
+<li>Click <strong>Generate Manifest &amp; Upload</strong>.</li>
+</ul>
+</li>
+<li>Start a local HTTP server pointing at <code>C:/PatchServer</code>:
+<pre><code class="lang-powershell"># PowerShell — serves on http://localhost:8080
+cd C:/PatchServer
+python -m http.server 8080
+</code></pre>
+</li>
+<li>In the <strong>Download</strong> tab, set <strong>Remote Base URL</strong> to <code>http://localhost:8080</code>.</li>
+<li>In your Scene, add the <code>OSLPatchUIController</code> component. Assign the Slider / Text fields and set <strong>Remote Base URL</strong> to <code>http://localhost:8080</code>.</li>
+<li>Press <strong>Play</strong> — the controller will check the version and download any changed files.</li>
+</ol>
+<hr>
+<h2 id="editor--uploader-window">Editor — Uploader Window</h2>
+<p>Open via <strong>OSL → Easy Patcher Uploader</strong> in the Unity menu bar.</p>
+<h3 id="upload-tab">Upload Tab</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Active Slot</strong></td>
+<td>Selects which version slot to work on (managed in the Versions tab).</td>
+</tr>
+<tr>
+<td><strong>Patch Folder</strong></td>
+<td>The local folder containing your built patch files.</td>
+</tr>
+<tr>
+<td><strong>↺ (Refresh)</strong></td>
+<td>Re-scans the folder and rebuilds the file tree.</td>
+</tr>
+<tr>
+<td><strong>Patch Files tree</strong></td>
+<td>Tick or untick individual files/folders to include or exclude from the manifest. Each file also has 🔒 (encrypt) and 🛡 (HMAC tamper-proof) toggles.</td>
+</tr>
+<tr>
+<td><strong>Upload Backend</strong></td>
+<td>Choose one of: Local Folder, Google Cloud Storage, AWS S3, Unity CCD.</td>
+</tr>
+<tr>
+<td><strong>Generate Manifest &amp; Upload</strong></td>
+<td>Generates <code>version.json</code>, stages the files, then uploads everything via the selected backend.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="download-tab">Download Tab</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Remote Base URL</strong></td>
+<td>The HTTP(S) URL the runtime will use to fetch <code>version.json</code> and patch files. Example: <code>https://storage.googleapis.com/my-bucket/patches</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="versions-tab">Versions Tab</h3>
+<p>Manage multiple patch version slots. Each slot stores a version string, source folder path, and the file tree state. Use <strong>Duplicate</strong> to branch a version for testing, and <strong>+ Add Version Slot</strong> to create a new one.</p>
+<hr>
+<h2 id="upload-backends--detailed-setup">Upload Backends — Detailed Setup</h2>
+<h3 id="1-local-folder">1. Local Folder</h3>
+<p><strong>Use case:</strong> Local testing with a simple HTTP server.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Destination Folder</strong></td>
+<td>Local path where files will be copied. Point an HTTP server at this folder.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Choose any empty folder as the destination (e.g. <code>C:/PatchServer</code>).</li>
+<li>Click <strong>Browse</strong> and select it.</li>
+<li>After uploading, start a local HTTP server:
+<pre><code class="lang-powershell">cd C:/PatchServer
+python -m http.server 8080
+</code></pre>
+</li>
+<li>Set the runtime URL to <code>http://localhost:8080</code>.</li>
+</ol>
+<hr>
+<h3 id="2-google-cloud-storage">2. Google Cloud Storage</h3>
+<p><strong>Use case:</strong> Production CDN via Google Cloud. Free tier available.</p>
+<h4 id="step-1--create-a-gcs-bucket">Step 1 — Create a GCS bucket</h4>
+<ol>
+<li>Go to <a href="https://console.cloud.google.com/">Google Cloud Console</a> and sign in.</li>
+<li>Navigate to <strong>Cloud Storage → Buckets → Create</strong>.</li>
+<li>Choose a globally unique <strong>bucket name</strong> (e.g. <code>my-game-patches</code>).</li>
+<li>Set <strong>Location</strong> to the region closest to your players.</li>
+<li>Under <strong>Access control</strong>, choose <strong>Uniform</strong>.</li>
+<li>After creating, go to the bucket's <strong>Permissions</strong> tab.</li>
+<li>Click <strong>Grant Access</strong>, add the principal <code>allUsers</code>, and assign the role <strong>Storage Object Viewer</strong>.
+<blockquote>
+<p>This makes the files publicly readable so the runtime can download them without authentication.</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="step-2--create-a-service-account-and-download-the-json-key">Step 2 — Create a Service Account and download the JSON key</h4>
+<ol>
+<li>Navigate to <strong>IAM &amp; Admin → Service Accounts → Create Service Account</strong>.</li>
+<li>Give it a name (e.g. <code>easy-patcher-uploader</code>).</li>
+<li>Assign the role <strong>Storage Object Admin</strong> (or a custom role with <code>storage.objects.create</code> + <code>storage.objects.delete</code>).</li>
+<li>Click <strong>Done</strong>, then open the newly created service account.</li>
+<li>Go to the <strong>Keys</strong> tab → <strong>Add Key → Create new key → JSON</strong>.</li>
+<li>A <code>.json</code> file will be downloaded. <strong>Keep this file secret — never commit it to Git.</strong></li>
+</ol>
+<h4 id="step-3--configure-the-editor-window">Step 3 — Configure the Editor window</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Where to find the value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bucket Name</strong></td>
+<td>The name you chose in Step 1 (e.g. <code>my-game-patches</code>)</td>
+</tr>
+<tr>
+<td><strong>Object Prefix</strong></td>
+<td><em>(Optional)</em> Subfolder inside the bucket (e.g. <code>patches/v2/</code>). Leave empty to upload to the root.</td>
+</tr>
+<tr>
+<td><strong>Service Account JSON Key</strong></td>
+<td>Open the downloaded <code>.json</code> file in a text editor and paste the entire contents here.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="step-4--set-the-runtime-url">Step 4 — Set the runtime URL</h4>
+<pre><code>https://storage.googleapis.com/&lt;BUCKET_NAME&gt;/&lt;OBJECT_PREFIX&gt;
+</code></pre>
+<p>Example: <code>https://storage.googleapis.com/my-game-patches/patches/v2</code></p>
+<hr>
+<h3 id="3-aws-s3">3. AWS S3</h3>
+<p><strong>Use case:</strong> Production CDN via Amazon Web Services.</p>
+<h4 id="step-1--create-an-s3-bucket">Step 1 — Create an S3 bucket</h4>
+<ol>
+<li>Sign in to the <a href="https://console.aws.amazon.com/">AWS Console</a> and open <strong>S3</strong>.</li>
+<li>Click <strong>Create bucket</strong>.</li>
+<li>Enter a <strong>Bucket name</strong> (e.g. <code>my-game-patches</code>) and choose your <strong>AWS Region</strong> (e.g. <code>ap-northeast-2</code> for Seoul, <code>us-east-1</code> for US East).</li>
+<li><strong>Uncheck</strong> &quot;Block all public access&quot; if you want public downloads, then acknowledge the warning.</li>
+<li>After creating the bucket, go to <strong>Permissions → Bucket policy</strong> and add:
+<pre><code class="lang-json">{
+  &quot;Version&quot;: &quot;2012-10-17&quot;,
+  &quot;Statement&quot;: [
+    {
+      &quot;Effect&quot;: &quot;Allow&quot;,
+      &quot;Principal&quot;: &quot;*&quot;,
+      &quot;Action&quot;: &quot;s3:GetObject&quot;,
+      &quot;Resource&quot;: &quot;arn:aws:s3:::my-game-patches/*&quot;
+    }
+  ]
+}
+</code></pre>
+Replace <code>my-game-patches</code> with your actual bucket name.</li>
+</ol>
+<h4 id="step-2--create-an-iam-user-and-access-keys">Step 2 — Create an IAM user and access keys</h4>
+<ol>
+<li>Open <strong>IAM → Users → Create user</strong>.</li>
+<li>Give it a name (e.g. <code>easy-patcher-uploader</code>), click Next.</li>
+<li>Choose <strong>Attach policies directly</strong> and search for <code>AmazonS3FullAccess</code>.
+<blockquote>
+<p>For tighter security, create a custom policy that only allows <code>s3:PutObject</code> and <code>s3:DeleteObject</code> on your specific bucket.</p>
+</blockquote>
+</li>
+<li>Click <strong>Create user</strong>, then open the user and go to <strong>Security credentials</strong>.</li>
+<li>Click <strong>Create access key</strong> → choose <strong>Application running outside AWS</strong> → <strong>Create</strong>.</li>
+<li><strong>Copy the Access Key ID and Secret Access Key now</strong> — the secret is only shown once.</li>
+</ol>
+<h4 id="step-3--configure-the-editor-window-1">Step 3 — Configure the Editor window</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Where to find the value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Access Key ID</strong></td>
+<td>Copied in Step 2 (e.g. <code>AKIAIOSFODNN7EXAMPLE</code>)</td>
+</tr>
+<tr>
+<td><strong>Secret Access Key</strong></td>
+<td>Copied in Step 2. Never commit this to source control.</td>
+</tr>
+<tr>
+<td><strong>Bucket Name</strong></td>
+<td>The name from Step 1 (e.g. <code>my-game-patches</code>)</td>
+</tr>
+<tr>
+<td><strong>Region</strong></td>
+<td>AWS region identifier (e.g. <code>ap-northeast-2</code>, <code>us-east-1</code>)</td>
+</tr>
+<tr>
+<td><strong>Object Key Prefix</strong></td>
+<td><em>(Optional)</em> Subfolder (e.g. <code>patches/</code>). Leave empty to upload to the root.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="step-4--set-the-runtime-url-1">Step 4 — Set the runtime URL</h4>
+<pre><code>https://&lt;BUCKET_NAME&gt;.s3.&lt;REGION&gt;.amazonaws.com/&lt;OBJECT_KEY_PREFIX&gt;
+</code></pre>
+<p>Example: <code>https://my-game-patches.s3.ap-northeast-2.amazonaws.com/patches</code></p>
+<hr>
+<h3 id="4-unity-ccd">4. Unity CCD</h3>
+<p><strong>Use case:</strong> Easiest option if you are already using Unity Gaming Services.</p>
+<h4 id="step-1--enable-ccd-in-your-project">Step 1 — Enable CCD in your project</h4>
+<ol>
+<li>Open <a href="https://dashboard.unity3d.com/">Unity Dashboard</a> and select your project.</li>
+<li>Navigate to <strong>Live Ops → Cloud Content Delivery</strong>.</li>
+<li>If not enabled, click <strong>Get Started</strong> to activate the service.</li>
+</ol>
+<h4 id="step-2--create-an-environment-and-bucket">Step 2 — Create an environment and bucket</h4>
+<ol>
+<li>In the CCD section, choose or create an <strong>Environment</strong> (the default is <code>production</code>).</li>
+<li>Click <strong>Create Bucket</strong>, give it a name (e.g. <code>game-patches</code>).</li>
+<li>After creation, open the bucket and copy the <strong>Bucket ID</strong> from the URL or the detail panel.</li>
+</ol>
+<h4 id="step-3--create-an-api-key">Step 3 — Create an API key</h4>
+<ol>
+<li>In the Unity Dashboard, go to <strong>Settings → Service Account API Keys</strong>.</li>
+<li>Click <strong>Create API Key</strong>.</li>
+<li>Give it a name and assign the <strong>Cloud Content Delivery</strong> role.</li>
+<li>Copy the generated key. <strong>It will not be shown again.</strong></li>
+</ol>
+<h4 id="step-4--find-your-project-id-and-environment-id">Step 4 — Find your Project ID and Environment ID</h4>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Where to find it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Project ID</strong></td>
+<td>Unity Dashboard → <strong>Settings → General → Project ID</strong> (also shown in Editor: <em>Edit → Project Settings → Services</em>)</td>
+</tr>
+<tr>
+<td><strong>Environment ID</strong></td>
+<td>CCD Dashboard → the environment detail page, or use <code>production</code> for the default environment</td>
+</tr>
+<tr>
+<td><strong>Bucket ID</strong></td>
+<td>CCD Dashboard → your bucket → <strong>Bucket Details</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="step-5--configure-the-editor-window">Step 5 — Configure the Editor window</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Project ID</strong></td>
+<td>From Step 4</td>
+</tr>
+<tr>
+<td><strong>Environment ID</strong></td>
+<td>From Step 4 (default: <code>production</code>)</td>
+</tr>
+<tr>
+<td><strong>Bucket ID</strong></td>
+<td>From Step 4</td>
+</tr>
+<tr>
+<td><strong>API Key</strong></td>
+<td>From Step 3</td>
+</tr>
+<tr>
+<td><strong>Auto Create Release</strong></td>
+<td>When enabled, a new release is created automatically after upload, making files immediately available to players.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="step-6--set-the-runtime-url">Step 6 — Set the runtime URL</h4>
+<p>After uploading and releasing, the public URL follows this format:</p>
+<pre><code>https://cdn-{projectId}.unity3dusercontent.com/client_api/v1/environments/{environmentId}/buckets/{bucketId}/releases/latest/entries
+</code></pre>
+<blockquote>
+<p><strong>Tip:</strong> Check the CCD dashboard for the exact CDN URL after your first release.</p>
+</blockquote>
+<hr>
+<h2 id="runtime-setup">Runtime Setup</h2>
+<h3 id="1-add-oslpatchuicontroller-to-your-scene">1. Add OSLPatchUIController to your Scene</h3>
+<ol>
+<li>Create a new empty GameObject in your loading Scene (e.g. name it <code>PatchManager</code>).</li>
+<li>Add the <code>OSLPatchUIController</code> component.</li>
+<li>Assign the Inspector fields:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Remote Base URL</strong></td>
+<td>The CDN / server URL where <code>version.json</code> and patch files are hosted.</td>
+</tr>
+<tr>
+<td><strong>Hmac Key Hex</strong></td>
+<td><em>(Optional)</em> 32-byte hex key for HMAC tamper-proof verification. Required only if any file has the 🛡 flag.</td>
+</tr>
+<tr>
+<td><strong>Loader</strong></td>
+<td>Assign an <code>IOSLLoader</code> instance via <code>[SerializeReference]</code>. The bundled <code>OSLSimpleBundleLoader</code> is a serializable class — pick it from the Inspector's <em>type selector</em> drop-down on the Loader field, then expand it to edit its fields. To use a custom loader, implement <code>IOSLLoader</code> and select it the same way.</td>
+</tr>
+<tr>
+<td><strong>Progress Slider</strong></td>
+<td>A <code>UnityEngine.UI.Slider</code> that shows download progress.</td>
+</tr>
+<tr>
+<td><strong>Status Text</strong></td>
+<td>A <code>TMP_Text</code> or <code>UI.Text</code> that shows status messages.</td>
+</tr>
+<tr>
+<td><strong>Size Text</strong></td>
+<td>A <code>TMP_Text</code> or <code>UI.Text</code> that shows <code>12.3 MB / 45.6 MB</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-oslsimplebundleloader">2. OSLSimpleBundleLoader</h3>
+<p><code>OSLSimpleBundleLoader</code> is a <code>[Serializable]</code> class (not a <code>MonoBehaviour</code>). On the <code>OSLPatchUIController</code> Inspector, click the <strong>Loader</strong> field's type selector and choose <code>OSLSimpleBundleLoader</code> to instantiate it inline. Its fields will appear nested under the Loader field.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Local Root Path Override</strong></td>
+<td><em>(Optional)</em> Override the local cache folder. Defaults to <code>Application.persistentDataPath/OSL/EasyPatcher</code>.</td>
+</tr>
+<tr>
+<td><strong>Aes Key Hex</strong></td>
+<td><em>(Optional)</em> 32-byte hex key for decrypting AES-256 encrypted files at runtime. Must match the key used during upload.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-patch-flow-at-runtime">3. Patch flow at runtime</h3>
+<pre><code>Start()
+  └─ CheckVersionAsync()        ← downloads version.json, compares with local
+       ├─ New version found
+       │    └─ StartDownloadAsync()  ← downloads only changed files
+       └─ Already up to date
+  └─ loader.InitializeAsync()   ← loads AssetBundles / catalogs from cache
+</code></pre>
+<hr>
+<h2 id="security--encryption--hmac">Security — Encryption &amp; HMAC</h2>
+<p>Keys are <strong>never</strong> stored in <code>EditorPrefs</code> or committed to source control. They are read from environment variables at upload time.</p>
+<table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Env Variable</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AES-256 file encryption</td>
+<td><code>OSL_PATCH_AES_KEY</code></td>
+<td>64 hex characters (32 bytes)</td>
+</tr>
+<tr>
+<td>HMAC-SHA256 tamper detection</td>
+<td><code>OSL_PATCH_HMAC_KEY</code></td>
+<td>64 hex characters (32 bytes)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Setting environment variables (Windows PowerShell):</strong></p>
+<pre><code class="lang-powershell">$env:OSL_PATCH_AES_KEY  = &quot;0011223344556677889900aabbccddeeff0011223344556677889900aabbccdd&quot;
+$env:OSL_PATCH_HMAC_KEY = &quot;aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899&quot;
+</code></pre>
+<blockquote>
+<p>Set these in the same PowerShell session where you open Unity, or configure them as system environment variables in <strong>Windows Settings → System → Advanced → Environment Variables</strong>.</p>
+</blockquote>
+<p><strong>Generating a random key (PowerShell):</strong></p>
+<pre><code class="lang-powershell">-join ((1..32) | ForEach-Object { '{0:x2}' -f (Get-Random -Max 256) })
+</code></pre>
+<p><strong>Runtime decryption:</strong> Supply the same AES key in the <code>aesKeyHex</code> field of <code>OSLSimpleBundleLoader</code>. The IV is prepended to each encrypted file automatically, so no manual IV management is needed.</p>
+<hr>
+<h2 id="custom-loader-ioslloader">Custom Loader (IOSLLoader)</h2>
+<p>Implement <code>IOSLLoader</code> to use Addressables, a custom bundle system, or any other asset loading strategy:</p>
+<pre><code class="lang-csharp">using OSL.EasyPatcher.Runtime.Core;
+using System;
+using System.Threading.Tasks;
+using UnityEngine;
+
+[Serializable]
+public class MyCustomLoader : IOSLLoader
+{
+    public async Task InitializeAsync()
+    {
+        // Initialize your catalog / bundle system here.
+        await Task.CompletedTask;
+    }
+
+    public async Task&lt;T&gt; LoadAssetAsync&lt;T&gt;(string key) where T : Object
+    {
+        // Load and return the asset.
+        return await Task.FromResult&lt;T&gt;(null);
+    }
+
+    public void ReleaseAsset(string key)
+    {
+        // Release the asset from memory.
+    }
+}
+</code></pre>
+<p>Add your loader component to a GameObject and assign it to the <strong>Loader</strong> field on <code>OSLPatchUIController</code>.</p>
+<hr>
+<h2 id="publishing--installation-options">Publishing &amp; Installation Options</h2>
+<p>This package supports two distribution paths. Both work from the same source tree under <code>Assets/OSL/EasyPatcher/</code>.</p>
+<h3 id="option-a--asset-store-unitypackage">Option A — Asset Store (<code>.unitypackage</code>)</h3>
+<ol>
+<li>In Unity, open <strong>Assets → Select Folder</strong> and select <code>Assets/OSL/EasyPatcher</code>.</li>
+<li>Right-click the folder and choose <strong>Export Package…</strong>.</li>
+<li>In the export dialog, leave <strong>Include dependencies</strong> unchecked, keep all entries selected, and click <strong>Export</strong>.</li>
+<li>Save as <code>OSL_EasyPatcher_&lt;version&gt;.unitypackage</code>.</li>
+<li>The Sample scene and <code>PatchTestRunner</code> are exported alongside the runtime/editor assemblies, so buyers can open <code>Sample/DemoScene.unity</code> immediately after import.</li>
+</ol>
+<h3 id="option-b--upm-git-url-or-local-path">Option B — UPM (Git URL or local path)</h3>
+<p>The package root is <code>Assets/OSL/EasyPatcher/</code> and contains a valid <code>package.json</code>.</p>
+<ul>
+<li><strong>Git URL:</strong> in <strong>Window → Package Manager → + → Add package from git URL…</strong>, enter:
+<pre><code>https://github.com/OngsooLabs/EasyPatcherRepo.git?path=EasyPatcher/Assets/OSL/EasyPatcher
+</code></pre>
+</li>
+<li><strong>Local path:</strong> in <strong>Package Manager → + → Add package from disk…</strong>, select the <code>package.json</code> inside <code>Assets/OSL/EasyPatcher/</code>.</li>
+</ul>
+<p>When installed via UPM, the <code>Sample/</code> folder ships as a regular runtime folder so the demo scene remains directly browsable. If you prefer the official UPM <code>Samples~</code> convention (samples imported on demand), rename <code>Sample</code> to <code>Samples~</code> and add a <code>samples</code> array to <code>package.json</code>.</p>
+<hr>
+<h2 id="folder-layout">Folder Layout</h2>
+<pre><code>Assets/OSL/EasyPatcher/
+  Editor/
+    Upload/             ← Upload backend implementations (GCS, S3, CCD, Local)
+    OSLUploaderWindow   ← Editor window entry point
+    OSLPatcherSettings  ← Serializable settings / tree node data
+    OSLPatcherTreeView  ← File tree view renderer
+  Runtime/
+    Core/               ← OSLPatchManager, PatchManifest, IOSLLoader
+    Loaders/            ← OSLSimpleBundleLoader
+    UI/                 ← OSLPatchUIController (MonoBehaviour)
+  Sample/               ← Example scene and test runner
+</code></pre>
+<hr>
+<h2 id="frequently-asked-questions">Frequently Asked Questions</h2>
+<p><strong>Q: Where are patch files cached on the player's device?</strong>
+A: <code>Application.persistentDataPath/OSL/EasyPatcher/</code> by default. You can override this in <code>OSLSimpleBundleLoader.localRootPathOverride</code>.</p>
+<p><strong>Q: What happens if the download is interrupted?</strong>
+A: <code>OSLPatchManager</code> only writes the local <code>version.json</code> after all files have been verified. On next launch, the version check will detect a mismatch and retry the download.</p>
+<p><strong>Q: Can I patch non-AssetBundle files (e.g. Lua scripts, JSON configs)?</strong>
+A: Yes. The patch system transfers any file type. Loading non-bundle files is the responsibility of your <code>IOSLLoader</code> implementation.</p>
+<p><strong>Q: The editor shows &quot;Environment variable is not set&quot; when I click Upload.</strong>
+A: You need to set <code>OSL_PATCH_AES_KEY</code> or <code>OSL_PATCH_HMAC_KEY</code> as environment variables <strong>before</strong> launching Unity Editor. See <a href="#security--encryption--hmac">Security — Encryption &amp; HMAC</a>.</p>
+<p><strong>Q: Do I need the TextMeshPro package?</strong>
+A: No. If TMP is not installed, the UI components fall back to legacy <code>UnityEngine.UI.Text</code> automatically. No code changes are needed.</p>
+<p><strong>Q: Can I use multiple patch versions simultaneously?</strong>
+A: Each version slot is independent. Use the <strong>Versions</strong> tab to manage them. Only the slot selected in the <strong>Upload</strong> tab is processed when you click &quot;Generate Manifest &amp; Upload&quot;.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/OngsooLabs/ongsoolabs.github.io/blob/copilot/fix-page-access-issue/articles/easypatcher.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © Ongsoo Labs. All rights reserved.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+- name: Quick Start
+  href: quick_start.md
+- name: Core Concepts
+  href: core_concepts.md
+- name: Asset-specific Guides
+  items:
+    - name: Deterministic
+      href: deterministic.md
+    - name: EasyPatcher
+      href: easypatcher.md
+    - name: SocialLogin
+      href: sociallogin.md
+    - name: IapClient
+      href: iapclient.md
+    - name: SecureSave
+      href: securesave.md
