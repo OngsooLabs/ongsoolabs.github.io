@@ -1,147 +1,133 @@
 {
-  "source_base_path": "/home/runner/work/ongsoolabs.github.io/ongsoolabs.github.io",
+  "source_base_path": "/home/runner/work/Integration/Integration",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
-      "type": "Resource",
-      "output": {
-        "resource": {
-          "relative_path": "index.json"
-        }
-      }
-    },
-    {
       "type": "Conceptual",
-      "source_relative_path": "api/index.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/CHANGELOG.md",
       "output": {
         ".html": {
-          "relative_path": "api/index.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "api/toc.yml",
-      "output": {
-        ".json": {
-          "relative_path": "api/toc.json"
-        },
-        ".html": {
-          "relative_path": "api/toc.html"
+          "relative_path": "OSL Integration/Assets/OSL/Deterministic/CHANGELOG.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "articles/core_concepts.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/Documentation~/QuickStart.md",
       "output": {
         ".html": {
-          "relative_path": "articles/core_concepts.html"
+          "relative_path": "OSL Integration/Assets/OSL/Deterministic/Documentation~/QuickStart.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "articles/deterministic.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/LICENSE.md",
       "output": {
         ".html": {
-          "relative_path": "articles/deterministic.html"
+          "relative_path": "OSL Integration/Assets/OSL/Deterministic/LICENSE.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "articles/easypatcher.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/README.md",
       "output": {
         ".html": {
-          "relative_path": "articles/easypatcher.html"
+          "relative_path": "OSL Integration/Assets/OSL/Deterministic/README.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "articles/iapclient.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/Samples/LockstepDemo/README_DEMO.md",
       "output": {
         ".html": {
-          "relative_path": "articles/iapclient.html"
+          "relative_path": "OSL Integration/Assets/OSL/Deterministic/Samples/LockstepDemo/README_DEMO.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "articles/quick_start.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/EasyPatcher/CHANGELOG.md",
       "output": {
         ".html": {
-          "relative_path": "articles/quick_start.html"
+          "relative_path": "OSL Integration/Assets/OSL/EasyPatcher/CHANGELOG.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "articles/securesave.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/EasyPatcher/LICENSE.md",
       "output": {
         ".html": {
-          "relative_path": "articles/securesave.html"
+          "relative_path": "OSL Integration/Assets/OSL/EasyPatcher/LICENSE.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "articles/sociallogin.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/EasyPatcher/README.md",
       "output": {
         ".html": {
-          "relative_path": "articles/sociallogin.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "articles/toc.yml",
-      "output": {
-        ".json": {
-          "relative_path": "articles/toc.json"
-        },
-        ".html": {
-          "relative_path": "articles/toc.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "favicon.ico",
-      "output": {
-        "resource": {
-          "relative_path": "favicon.ico"
+          "relative_path": "OSL Integration/Assets/OSL/EasyPatcher/README.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "index.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/IapClient/Documentation/README.md",
       "output": {
         ".html": {
-          "relative_path": "index.html"
+          "relative_path": "OSL Integration/Assets/OSL/IapClient/Documentation/README.html"
         }
       },
       "version": ""
     },
     {
-      "type": "Resource",
-      "source_relative_path": "logo.svg",
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/SecureSave/Documentation/README.md",
       "output": {
-        "resource": {
-          "relative_path": "logo.svg"
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/SecureSave/Documentation/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/SecureSave/LICENSE.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/SecureSave/LICENSE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/SocialLogin/Docs/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/SocialLogin/Docs/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/OSL_Development_Guideline_v1.1.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/OSL_Development_Guideline_v1.1.html"
         }
       },
       "version": ""
