@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Changelog </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Changelog ">
+      
+      
+      <link rel="icon" href="../../../../favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/Deterministic/CHANGELOG.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="changelog">Changelog</h1>
+
+<p>All notable changes to <strong>OSL Deterministic Core</strong> are documented in this file.</p>
+<p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>,
+and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h2 id="100---initial-release">[1.0.0] - Initial Release</h2>
+<h3 id="added">Added</h3>
+<ul>
+<li><strong>Core RNG</strong>
+<ul>
+<li><code>IRandomEngine</code> integer-first PRNG contract with <code>Span&lt;byte&gt;</code> state save/load.</li>
+<li><code>PCG32</code> default engine (PCG-XSH-RR 64/32) with unbiased range generation.</li>
+<li><code>PCG32State</code> portable 16-byte little-endian snapshot.</li>
+<li><code>OSLRandom</code> developer-facing facade (<code>Range</code>, <code>Chance</code>, etc.).</li>
+</ul>
+</li>
+<li><strong>Shuffling</strong>
+<ul>
+<li><code>OSLDeckShuffler.Shuffle</code> with <code>IList&lt;T&gt;</code> and <code>Span&lt;T&gt;</code> overloads, including
+partial-range support.</li>
+</ul>
+</li>
+<li><strong>Gacha</strong>
+<ul>
+<li><code>OSLGachaTable&lt;T&gt;</code> immutable weighted draw table with cumulative weights and
+binary search.</li>
+<li><code>GachaEntry&lt;T&gt;</code>, <code>GachaTableJson</code>, <code>OSLGachaTableAsset</code> for code / JSON /
+ScriptableObject workflows.</li>
+<li>Pity-aware <code>RollMany</code> overload.</li>
+</ul>
+</li>
+<li><strong>Pity</strong>
+<ul>
+<li><code>IPitySystem</code> pluggable contract with <code>Span&lt;byte&gt;</code> state IO.</li>
+<li><code>SimpleHardPity</code> reference implementation (consecutive-miss counter).</li>
+</ul>
+</li>
+<li><strong>Combat</strong>
+<ul>
+<li><code>OSLCombatResolver</code> with integer-first probability APIs
+(<code>RollPermille</code>, <code>RollProbability</code>, <code>RollDice</code>, <code>RollCritical</code>).</li>
+</ul>
+</li>
+<li><strong>Samples</strong>
+<ul>
+<li>Lockstep Demo: split-screen <code>OnGUI</code> simulation with per-tick FNV-1a state
+hash and SYNC / DESYNC banner.</li>
+</ul>
+</li>
+<li><strong>Tests</strong>
+<ul>
+<li>EditMode tests covering determinism, state round-trips, range bounds,
+distribution sanity, shuffle correctness, pity progression, gacha JSON
+round-trips, and combat boundaries.</li>
+</ul>
+</li>
+<li><strong>Packaging</strong>
+<ul>
+<li>UPM <code>package.json</code>, English README, English LICENSE, QuickStart guide.</li>
+</ul>
+</li>
+</ul>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>Target framework: <strong>.NET Standard 2.1</strong>.</li>
+<li>Minimum Unity version: <strong>2021.3</strong>.</li>
+<li>Zero third-party dependencies. Zero allocations on RNG hot paths.</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/Deterministic/CHANGELOG.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
