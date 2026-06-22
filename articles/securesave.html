@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>OSL Secure Save </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+      <meta http-equiv="Pragma" content="no-cache">
+      <meta http-equiv="Expires" content="0">
+      <meta name="title" content="OSL Secure Save ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397">
+      <link rel="stylesheet" href="../public/main.css?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/blob/main/articles/securesave.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="osl-secure-save">OSL Secure Save</h1>
+
+<p>Server-authoritative save system for Unity using <strong>Unity Gaming Services (UGS)</strong>.<br>
+All write operations are validated by a Cloud Code script before being committed to Cloud Save.<br>
+Reads are performed directly via the Cloud Save SDK on the client.</p>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#architecture">Architecture</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#ugs-project-setup">UGS Project Setup</a></li>
+<li><a href="#unity-package-setup">Unity Package Setup</a></li>
+<li><a href="#cloud-code-endpoint-deployment">Cloud Code Endpoint Deployment</a></li>
+<li><a href="#remote-config-setup-optional">Remote Config Setup (Optional)</a></li>
+<li><a href="#assembly-definition-setup">Assembly Definition Setup</a></li>
+<li><a href="#using-oslsavemanager">Using OSLSaveManager</a></li>
+<li><a href="#demo-scene">Demo Scene</a></li>
+</ol>
+<hr>
+<h2 id="overview">Overview</h2>
+<p>OSL Secure Save prevents client-side cheating by routing all save operations through a Cloud Code endpoint (<code>osl_master_save</code>). The endpoint enforces:</p>
+<ul>
+<li><strong>Type validation</strong> — value must match the declared type for that key</li>
+<li><strong>Range validation</strong> — value must fall within <code>MinValue</code>/<code>MaxValue</code></li>
+<li><strong>Delta validation</strong> — for <code>AddOnly</code> keys, the increment cannot exceed <code>MaxDelta</code></li>
+<li><strong>Operation validation</strong> — each key is locked to <code>AddOnly</code>, <code>Replace</code>, or <code>Both</code></li>
+</ul>
+<hr>
+<h2 id="architecture">Architecture</h2>
+<pre><code>Client (Unity)
+  │
+  ├─ Write
+  │     └─► OSLSaveManager.AddInt / SetInt / SetString / SetBool
+  │               └─► CloudCodeService.CallEndpointAsync(&quot;osl_master_save&quot;)
+  │                         └─► [Server] Load rules → Validate → CloudSave.setItem()
+  │
+  └─ Read
+        └─► OSLSaveManager.GetAsync&lt;T&gt; / LoadAllAsync
+                  └─► CloudSaveService.Instance.Data.Player.LoadAllAsync()
+</code></pre>
+<hr>
+<h2 id="requirements">Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unity</td>
+<td>2022.3 LTS or later</td>
+</tr>
+<tr>
+<td>com.unity.services.cloudcode</td>
+<td>2.x or later</td>
+</tr>
+<tr>
+<td>com.unity.services.cloudsave</td>
+<td>3.0.0 or later</td>
+</tr>
+<tr>
+<td>com.unity.services.authentication</td>
+<td>2.x or later</td>
+</tr>
+<tr>
+<td>com.unity.services.core</td>
+<td>1.x or later</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="ugs-project-setup">UGS Project Setup</h2>
+<ol>
+<li>Open <a href="https://dashboard.unity3d.com/">Unity Dashboard</a>.</li>
+<li>Create or select a project.</li>
+<li>Enable <strong>Cloud Code</strong>, <strong>Cloud Save</strong>, <strong>Authentication</strong>, and optionally <strong>Remote Config</strong>.</li>
+<li>In the Unity Editor, link your project via <strong>Edit → Project Settings → Services</strong>.</li>
+</ol>
+<hr>
+<h2 id="unity-package-setup">Unity Package Setup</h2>
+<ol>
+<li>Search for <strong>OSL Secure Save</strong> in the Unity Asset Store, or open it directly at <a href="https://assetstore.unity.com/packages/slug/375944">Unity Asset Store (OSL Secure Save)</a>.</li>
+<li>Click <strong>Add to My Assets</strong>.</li>
+<li>Open Unity and navigate to <strong>Window &gt; Package Manager</strong>.</li>
+<li>Select <strong>Packages: My Assets</strong> from the dropdown.</li>
+<li>Locate <strong>OSL Secure Save</strong>, download it, and click <strong>Import</strong>.</li>
+</ol>
+<p>Next, install the required UGS SDKs via <strong>Window → Package Manager → Unity Registry</strong>:</p>
+<ul>
+<li><code>Authentication</code> (<code>com.unity.services.authentication</code>)</li>
+<li><code>Cloud Code</code> (<code>com.unity.services.cloudcode</code>)</li>
+<li><code>Cloud Save</code> (<code>com.unity.services.cloudsave</code>)</li>
+<li><code>Remote Config</code> (<code>com.unity.services.remoteconfig</code>) — optional</li>
+</ul>
+<hr>
+<h2 id="cloud-code-endpoint-deployment">Cloud Code Endpoint Deployment</h2>
+<ol>
+<li>Go to <strong>Dashboard → Cloud Code → Scripts</strong> and click <strong>Create Script</strong>, name it <code>osl_master_save</code>.</li>
+<li>Add parameters <code>key</code> (String, required) and <code>operation</code> (String, required). Do <strong>not</strong> add <code>value</code> as a typed parameter.</li>
+<li>Paste the contents of <code>Assets/OSL/SecureSave/CloudCode/osl_master_save.js</code> into the script editor.</li>
+<li>Click <strong>Save &amp; Deploy</strong>.</li>
+</ol>
+<hr>
+<h2 id="remote-config-setup-optional">Remote Config Setup (Optional)</h2>
+<p>Add a key <code>osl_secure_save_rules</code> of type JSON to Remote Config with your rule set:</p>
+<pre><code class="lang-json">{
+  &quot;Rules&quot;: [
+    { &quot;Key&quot;: &quot;gold&quot;,       &quot;Type&quot;: 0, &quot;MinValue&quot;: 0, &quot;MaxValue&quot;: 9999999, &quot;MaxDelta&quot;: 10000, &quot;AllowedOp&quot;: 0 },
+    { &quot;Key&quot;: &quot;level&quot;,      &quot;Type&quot;: 0, &quot;MinValue&quot;: 1, &quot;MaxValue&quot;: 999,     &quot;MaxDelta&quot;: 1,     &quot;AllowedOp&quot;: 1 },
+    { &quot;Key&quot;: &quot;playerName&quot;, &quot;Type&quot;: 2, &quot;MinValue&quot;: 0, &quot;MaxValue&quot;: 0,       &quot;MaxDelta&quot;: 0,     &quot;AllowedOp&quot;: 1 }
+  ]
+}
+</code></pre>
+<p><strong>Type:</strong> <code>0</code> = Int, <code>1</code> = Float, <code>2</code> = String, <code>3</code> = Bool<br>
+<strong>AllowedOp:</strong> <code>0</code> = AddOnly, <code>1</code> = Replace, <code>2</code> = Both</p>
+<hr>
+<h2 id="assembly-definition-setup">Assembly Definition Setup</h2>
+<p>Open <code>Assets/OSL/SecureSave/Runtime/OSL.SecureSave.Runtime.asmdef</code> and ensure it references:</p>
+<pre><code class="lang-json">{
+  &quot;references&quot;: [
+    &quot;GUID:f220a277eefae4d3aa9e31c2b43bb307&quot;,
+    &quot;GUID:be0d2672886cc45b2bcea5a5053a5347&quot;
+  ]
+}
+</code></pre>
+<hr>
+<h2 id="using-oslsavemanager">Using OSLSaveManager</h2>
+<h3 id="initialization">Initialization</h3>
+<pre><code class="lang-csharp">await UnityServices.InitializeAsync();
+await AuthenticationService.Instance.SignInAnonymouslyAsync();
+</code></pre>
+<h3 id="write-operations">Write operations</h3>
+<pre><code class="lang-csharp">OSLSaveResult result = await OSLSaveManager.Instance.AddInt(&quot;gold&quot;, 50);
+await OSLSaveManager.Instance.SetInt(&quot;level&quot;, 5);
+await OSLSaveManager.Instance.SetString(&quot;playerName&quot;, &quot;Hero&quot;);
+await OSLSaveManager.Instance.SetBool(&quot;tutorialDone&quot;, true);
+</code></pre>
+<h3 id="read-operations">Read operations</h3>
+<pre><code class="lang-csharp">int gold   = await OSLSaveManager.Instance.GetAsync&lt;int&gt;(&quot;gold&quot;, 0);
+string name = await OSLSaveManager.Instance.GetAsync&lt;string&gt;(&quot;playerName&quot;, &quot;Unknown&quot;);
+Dictionary&lt;string, object&gt; all = await OSLSaveManager.Instance.LoadAllAsync();
+</code></pre>
+<hr>
+<h2 id="demo-scene">Demo Scene</h2>
+<p><code>Assets/OSL/SecureSave/Demo/OSLBasicUsageSample.cs</code> provides an interactive OnGUI demo.</p>
+<ol>
+<li>Create an empty scene and attach <code>OSLBasicUsageSample</code> to a GameObject.</li>
+<li>Enter Play mode and use the on-screen buttons to test Sign In, Add Gold, and Level Up operations.</li>
+</ol>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/OngsooLabs/Integration/blob/main/articles/securesave.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

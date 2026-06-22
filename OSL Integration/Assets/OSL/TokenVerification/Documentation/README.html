@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>OSL Social Sign-In Verification Server - Setup Guide </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+      <meta http-equiv="Pragma" content="no-cache">
+      <meta http-equiv="Expires" content="0">
+      <meta name="title" content="OSL Social Sign-In Verification Server - Setup Guide ">
+      
+      
+      <link rel="icon" href="../../../../../favicon.ico">
+      <link rel="stylesheet" href="../../../../../public/docfx.min.css?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397">
+      <link rel="stylesheet" href="../../../../../public/main.css?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397">
+      <meta name="docfx:navrel" content="../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../../toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/TokenVerification/Documentation/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../public/docfx.min.js?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="osl-social-sign-in-verification-server---setup-guide">OSL Social Sign-In Verification Server - Setup Guide</h1>
+
+<p>Welcome to the OSL Token Verification System. The included backend server is built with a lightweight ASP.NET Core Minimal API to provide secure token verification for Google, Facebook, Apple, and Steam sign-in flows.</p>
+<p>This guide explains how to configure the server source, run it locally, and connect it to the Unity sample scene.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before running the server, install the .NET 8 SDK on your machine.</p>
+<ul>
+<li>Download: <a href="https://dotnet.microsoft.com/download">https://dotnet.microsoft.com/download</a></li>
+</ul>
+<h2 id="step-1-configure-your-app-secrets">Step 1: Configure Your App Secrets</h2>
+<p>For security reasons, your app secrets must never be hardcoded in the Unity client. Store them only in the server configuration.</p>
+<ol>
+<li>Extract <code>Assets/OSL/TokenVerification/Server_Dotnet_Source.zip</code> to a local working folder.</li>
+<li>Open <code>appsettings.json</code> in a text editor.</li>
+<li>Replace the placeholder values with the credentials from your provider dashboards.</li>
+</ol>
+<p>Example configuration:</p>
+<pre><code class="lang-json">&quot;Authentication&quot;: {
+  &quot;GoogleClientId&quot;: &quot;YOUR_GOOGLE_CLIENT_ID&quot;,
+  &quot;FacebookAppId&quot;: &quot;YOUR_FACEBOOK_APP_ID&quot;,
+  &quot;FacebookAppSecret&quot;: &quot;YOUR_FACEBOOK_APP_SECRET&quot;,
+  &quot;AppleAppId&quot;: &quot;YOUR_APPLE_BUNDLE_ID&quot;,
+  &quot;SteamAppId&quot;: &quot;480&quot;,
+  &quot;SteamWebApiKey&quot;: &quot;YOUR_STEAM_WEB_API_KEY_HERE&quot;
+}
+</code></pre>
+<p>Save the file after editing.</p>
+<h2 id="step-2-run-the-local-server">Step 2: Run the Local Server</h2>
+<p>The source archive currently includes a Windows startup script.</p>
+<h3 id="windows">Windows</h3>
+<ul>
+<li>Double-click <code>start.bat</code> from the extracted server folder.</li>
+</ul>
+<h3 id="alternative-command-line-startup">Alternative command line startup</h3>
+<p>If you prefer the CLI, open a terminal in the extracted server folder and run:</p>
+<pre><code class="lang-bash">dotnet run
+</code></pre>
+<p>Verify that the server is running by checking for output similar to:</p>
+<pre><code class="lang-text">Now listening on: http://localhost:5000
+</code></pre>
+<p>You can then open:</p>
+<ul>
+<li><code>http://localhost:5000/swagger</code></li>
+</ul>
+<p>This allows you to test verification endpoints directly in the browser before connecting Unity.</p>
+<h2 id="step-3-connect-the-unity-client">Step 3: Connect the Unity Client</h2>
+<p>The package includes a sample scene at <code>Assets/OSL/TokenVerification/Samples/Scene/DemoScene.unity</code>.</p>
+<p>The sample scene uses a runtime <code>OnGUI</code> interface by default so it can remain lightweight and avoid extra UI package dependencies during validation.</p>
+<p>In the <code>DemoSceneController</code> component:</p>
+<ul>
+<li><code>Verify Manager</code> should reference the <code>TokenVerifyManager</code> component on <code>DemoRoot</code></li>
+<li><code>Token Input Field</code> can be left empty</li>
+<li><code>Console Log Text</code> can be left empty</li>
+</ul>
+<p>When both UI reference fields are empty, the scene automatically shows the built-in <code>OnGUI</code> sample UI at runtime.</p>
+<p>To test the Unity sample:</p>
+<ol>
+<li>Open <code>Assets/OSL/TokenVerification/Samples/Scene/DemoScene.unity</code>.</li>
+<li>Set <code>TokenVerifyManager &gt; Server Base Url</code> to your local or deployed server URL.</li>
+<li>Press Play.</li>
+<li>Paste a valid provider token into the runtime text box.</li>
+<li>Click one of the verify buttons: Google, Facebook, Apple, or Steam.</li>
+<li>Review the response in the on-screen log area and the Unity Console.</li>
+</ol>
+<h2 id="implementation-example">Implementation Example</h2>
+<pre><code class="lang-csharp">public TokenVerifyManager verifyManager;
+
+public void OnLoginSuccess(string myToken)
+{
+	verifyManager.VerifyToken(AuthProvider.Google, myToken, (response) =&gt;
+	{
+		if (response.success)
+		{
+			Debug.Log(&quot;Server Verified! User UID: &quot; + response.uid);
+			// Proceed to the next step in your login flow.
+		}
+		else
+		{
+			Debug.LogError(&quot;Verification Failed: &quot; + response.message);
+		}
+	});
+}
+</code></pre>
+<h2 id="deploying-to-production">Deploying to Production</h2>
+<p>The sample is configured for local testing with <code>http://localhost:5000</code>.</p>
+<p>Before shipping your game, deploy the extracted server source to a real host such as Azure, AWS, Google Cloud, or another VPS environment. After deployment, update <code>serverBaseUrl</code> in <code>TokenVerifyManager</code> to point to your live API domain, for example:</p>
+<ul>
+<li><code>https://api.yourgame.com</code></li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="port-binding-error">Port binding error</h3>
+<p>If you see an error similar to <code>Failed to bind to address http://127.0.0.1:5000</code>, another process is already using that port. Change the configured port in your server startup settings and use the same port in Unity.</p>
+<h3 id="facebook-app-access-token-error">Facebook app access token error</h3>
+<p>If Facebook verification returns an app access token error, verify that <code>FacebookAppId</code> and <code>FacebookAppSecret</code> are present and correct in <code>appsettings.json</code>.</p>
+<h3 id="optional-custom-ui">Optional custom UI</h3>
+<p>If you want to use your own UI, you may assign compatible text-based components to the following fields on <code>DemoSceneController</code>:</p>
+<ul>
+<li><code>Token Input Field</code></li>
+<li><code>Console Log Text</code></li>
+</ul>
+<p>The controller reads and writes a public <code>text</code> property through reflection, so it can work with supported legacy UGUI or TMP-style components without taking a hard assembly dependency in the sample script.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/TokenVerification/Documentation/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
