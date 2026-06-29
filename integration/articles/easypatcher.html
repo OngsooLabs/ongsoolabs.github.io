@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>OSL Easy Patcher </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+      <meta http-equiv="Pragma" content="no-cache">
+      <meta http-equiv="Expires" content="0">
+      <meta name="title" content="OSL Easy Patcher ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=7d446b885dddb9725645218a3ee4b5bf94b554f0">
+      <link rel="stylesheet" href="../public/main.css?v=7d446b885dddb9725645218a3ee4b5bf94b554f0">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/blob/main/articles/easypatcher.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js?v=7d446b885dddb9725645218a3ee4b5bf94b554f0"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="osl-easy-patcher">OSL Easy Patcher</h1>
+
+<p>A lightweight patch distribution system for Unity games.
+Upload your patch files from the Editor, and let players automatically download only the changed files at runtime — no Addressables, no third-party SDK required.</p>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#editor--uploader-window">Editor — Uploader Window</a></li>
+<li><a href="#upload-backends--detailed-setup">Upload Backends — Detailed Setup</a></li>
+<li><a href="#runtime-setup">Runtime Setup</a></li>
+<li><a href="#security--encryption--hmac">Security — Encryption &amp; HMAC</a></li>
+<li><a href="#custom-loader-ioslloader">Custom Loader (IOSLLoader)</a></li>
+<li><a href="#publishing--installation-options">Publishing &amp; Installation Options</a></li>
+<li><a href="#frequently-asked-questions">Frequently Asked Questions</a></li>
+</ol>
+<hr>
+<h2 id="overview">Overview</h2>
+<pre><code>[Editor] Build patch files
+     └─▶ OSL Uploader Window
+             └─▶ Generate version.json manifest
+                     └─▶ Upload to server (Local / GCS / S3 / CCD)
+
+[Runtime] Game starts
+     └─▶ OSLPatchUIController
+             └─▶ OSLPatchManager
+                     ├─▶ Fetch version.json from server
+                     ├─▶ Compare with local version
+                     ├─▶ Download changed files
+                     └─▶ IOSLLoader.InitializeAsync()
+</code></pre>
+<hr>
+<h2 id="requirements">Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unity</td>
+<td>2021.3 LTS or later (tested on 6000.x)</td>
+</tr>
+<tr>
+<td>.NET Standard</td>
+<td>2.1</td>
+</tr>
+<tr>
+<td>TextMeshPro <em>(optional)</em></td>
+<td>Any — auto-detected via <code>OSL_TMP_PRESENT</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="installation">Installation</h2>
+<ol>
+<li>Search for <strong>OSL Easy Patcher</strong> in the Unity Asset Store, or open it directly at <a href="https://assetstore.unity.com/packages/slug/378832">Unity Asset Store (OSL Easy Patcher)</a>.</li>
+<li>Click <strong>Add to My Assets</strong>.</li>
+<li>Open Unity and navigate to <strong>Window &gt; Package Manager</strong>.</li>
+<li>Select <strong>Packages: My Assets</strong> from the dropdown.</li>
+<li>Locate <strong>OSL Easy Patcher</strong>, download it, and click <strong>Import</strong>.</li>
+<li><em>(Optional)</em> If you use TextMeshPro, the <code>OSL_TMP_PRESENT</code> scripting define is set automatically through the assembly definition's <code>versionDefines</code>. No manual action is needed.</li>
+</ol>
+<hr>
+<h2 id="quick-start">Quick Start</h2>
+<blockquote>
+<p>Goal: test the full flow locally in 5 minutes.</p>
+</blockquote>
+<ol>
+<li><strong>Build your patch files</strong> into any folder on your PC (e.g. <code>C:/MyPatchBuild</code>).</li>
+<li>Open <strong>Tools &gt; OSL &gt; Easy Patcher Uploader</strong> from the Unity menu bar.</li>
+<li>In the <strong>Upload</strong> tab:
+<ul>
+<li>Set <strong>Patch Folder</strong> to <code>C:/MyPatchBuild</code>.</li>
+<li>Click <strong>↺</strong> to scan files.</li>
+<li>Choose <strong>Local Folder</strong> backend and set <strong>Destination Folder</strong> (e.g. <code>C:/PatchServer</code>).</li>
+<li>Click <strong>Generate Manifest &amp; Upload</strong>.</li>
+</ul>
+</li>
+<li>Start a local HTTP server pointing at <code>C:/PatchServer</code>:
+<pre><code class="lang-powershell">cd C:/PatchServer
+python -m http.server 8080
+</code></pre>
+</li>
+<li>In the <strong>Download</strong> tab, set <strong>Remote Base URL</strong> to <code>http://localhost:8080</code>.</li>
+<li>In your Scene, add the <code>OSLPatchUIController</code> component. Assign the Slider / Text fields and set <strong>Remote Base URL</strong> to <code>http://localhost:8080</code>.</li>
+<li>Press <strong>Play</strong> — the controller will check the version and download any changed files.</li>
+</ol>
+<hr>
+<h2 id="editor--uploader-window">Editor — Uploader Window</h2>
+<p>Open via <strong>OSL → Easy Patcher Uploader</strong> in the Unity menu bar.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Active Slot</strong></td>
+<td>Selects which version slot to work on.</td>
+</tr>
+<tr>
+<td><strong>Patch Folder</strong></td>
+<td>The local folder containing your built patch files.</td>
+</tr>
+<tr>
+<td><strong>↺ (Refresh)</strong></td>
+<td>Re-scans the folder and rebuilds the file tree.</td>
+</tr>
+<tr>
+<td><strong>Upload Backend</strong></td>
+<td>Choose one of: Local Folder, Google Cloud Storage, AWS S3, Unity CCD.</td>
+</tr>
+<tr>
+<td><strong>Generate Manifest &amp; Upload</strong></td>
+<td>Generates <code>version.json</code>, stages the files, then uploads everything via the selected backend.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="upload-backends--detailed-setup">Upload Backends — Detailed Setup</h2>
+<h3 id="1-local-folder">1. Local Folder</h3>
+<p>Set a local destination folder and point an HTTP server at it for testing.</p>
+<h3 id="2-google-cloud-storage">2. Google Cloud Storage</h3>
+<p>Create a GCS bucket with public read access, create a Service Account with Storage Object Admin role, and provide the JSON key in the Editor window.</p>
+<h3 id="3-aws-s3">3. AWS S3</h3>
+<p>Create an S3 bucket with public read access, create an IAM user with S3 write permissions, and provide the Access Key ID, Secret Access Key, bucket name, and region in the Editor window.</p>
+<h3 id="4-unity-ccd">4. Unity CCD</h3>
+<p>Enable Cloud Content Delivery in the Unity Dashboard, create a bucket, generate an API key, and configure the Project ID, Environment ID, Bucket ID, and API key in the Editor window.</p>
+<hr>
+<h2 id="runtime-setup">Runtime Setup</h2>
+<ol>
+<li>Add the <code>OSLPatchUIController</code> component to a GameObject in your loading scene.</li>
+<li>Assign the <strong>Remote Base URL</strong>, <strong>Progress Slider</strong>, <strong>Status Text</strong>, and <strong>Size Text</strong> fields.</li>
+<li>Set the <strong>Loader</strong> field to an <code>OSLSimpleBundleLoader</code> instance or your custom <code>IOSLLoader</code> implementation.</li>
+</ol>
+<hr>
+<h2 id="security--encryption--hmac">Security — Encryption &amp; HMAC</h2>
+<p>Keys are read from environment variables at upload time and never stored in source control.</p>
+<table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Env Variable</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AES-256 file encryption</td>
+<td><code>OSL_PATCH_AES_KEY</code></td>
+<td>64 hex characters (32 bytes)</td>
+</tr>
+<tr>
+<td>HMAC-SHA256 tamper detection</td>
+<td><code>OSL_PATCH_HMAC_KEY</code></td>
+<td>64 hex characters (32 bytes)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="custom-loader-ioslloader">Custom Loader (IOSLLoader)</h2>
+<p>Implement <code>IOSLLoader</code> to use Addressables, a custom bundle system, or any other asset loading strategy:</p>
+<pre><code class="lang-csharp">[Serializable]
+public class MyCustomLoader : IOSLLoader
+{
+    public async Task InitializeAsync() { /* ... */ }
+    public async Task&lt;T&gt; LoadAssetAsync&lt;T&gt;(string key) where T : Object { /* ... */ }
+    public void ReleaseAsset(string key) { /* ... */ }
+}
+</code></pre>
+<hr>
+<h2 id="publishing--installation-options">Publishing &amp; Installation Options</h2>
+<p><strong>Option A — Asset Store (<code>.unitypackage</code>)</strong>: Export the <code>Assets/OSL/EasyPatcher/</code> folder via <strong>Assets → Export Package…</strong>.</p>
+<p><strong>Option B — UPM (Git URL or local path)</strong>: Add the package from <strong>Window → Package Manager → + → Add package from git URL…</strong> or from disk.</p>
+<hr>
+<h2 id="frequently-asked-questions">Frequently Asked Questions</h2>
+<p><strong>Q: Where are patch files cached on the player's device?</strong>
+A: <code>Application.persistentDataPath/OSL/EasyPatcher/</code> by default.</p>
+<p><strong>Q: What happens if the download is interrupted?</strong>
+A: The local <code>version.json</code> is only written after all files are verified. On next launch, the version check detects a mismatch and retries.</p>
+<p><strong>Q: Can I patch non-AssetBundle files?</strong>
+A: Yes. The patch system transfers any file type. Loading is handled by your <code>IOSLLoader</code> implementation.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/OngsooLabs/Integration/blob/main/articles/easypatcher.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

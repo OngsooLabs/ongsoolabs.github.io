@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>IapClient </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+      <meta http-equiv="Pragma" content="no-cache">
+      <meta http-equiv="Expires" content="0">
+      <meta name="title" content="IapClient ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=7d446b885dddb9725645218a3ee4b5bf94b554f0">
+      <link rel="stylesheet" href="../public/main.css?v=7d446b885dddb9725645218a3ee4b5bf94b554f0">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/blob/main/articles/iapclient.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js?v=7d446b885dddb9725645218a3ee4b5bf94b554f0"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="iapclient">IapClient</h1>
+
+<p>IapClient is a Unity package that integrates in-app purchase (IAP) functionality into your project.<br>
+It is built on top of Unity IAP v5 and Unity Services Core, and provides a server-side receipt verification workflow against your own backend.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Google Play and Apple App Store purchase flow integration</li>
+<li>Backend receipt verification with automatic retry</li>
+<li>Duplicate reward grant prevention</li>
+<li>Environment-specific configuration via the <code>IapSetupConfig</code> ScriptableObject</li>
+<li>In-editor backend API test tool (<code>IAP API Tester</code>)</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Package ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unity Purchasing</td>
+<td><code>com.unity.purchasing</code></td>
+</tr>
+<tr>
+<td>Unity Services Core</td>
+<td><code>com.unity.services.core</code></td>
+</tr>
+</tbody>
+</table>
+<p>If either package is missing, <code>IapManager</code> compiles as a fallback stub and all runtime IAP functionality is disabled.</p>
+<h2 id="installation">Installation</h2>
+<ol>
+<li>Search for <strong>OSL IAP Client</strong> on the Unity Asset Store, or open it directly at <a href="https://assetstore.unity.com/packages/slug/375176">Unity Asset Store (OSL IAP Client)</a>, then click <strong>Add to My Assets</strong>.</li>
+<li>In Unity, open <strong>Window &gt; Package Manager</strong>, select <strong>Packages: My Assets</strong>, locate the package, and click <strong>Download</strong> then <strong>Import</strong>.</li>
+<li>Wait for Unity to finish script compilation.</li>
+</ol>
+<h2 id="configuring-iapsetupconfig">Configuring IapSetupConfig</h2>
+<p><code>IapSetupConfig</code> is a ScriptableObject that centralizes all IAP environment settings.<br>
+Create one via the <strong>Create Setup Asset</strong> button in the <strong>Tools &gt; OSL &gt; IAP API Tester</strong> window, or by right-clicking in the Project window and selecting <strong>Create &gt; OSL &gt; IAP &gt; Setup Config</strong>.</p>
+<h3 id="fields">Fields</h3>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Field</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Environment</strong></td>
+<td>Environment Name</td>
+<td><code>production</code></td>
+<td>Unity Services environment name</td>
+</tr>
+<tr>
+<td></td>
+<td>Server URL</td>
+<td><code>https://your-server-domain.com</code></td>
+<td>Base URL of your backend verification server</td>
+</tr>
+<tr>
+<td></td>
+<td>Timeout Seconds</td>
+<td><code>15</code></td>
+<td>HTTP request timeout in seconds</td>
+</tr>
+<tr>
+<td><strong>Demo Defaults</strong></td>
+<td>Default User ID</td>
+<td><code>TEST_USER_001</code></td>
+<td>Default user ID used for demo and testing</td>
+</tr>
+<tr>
+<td></td>
+<td>Demo Consumable Product ID</td>
+<td><code>gold_100</code></td>
+<td>Consumable product ID for the demo buy button</td>
+</tr>
+<tr>
+<td></td>
+<td>Demo Subscription Product ID</td>
+<td><code>vip_monthly</code></td>
+<td>Subscription product ID for the demo buy button</td>
+</tr>
+<tr>
+<td><strong>Apple Sandbox</strong></td>
+<td>Use Debug Build For Apple Sandbox</td>
+<td><code>true</code></td>
+<td>Automatically enables Apple sandbox mode in debug builds</td>
+</tr>
+<tr>
+<td></td>
+<td>Force Apple Sandbox</td>
+<td><code>false</code></td>
+<td>Forces Apple sandbox mode regardless of build type</td>
+</tr>
+<tr>
+<td><strong>Retry</strong></td>
+<td>Max Verification Retries</td>
+<td><code>3</code></td>
+<td>Maximum number of verification retry attempts</td>
+</tr>
+<tr>
+<td></td>
+<td>Retry Delay Seconds</td>
+<td><code>2</code></td>
+<td>Base delay between retries in seconds (increases per attempt)</td>
+</tr>
+<tr>
+<td><strong>Product Catalog</strong></td>
+<td>Products</td>
+<td>—</td>
+<td>List of product IDs and types (Consumable / NonConsumable / Subscription)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> If Server URL is left at its default value (<code>https://your-server-domain.com</code>), a warning is logged at runtime initialization.</p>
+</blockquote>
+<h2 id="scene-setup">Scene Setup</h2>
+<ol>
+<li>Add an empty <code>GameObject</code> to your scene and attach the <code>IapManager</code> component.</li>
+<li>Assign your <code>IapSetupConfig</code> asset to the <strong>Setup Config</strong> slot.</li>
+<li>Assign a <code>BackendApiClient</code> component to the <strong>Api Client</strong> slot.</li>
+<li>Set the <strong>Current User ID</strong> field to the logged-in user's ID, or call <code>SetCurrentUserId(userId)</code> in code before any purchase is initiated.</li>
+</ol>
+<h3 id="checking-setup-warnings">Checking Setup Warnings</h3>
+<p><code>IapManager.GetSetupWarnings()</code> returns an array of warning messages for any missing or invalid configuration. Review the Console output for these warnings before testing.</p>
+<h2 id="purchase-flow">Purchase Flow</h2>
+<pre><code>BuyProduct(productId)
+    └─ StoreController.PurchaseProduct()
+           └─ OnPurchasePending (PendingOrder)
+                  └─ BuildPurchaseRequest() — parse receipt and branch by store
+                  └─ VerifyWithRetryAsync() — send to backend (up to N retries)
+                         └─ HandleVerificationResponse()
+                                ├─ ShouldGrantReward → GrantItemToPlayer() → OnRewardGranted event
+                                └─ ShouldConfirmPurchase → StoreController.ConfirmPurchase()
+</code></pre>
+<h3 id="initiating-a-purchase">Initiating a Purchase</h3>
+<pre><code class="lang-csharp">iapManager.BuyProduct(&quot;gold_100&quot;);
+</code></pre>
+<h3 id="subscribing-to-the-reward-event">Subscribing to the Reward Event</h3>
+<pre><code class="lang-csharp">iapManager.OnRewardGranted += OnItemGranted;
+
+void OnItemGranted(string productId)
+{
+    Debug.Log($&quot;Reward granted: {productId}&quot;);
+}
+</code></pre>
+<h2 id="store-specific-receipt-handling">Store-Specific Receipt Handling</h2>
+<table>
+<thead>
+<tr>
+<th>Store</th>
+<th>Unity Receipt Store Value</th>
+<th>Backend Endpoint</th>
+<th>Value Sent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google Play</td>
+<td><code>GooglePlay</code></td>
+<td><code>/api/iap/google/verify</code></td>
+<td><code>purchaseToken</code></td>
+</tr>
+<tr>
+<td>Apple App Store</td>
+<td><code>AppleAppStore</code></td>
+<td><code>/api/iap/apple/verify</code></td>
+<td><code>TransactionId</code> + <code>Payload</code></td>
+</tr>
+<tr>
+<td>Mac App Store</td>
+<td><code>MacAppStore</code></td>
+<td><code>/api/iap/apple/verify</code></td>
+<td><code>TransactionId</code> + <code>Payload</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="backend-verification-api">Backend Verification API</h2>
+<p><code>IapManager</code> communicates with the backend using the following JSON models.</p>
+<h3 id="request-purchaserequest">Request (PurchaseRequest)</h3>
+<pre><code class="lang-json">{
+  &quot;UserId&quot;: &quot;user-123&quot;,
+  &quot;ProductId&quot;: &quot;gold_100&quot;,
+  &quot;TransactionId&quot;: &quot;GPA.1234-5678-9012-34567&quot;,
+  &quot;PurchaseToken&quot;: &quot;...&quot;,
+  &quot;IsSubscription&quot;: false,
+  &quot;IsSandbox&quot;: false
+}
+</code></pre>
+<h3 id="response-purchaseresponse">Response (PurchaseResponse)</h3>
+<pre><code class="lang-json">{
+  &quot;IsSuccess&quot;: true,
+  &quot;ResultCode&quot;: &quot;Verified&quot;,
+  &quot;Message&quot;: &quot;&quot;,
+  &quot;TransactionId&quot;: &quot;GPA.1234-5678-9012-34567&quot;,
+  &quot;ShouldConfirmPurchase&quot;: true,
+  &quot;ShouldGrantReward&quot;: true
+}
+</code></pre>
+<h3 id="resultcode-values">ResultCode Values</h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Verified</code></td>
+<td>Receipt verification succeeded</td>
+</tr>
+<tr>
+<td><code>AlreadyProcessed</code></td>
+<td>Transaction has already been processed (duplicate prevention)</td>
+</tr>
+<tr>
+<td><code>VerificationFailed</code></td>
+<td>Receipt verification failed</td>
+</tr>
+</tbody>
+</table>
+<h2 id="retry-logic">Retry Logic</h2>
+<ul>
+<li>On verification failure, <code>IapManager</code> retries up to the <strong>Max Verification Retries</strong> count configured in <code>IapSetupConfig</code>.</li>
+<li>The delay between retries increases progressively: <code>RetryDelaySeconds × attempt number</code>.</li>
+<li>Retries stop immediately when <code>Verified</code>, <code>AlreadyProcessed</code>, or <code>VerificationFailed</code> is received, or when the reward or confirmation flag is true.</li>
+<li>Concurrent processing of the same <code>TransactionId</code> is prevented by an in-memory tracking set.</li>
+</ul>
+<h2 id="iap-api-tester-editor-tool">IAP API Tester (Editor Tool)</h2>
+<p>Open the editor tool via <strong>Tools &gt; OSL &gt; IAP API Tester</strong> to test your backend verification API without running a full build.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setup Config</td>
+<td>Shared configuration asset. Use <strong>Load Defaults From Config</strong> to populate fields automatically.</td>
+</tr>
+<tr>
+<td>Server Base URL</td>
+<td>Base URL of your backend server</td>
+</tr>
+<tr>
+<td>Test User ID</td>
+<td>User ID to use in test requests</td>
+</tr>
+<tr>
+<td>Product ID</td>
+<td>Product ID to include in the request</td>
+</tr>
+<tr>
+<td>Is Subscription?</td>
+<td>Whether the product is a subscription</td>
+</tr>
+<tr>
+<td>Is Sandbox (Apple)?</td>
+<td>Whether to set the Apple sandbox flag</td>
+</tr>
+<tr>
+<td>Receipt Data</td>
+<td>For Google: <code>purchaseToken</code>. For Apple: <code>TransactionId</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Click <strong>Test Google Receipt</strong> or <strong>Test Apple Receipt</strong> to send a request to <code>/api/iap/google/verify</code> or <code>/api/iap/apple/verify</code> respectively. The server response appears in the <strong>Server Response Log</strong> at the bottom of the window.</p>
+<h2 id="operational-notes">Operational Notes</h2>
+<ul>
+<li>Keep product IDs in sync between store consoles and your <code>IapSetupConfig</code> product catalog.</li>
+<li>Validate both sandbox and live purchase paths before releasing to production.</li>
+<li>Enable <strong>Force Apple Sandbox</strong> only during development; disable it in release builds.</li>
+<li><strong>Current User ID</strong> must be set before any purchase is initiated — verification is aborted if it is empty.</li>
+<li>The in-memory <code>_grantedTransactionIds</code> set prevents duplicate rewards within a session but is cleared on app restart. Ensure your backend handles <code>AlreadyProcessed</code> responses correctly.</li>
+</ul>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="quick_start.html">Quick Start</a></li>
+<li><a href="core_concepts.html">Core Concepts</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/OngsooLabs/Integration/blob/main/articles/iapclient.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
