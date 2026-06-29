@@ -1,123 +1,78 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-      <title>Ongsoo Labs Integration Framework Documentation </title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-      <meta http-equiv="Pragma" content="no-cache">
-      <meta http-equiv="Expires" content="0">
-      <meta name="title" content="Ongsoo Labs Integration Framework Documentation ">
-      
-      
-      <link rel="icon" href="favicon.ico">
-      <link rel="stylesheet" href="public/docfx.min.css?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397">
-      <link rel="stylesheet" href="public/main.css?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397">
-      <meta name="docfx:navrel" content="toc.html">
-      <meta name="docfx:tocrel" content="toc.html">
-      
-      
-      
-      
-      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/blob/main/index.md/#L1">
-      <meta name="loc:inThisArticle" content="In this article">
-      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
-      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
-      <meta name="loc:tocFilter" content="Filter by title">
-      <meta name="loc:nextArticle" content="Next">
-      <meta name="loc:prevArticle" content="Previous">
-      <meta name="loc:themeLight" content="Light">
-      <meta name="loc:themeDark" content="Dark">
-      <meta name="loc:themeAuto" content="Auto">
-      <meta name="loc:changeTheme" content="Change theme">
-      <meta name="loc:copy" content="Copy">
-      <meta name="loc:downloadPdf" content="Download PDF">
-
-      <script type="module" src="./public/docfx.min.js?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397"></script>
-
-      <script>
-        const theme = localStorage.getItem('theme') || 'auto'
-        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-      </script>
-
-  </head>
-
-  <body class="tex2jax_ignore" data-layout="landing" data-yaml-mime="">
-    <header class="bg-body border-bottom">
-      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
-        <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="index.html">
-            <img id="logo" class="svg" src="logo.svg" alt="">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ongsoo Labs Developer Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script>
+        // Smart Redirect Logic
+        // If the user visits a path like /articles/... or /api/... that belonged to the old OSLIntegration docs,
+        // we redirect them to /integration/...
+        (function() {
+            var path = window.location.pathname;
+            // Paths that used to be at the root for OSLIntegration
+            var oldPaths = ['/articles/', '/api/', '/images/'];
             
-          </a>
-          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="bi bi-three-dots"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navpanel">
-            <div id="navbar">
+            // If the path starts with any of the old paths, redirect to /integration
+            for (var i = 0; i < oldPaths.length; i++) {
+                if (path.startsWith(oldPaths[i])) {
+                    var newUrl = window.location.protocol + "//" + window.location.host + "/integration" + path + window.location.search + window.location.hash;
+                    window.location.replace(newUrl);
+                    return;
+                }
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+
+    <header class="hub-header">
+        <nav class="nav-container">
+            <div class="logo">Ongsoo Labs</div>
+            <div class="nav-links">
+                <a href="https://github.com/OngsooLabs/ongsoolabs.github.io/issues" target="_blank">Issues</a>
+                <a href="https://github.com/OngsooLabs/ongsoolabs.github.io/releases" target="_blank">Releases</a>
             </div>
-          </div>
-        </div>
-      </nav>
+        </nav>
     </header>
 
-    <main class="container-xxl">
+    <main class="hero-section">
+        <h1 class="hero-title">Developer Hub</h1>
+        <p class="hero-subtitle">Official technical documentation, API references, and integration guides for the Ongsoo Labs ecosystem.</p>
+        
+        <div class="cards-container">
+            <a href="/integration/" class="project-card">
+                <div class="card-content">
+                    <div class="card-icon integration-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h2>OSL Integration</h2>
+                    <p>Unity asset integration framework. Deterministic RNG, EasyPatcher, SocialLogin, and SecureSave.</p>
+                </div>
+                <div class="card-glow"></div>
+            </a>
 
-      <div class="content">
-        <div class="actionbar">
-
-          <nav id="breadcrumb"></nav>
+            <a href="/api/" class="project-card">
+                <div class="card-content">
+                    <div class="card-icon api-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                    </div>
+                    <h2>OngsooLabs API</h2>
+                    <p>Backend services and API references. Scalable infrastructure and microservices documentation.</p>
+                </div>
+                <div class="card-glow"></div>
+            </a>
         </div>
-
-        <article data-uid="">
-<h1 id="ongsoo-labs-integration-framework-documentation">Ongsoo Labs Integration Framework Documentation</h1>
-
-<p>Ongsoo Labs' official technical documentation for the Unity asset integration framework.
-This website is powered by DocFX and provides the latest API references and integration guides.</p>
-<h2 id="asset-ecosystem">Asset Ecosystem</h2>
-<p>The Ongsoo Labs integration framework is designed so each module works together seamlessly.
-Browse the asset guides below by category.</p>
-<ul>
-<li><a href="articles/deterministic.html">Deterministic</a>: Zero-dependency, zero-allocation deterministic RNG suite</li>
-<li><a href="articles/easypatcher.html">EasyPatcher</a>: Runtime resource patching and integrity validation</li>
-<li><a href="articles/sociallogin.html">SocialLogin</a>: Social platform authentication (Google, Apple, and more)</li>
-<li><a href="articles/iapclient.html">IapClient</a>: In-app purchase client module</li>
-<li><a href="articles/securesave.html">SecureSave</a>: Local data encryption and secure storage</li>
-</ul>
-<h2 id="repository-management">Repository Management</h2>
-<p>Use the links below to manage documentation updates, issue tracking, release history, and project operations.</p>
-<ul>
-<li><a href="https://github.com/OngsooLabs/ongsoolabs.github.io/issues">GitHub Issues</a>: Bug reports and documentation requests</li>
-<li><a href="https://github.com/OngsooLabs/ongsoolabs.github.io/releases">Changelog &amp; Releases</a>: Published release notes and artifacts</li>
-</ul>
-<h2 id="system-requirements">System Requirements</h2>
-<ul>
-<li>Unity 2021.3 LTS or later (recommended)</li>
-<li>.NET Standard 2.1 compatible environment</li>
-</ul>
-
-</article>
-
-        <div class="contribution d-print-none">
-          <a href="https://github.com/OngsooLabs/Integration/blob/main/index.md/#L1" class="edit-link">Edit this page</a>
-        </div>
-
-        <div class="next-article d-print-none border-top" id="nextArticle"></div>
-
-      </div>
-
-      <div class="affix">
-        <nav id="affix"></nav>
-      </div>
     </main>
-
-
-    <footer class="border-top text-secondary">
-      <div class="container-xxl">
-        <div class="flex-fill">
-          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
-        </div>
-      </div>
+    
+    <footer class="hub-footer">
+        <p>&copy; 2026 Ongsoo Labs. All rights reserved.</p>
     </footer>
-  </body>
+</body>
 </html>
