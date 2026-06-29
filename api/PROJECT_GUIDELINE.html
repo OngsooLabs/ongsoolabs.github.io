@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>OngsooLabs.Api 프로젝트 지침 (PROJECT_GUIDELINE.md) </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="OngsooLabs.Api 프로젝트 지침 (PROJECT_GUIDELINE.md) ">
+      
+      
+      <link rel="icon" href="favicon.ico">
+      <link rel="stylesheet" href="public/docfx.min.css">
+      <link rel="stylesheet" href="public/main.css">
+      <meta name="docfx:navrel" content="toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/OngsooLabs.Api/blob/main/PROJECT_GUIDELINE.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="index.html">
+            <img id="logo" class="svg" src="logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="ongsoolabsapi-프로젝트-지침-project_guidelinemd">OngsooLabs.Api 프로젝트 지침 (PROJECT_GUIDELINE.md)</h1>
+
+<p>본 문서는 <code>OngsooLabs.Api</code> 솔루션의 아키텍처 원칙, 의존성 규칙 및 프로덕션 환경 출시를 위해 반드시 준수해야 하는 보안 통제 지침을 정의합니다. 모든 개발자는 본 지침을 엄격히 준수하여 코드를 작성해야 합니다.</p>
+<hr>
+<h2 id="1-아키텍처-및-레이어-의존성-규칙">1. 아키텍처 및 레이어 의존성 규칙</h2>
+<p>본 솔루션은 <code>src/Services/&lt;ServiceName&gt;/</code> 경로 하위에 개별 백엔드 서비스를 격리하는 멀티 서비스 모노레포 구조를 따릅니다. 의존성은 언제나 고수준(Host)에서 저수준(Domain) 방향으로만 흐르는 단방향 아키텍처를 유지하며, 타 서비스와의 교차 참조는 금지됩니다.</p>
+<ul>
+<li><strong><code>WebApi</code></strong> ➡️ <strong><code>Infrastructure</code></strong> ➡️ <strong><code>Domain</code></strong></li>
+</ul>
+<h3 id="-ongsoolabsdomain-core-layer">📂 OngsooLabs.<servicename>.Domain (Core Layer)</servicename></h3>
+<ul>
+<li><strong>의존성 규칙</strong>: <strong>의존성 제로 (Zero-dependency)</strong></li>
+<li>외부 Nuget 패키지, DB 프레임워크, 웹 호스트 라이브러리를 일절 참조하지 않는 순수 C# 코드로만 작성합니다.</li>
+</ul>
+<h3 id="-ongsoolabsinfrastructure-technical-implementation-layer">📂 OngsooLabs.<servicename>.Infrastructure (Technical Implementation Layer)</servicename></h3>
+<ul>
+<li><strong>의존성 규칙</strong>: 동일 서비스의 <code>Domain</code> 프로젝트만 참조하며, 기술 구현을 위한 외부 라이브러리(<code>Playwright</code> 등)를 활용합니다.</li>
+</ul>
+<h3 id="-ongsoolabswebapi-host--presentation-layer">📂 OngsooLabs.<servicename>.WebApi (Host &amp; Presentation Layer)</servicename></h3>
+<ul>
+<li><strong>의존성 규칙</strong>: 동일 서비스의 <code>Domain</code> 및 <code>Infrastructure</code>를 참조하여 DI를 조립하며, 서비스를 단독 실행 가능한 호스트로 빌드합니다.</li>
+</ul>
+<hr>
+<h2 id="2-공통-코드-배치-원칙">2. 공통 코드 배치 원칙</h2>
+<ul>
+<li><strong>순수 C# 기반 공통 코드</strong> ➡️ 개별 서비스의 <code>Domain/Common/</code> 배치</li>
+<li><strong>외부 라이브러리 종속 공통 코드</strong> ➡️ 개별 서비스의 <code>Infrastructure/Common/</code> 배치</li>
+<li><strong>웹 프레임워크 종속 공통 코드</strong> ➡️ 개별 서비스의 <code>WebApi/Extensions/</code> 또는 <code>WebApi/Helpers/</code> 배치</li>
+</ul>
+<hr>
+<h2 id="3-프로덕션-api-보안-통제-지침-security-regulations">3. 프로덕션 API 보안 통제 지침 (Security Regulations)</h2>
+<ol>
+<li><strong>외부 프록시 인증 필수화</strong>: WebApi 레이어는 진입 미들웨어에서 <code>X-RapidAPI-Proxy-Secret</code> 고유 헤더 값을 상시 검증하며, 누락되거나 불일치할 경우 비즈니스 로직(Domain)을 타지 않고 즉시 <code>401 Unauthorized</code>를 반환한다.</li>
+<li><strong>크롤러 실행 권한 제한</strong>: Dockerfile을 통한 최종 배포 이미지 빌드 시, Playwright 및 웹 드라이버는 Linux 비특권 유저(Application User) 권한으로 구동하여 호스트 커널 장악 위험을 원천 차단한다.</li>
+<li><strong>SSRF 인풋 검증</strong>: <code>Infrastructure</code> 레이어의 AI Reader 엔진은 요청된 URL이 클라우드 인프라 내부 메타데이터 주소(<code>169.254.x.x</code>)나 로컬 호스트(<code>localhost</code>, <code>127.0.0.1</code>)를 가리키고 있는지 검증하고, 적발 시 즉시 예외를 던진다.</li>
+</ol>
+<hr>
+<h2 id="4-인프라-및-네트워크-가드레일-aws">4. 인프라 및 네트워크 가드레일 (AWS)</h2>
+<ol>
+<li><strong>보안 그룹(Security Group) 최소 권한 허용</strong>: API 컨테이너 인바운드 규칙에서 외부 노출을 최소화하고, RapidAPI 프록시 IP 대역 화이트리스트 적용을 검토한다.</li>
+<li><strong>SSH 포트(22) 보호</strong>: 인바운드 규칙에서 SSH 포트는 작업 인원의 공인 IP 단일 대역만 허용하도록 고정한다.</li>
+</ol>
+<hr>
+<h2 id="5-공통-기술-서비스-격리-및-내부망-통신-통제-지침">5. 공통 기술 서비스 격리 및 내부망 통신 통제 지침</h2>
+<ol>
+<li><strong>공통 기술 도커 분리</strong>: 비즈니스 로직과 무관하고 범용적으로 사용 가능한 텍스트 처리, 토큰 연산 등의 기술 분석 기능은 별도의 독립된 초경량 도커 서비스로 격리하여 배포한다.</li>
+<li><strong>외부 노출 원천 차단</strong>: 분리된 공통 기술 서비스는 외부 포트(80, 443)를 가질 수 없으며, 오직 <code>docker-compose</code>로 생성된 비공개 가상 브릿지 네트워크(<code>ongsoolabs-net</code>) 내에서만 수신 대기한다.</li>
+<li><strong>내부 DNS 통신 규격</strong>: 비즈니스 도메인 서비스(예: AI Reader)가 이 공통 기술 서비스를 호출할 때는 환경 변수로 주입된 도커 내부 DNS 주소(예: <code>http://ongsoolabs-textprocessor:8080</code>)를 사용한다.</li>
+</ol>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/OngsooLabs/OngsooLabs.Api/blob/main/PROJECT_GUIDELINE.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
