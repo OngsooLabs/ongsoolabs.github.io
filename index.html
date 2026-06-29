@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ongsoo Labs Developer Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script>
+        // Smart Redirect Logic
+        // If the user visits a path like /articles/... or /api/... that belonged to the old OSLIntegration docs,
+        // we redirect them to /integration/...
+        (function() {
+            var path = window.location.pathname;
+            // Paths that used to be at the root for OSLIntegration
+            var oldPaths = ['/articles/', '/api/', '/images/'];
+            
+            // If the path starts with any of the old paths, redirect to /integration
+            for (var i = 0; i < oldPaths.length; i++) {
+                if (path.startsWith(oldPaths[i])) {
+                    var newUrl = window.location.protocol + "//" + window.location.host + "/integration" + path + window.location.search + window.location.hash;
+                    window.location.replace(newUrl);
+                    return;
+                }
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+
+    <header class="hub-header">
+        <nav class="nav-container">
+            <div class="logo">Ongsoo Labs</div>
+            <div class="nav-links">
+                <a href="https://github.com/OngsooLabs/ongsoolabs.github.io/issues" target="_blank">Issues</a>
+                <a href="https://github.com/OngsooLabs/ongsoolabs.github.io/releases" target="_blank">Releases</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="hero-section">
+        <h1 class="hero-title">Developer Hub</h1>
+        <p class="hero-subtitle">Official technical documentation, API references, and integration guides for the Ongsoo Labs ecosystem.</p>
+        
+        <div class="cards-container">
+            <a href="/integration/" class="project-card">
+                <div class="card-content">
+                    <div class="card-icon integration-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h2>OSL Integration</h2>
+                    <p>Unity asset integration framework. Deterministic RNG, EasyPatcher, SocialLogin, and SecureSave.</p>
+                </div>
+                <div class="card-glow"></div>
+            </a>
+
+            <a href="/api/" class="project-card">
+                <div class="card-content">
+                    <div class="card-icon api-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                    </div>
+                    <h2>OngsooLabs API</h2>
+                    <p>Backend services and API references. Scalable infrastructure and microservices documentation.</p>
+                </div>
+                <div class="card-glow"></div>
+            </a>
+        </div>
+    </main>
+    
+    <footer class="hub-footer">
+        <p>&copy; 2026 Ongsoo Labs. All rights reserved.</p>
+    </footer>
+</body>
+</html>
