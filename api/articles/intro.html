@@ -84,23 +84,25 @@
 <h1 id="introduction-to-ongsoolabs-api">Introduction to OngsooLabs API</h1>
 
 <p>Welcome to the official documentation for the <strong>OngsooLabs API</strong> ecosystem.</p>
-<p>OngsooLabs API is a suite of high-performance, containerized microservices designed to bridge the gap between unstructured data and modern AI applications. Built on robust technologies like .NET, Docker, and AWS, our APIs provide reliable and scalable solutions for data preprocessing, intelligent web scraping, and text manipulation.</p>
+<p>OngsooLabs API is an enterprise-grade backend platform designed as a comprehensive <strong>Knowledge Ingestion Gateway</strong>. Our architecture isolates distinct backend services—each highly specialized in data extraction, processing, and delivery—to provide robust, scalable solutions for modern AI and enterprise applications.</p>
 <h2 id="our-vision">Our Vision</h2>
-<p>In the era of Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG), the quality of your input data is just as important as the model itself. Our mission is to provide developers with seamless pipelines that transform messy, unstructured web content into clean, structured, and AI-ready formats.</p>
-<h2 id="key-services">Key Services</h2>
-<p>Currently, the OngsooLabs API ecosystem includes:</p>
+<p>In the rapidly evolving landscape of AI, LLMs, and Retrieval-Augmented Generation (RAG), the quality and structure of data are paramount. Our ultimate vision is to create a centralized <strong>AI Knowledge Platform</strong>.</p>
+<p>We aim to seamlessly gather, understand, structure, optimize, and deliver knowledge from a wide variety of heterogeneous sources—including web pages, PDF/Office documents, GitHub repositories, Notion workspaces, and YouTube transcripts. By providing pristine, AI-ready data pipelines, we empower developers to build smarter, more reliable AI systems without worrying about data preprocessing.</p>
+<h2 id="platform-architecture">Platform Architecture</h2>
+<p>To achieve massive scalability and maintainability, the OngsooLabs API ecosystem is built upon a strict multi-service architecture:</p>
 <ul>
-<li><strong><a href="ai-reader-api.html">AI Reader API</a></strong>: Our flagship data ingestion service. It acts as an intelligent proxy that fetches web pages, strips away boilerplate noise (like ads, sidebars, and navigation), and converts the core content into pure, token-optimized Markdown.</li>
-<li><strong>TextProcessor</strong>: A dedicated microservice for advanced text chunking, token estimation, and manipulation, working in tandem with the AI Reader to handle massive documents efficiently.</li>
+<li><strong>Isolated Microservices</strong>: Each service is developed in an isolated environment within a monorepo, strictly adhering to Clean Architecture principles (Domain, Infrastructure, WebApi) with zero-dependency core layers.</li>
+<li><strong>Independent Scaling &amp; Deployment</strong>: Services are fully containerized and deployed with their own independent CI/CD pipelines, ensuring that heavy computational tasks (like web rendering) do not bottleneck lightweight data processing requests.</li>
+<li><strong>Shared Platform Services</strong>: Common technical utilities (such as token counting, text chunking, and text slicing) are decoupled into shared containerized platform services. They communicate securely over private internal networks via lightweight HTTP/JSON or gRPC.</li>
 </ul>
-<h2 id="architecture-highlights">Architecture Highlights</h2>
+<h2 id="available-apis">Available APIs</h2>
+<p>Our platform is continuously expanding. Currently, we offer the following public-facing services:</p>
 <ul>
-<li><strong>Microservices Architecture</strong>: Our backend is decoupled into independent Docker containers (e.g., <code>Scraper</code> and <code>TextProcessor</code>), allowing them to scale independently based on computational load.</li>
-<li><strong>Performance First</strong>: Advanced techniques, such as continuous Browser Context Pooling, ensure that web rendering is ultra-fast with minimal memory overhead compared to traditional headless browser solutions.</li>
-<li><strong>Enterprise-Grade Routing</strong>: Built-in proxy rotators dynamically switch between Datacenter and Residential proxies to maximize collection success rates.</li>
+<li><strong><a href="ai-reader-api.html">AI Reader API</a></strong>: Our flagship data ingestion service. It acts as an intelligent pipeline that fetches web pages, strips away boilerplate noise, and converts the core content into pure, token-optimized Markdown ready for LLMs.</li>
 </ul>
-<h2 id="getting-started">Getting Started</h2>
-<p>To explore what our API can do, check out the <a href="ai-reader-api.html">AI Reader API Documentation</a> or visit our <a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">RapidAPI Hub</a> to grab an API key and start making requests immediately.</p>
+<h2 id="looking-forward">Looking Forward</h2>
+<p>As we progress through our strategic product roadmap, you can expect new APIs and features tailored for intelligent caching, automated batch crawling, change detection, and seamless enterprise workspace integrations.</p>
+<p>Explore our specific API documentations from the sidebar to get started, or visit our issue tracker to request new features and integrations.</p>
 
 </article>
 
