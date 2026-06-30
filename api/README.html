@@ -69,45 +69,45 @@
         <article data-uid="">
 <h1 id="ai-reader-api-ongsoolabsapi-v10">AI Reader API (OngsooLabs.Api v1.0)</h1>
 
-<p><strong>.NET 10</strong> 기반 AI 전처리 및 웹 콘텐츠 정제 REST API 서비스. <strong>GitHub Actions CI/CD</strong>로 <strong>AWS EC2</strong>에 자동 배포되며, Nginx 리버스 프록시를 통해 <strong>HTTPS</strong>로 서빙됩니다.</p>
+<p>A REST API service for AI preprocessing and web content refinement based on <strong>.NET 10</strong>. It is automatically deployed to <strong>AWS EC2</strong> via <strong>GitHub Actions CI/CD</strong> and served over <strong>HTTPS</strong> through an Nginx reverse proxy.</p>
 <p><strong>Base URL:</strong> <code>https://api.ongsoolabs.com</code></p>
 <hr>
-<h2 id="서비스-소개">서비스 소개</h2>
-<p>AI Reader API는 웹페이지를 LLM이 바로 사용할 수 있는 최적의 형태로 변환하는 AI 전처리 서비스입니다.</p>
-<h3 id="핵심-가치-및-동작-구조">핵심 가치 및 동작 구조</h3>
+<h2 id="introduction">Introduction</h2>
+<p>The AI Reader API is an AI preprocessing service that transforms web pages into an optimal format ready for immediate use by Large Language Models (LLMs).</p>
+<h3 id="core-value--pipeline">Core Value &amp; Pipeline</h3>
 <pre><code>Web Page → Content Extraction → Boilerplate Removal → Markdown Conversion → Metadata Analysis → Token Estimation → AI Ready Output
 </code></pre>
-<h3 id="주요-제공-기능">주요 제공 기능</h3>
+<h3 id="key-features">Key Features</h3>
 <ul>
-<li><strong>Markdown 변환</strong>: 웹페이지의 스타일과 불필요 요소를 걷어내고 순수 마크다운으로 변환합니다.</li>
-<li><strong>본문 및 제목 추출</strong>: 노이즈를 필터링하고 실제 기사 또는 상품의 핵심 본문 및 제목을 추출합니다.</li>
-<li><strong>언어 및 지표 분석</strong>: 대상 페이지의 언어 분석, 단어 수 계산, 토큰 수 계산을 지원합니다.</li>
-<li><strong>Embedding 비용 추정</strong>: 추출된 텍스트 크기에 기초한 임베딩 비용을 추정합니다.</li>
-<li><strong>독서 시간(Reading Time) 계산</strong>: 평균 독서 속도를 기반으로 예상 시간을 제공합니다.</li>
+<li><strong>Markdown Conversion</strong>: Strips away styling and unnecessary elements from web pages, converting them into pure markdown.</li>
+<li><strong>Content &amp; Title Extraction</strong>: Filters out noise to extract the core text and title of actual articles or products.</li>
+<li><strong>Language &amp; Metric Analysis</strong>: Supports language detection, word count, and token count calculations for the target page.</li>
+<li><strong>Embedding Cost Estimation</strong>: Estimates embedding costs based on the size of the extracted text.</li>
+<li><strong>Reading Time Calculation</strong>: Provides an estimated reading time based on average reading speeds.</li>
 </ul>
 <hr>
-<h2 id="시스템-아키텍처-v10-개선-사항">시스템 아키텍처 (v1.0 개선 사항)</h2>
+<h2 id="system-architecture-v10-improvements">System Architecture (v1.0 Improvements)</h2>
 <h3 id="1-browser--context-pool">1. Browser &amp; Context Pool</h3>
-<p>매 요청마다 무겁게 브라우저를 띄우지 않고, 초기 서버 구동 시 단일 크롬 브라우저를 상시 구동하여 격리된 컨텍스트와 페이지를 풀링하여 초고속 렌더링을 지원합니다. 주기적인 브라우저 리사이클 메커니즘을 내장하여 메모리 누수를 관리합니다.</p>
+<p>Instead of launching a heavy browser for every request, a single Chrome instance runs continuously from server startup. It pools isolated contexts and pages to support ultra-fast rendering. A built-in browser recycling mechanism manages memory leaks.</p>
 <h3 id="2-site-rule-engine">2. Site Rule Engine</h3>
-<p>도메인별(예: 쿠팡, 아마존, MDN 등)로 수집 전략을 분리하여 <code>ISiteRule</code> 인터페이스 기반으로 유연하게 규칙을 적용합니다. 신규 도메인의 정책이 추가되더라도 메인 엔진의 수정 없이 룰 추가만으로 확장이 가능합니다.</p>
+<p>Extraction strategies are separated by domain (e.g., Amazon, MDN) and applied flexibly using the <code>ISiteRule</code> interface. When rules for a new domain are needed, they can be expanded simply by adding rules without modifying the main engine.</p>
 <h3 id="3-proxy-router">3. Proxy Router</h3>
-<p>비용 효율과 수집 성공률의 극대화를 위해 프록시를 항상 고정하여 사용하지 않고, 수집 대상이나 차단 상황에 맞추어 <strong>No Proxy ➡️ Datacenter Proxy ➡️ Residential Proxy</strong> 순으로 순차 에스컬레이션하는 로터 필터를 지원합니다.</p>
+<p>To maximize cost-efficiency and collection success rates, proxies are not statically assigned. Instead, the router filter escalates sequentially from <strong>No Proxy ➡️ Datacenter Proxy ➡️ Residential Proxy</strong> depending on the target or block status.</p>
 <h3 id="4-reader-mode--output-options">4. Reader Mode &amp; Output Options</h3>
 <ul>
-<li><strong>Reader Mode</strong>: 콘텐츠의 형태에 따라 <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, <code>generic</code> 모드를 지원하며, 본문 추출 구문 및 변환기가 독립적으로 동작합니다.</li>
-<li><strong>Output Options</strong>: 응답 데이터 크기를 줄이고 토큰을 절약할 수 있도록 이미지, 링크, 테이블, 코드 블록 등의 마크다운 포함 여부를 사용자가 정밀하게 제어할 수 있습니다.</li>
+<li><strong>Reader Mode</strong>: Supports <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, and <code>generic</code> modes depending on the content type. Content extraction syntax and converters operate independently for each mode.</li>
+<li><strong>Output Options</strong>: Users can precisely control whether to include images, links, tables, and code blocks in the markdown output to reduce response size and save tokens.</li>
 </ul>
 <hr>
-<h2 id="api-엔드포인트">API 엔드포인트</h2>
-<h3 id="1-공통-시스템-api">1. 공통 시스템 API</h3>
+<h2 id="api-endpoints">API Endpoints</h2>
+<h3 id="1-common-system-api">1. Common System API</h3>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">메서드</th>
-<th style="text-align: left;">경로</th>
-<th style="text-align: center;">인증</th>
-<th style="text-align: left;">설명</th>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: center;">Auth</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
@@ -115,19 +115,19 @@
 <td style="text-align: left;"><code>GET</code></td>
 <td style="text-align: left;"><code>/</code></td>
 <td style="text-align: center;">❌</td>
-<td style="text-align: left;">서비스 식별 정보</td>
+<td style="text-align: left;">Service identification info</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>GET</code></td>
 <td style="text-align: left;"><code>/health</code></td>
 <td style="text-align: center;">❌</td>
-<td style="text-align: left;">ASP.NET 헬스체크</td>
+<td style="text-align: left;">ASP.NET health check</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>GET</code></td>
 <td style="text-align: left;"><code>/ping</code></td>
 <td style="text-align: center;">❌</td>
-<td style="text-align: left;">경량 생존 확인</td>
+<td style="text-align: left;">Lightweight liveness probe</td>
 </tr>
 </tbody>
 </table>
@@ -136,10 +136,10 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">메서드</th>
-<th style="text-align: left;">경로</th>
-<th style="text-align: center;">인증</th>
-<th style="text-align: left;">설명</th>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: center;">Auth</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
@@ -147,23 +147,23 @@
 <td style="text-align: left;"><code>GET</code></td>
 <td style="text-align: left;"><code>/v1/reader</code></td>
 <td style="text-align: center;">✅</td>
-<td style="text-align: left;">URL 파라미터를 사용한 텍스트 변환 및 분석</td>
+<td style="text-align: left;">Text conversion and analysis using URL parameters</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
 <td style="text-align: left;"><code>/v1/reader</code></td>
 <td style="text-align: center;">✅</td>
-<td style="text-align: left;">JSON 바디를 통한 고급 옵션(쿠키, 헤더, 프록시) 제공</td>
+<td style="text-align: left;">Advanced options (cookies, headers, proxy) via JSON body</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
 <td style="text-align: left;"><code>/v1/reader/chunk</code></td>
 <td style="text-align: center;">✅</td>
-<td style="text-align: left;">독립된 TextProcessor 마이크로서비스를 경유한 텍스트 청킹</td>
+<td style="text-align: left;">Text chunking via an independent TextProcessor microservice</td>
 </tr>
 </tbody>
 </table>
-<h4 id="post-v1reader-요청-예시"><strong>POST /v1/reader 요청 예시</strong></h4>
+<h4 id="post-v1reader-request-example"><strong>POST /v1/reader Request Example</strong></h4>
 <pre><code class="lang-http">POST /v1/reader
 Content-Type: application/json
 X-RapidAPI-Proxy-Secret: &lt;secret&gt;
@@ -183,26 +183,26 @@ X-RapidAPI-Proxy-Secret: &lt;secret&gt;
 }
 </code></pre>
 <hr>
-<h2 id="운영-정책-및-이용약관-terms--policies">운영 정책 및 이용약관 (Terms &amp; Policies)</h2>
-<p>AI Reader API를 이용하는 모든 사용자는 다음 운영 정책을 반드시 준수하고 이에 동의해야 합니다.</p>
+<h2 id="terms--policies">Terms &amp; Policies</h2>
+<p>All users of the AI Reader API must strictly adhere to and agree with the following operational policies:</p>
 <ol>
-<li><strong>이용자 책임의 원칙</strong>: 사용자는 AI 전처리 기능을 통해 변환하고자 하는 대상 웹사이트의 서비스 이용약관, 저작권 규정 및 관련 법령을 전적으로 준수해야 합니다.</li>
-<li><strong>서비스 안정성 통제</strong>: 운영자는 서비스 전체의 안정성과 악의적인 자원 고갈(Abuse) 방지를 위해 특정 계정의 요청 속도를 제한하거나 접근을 차단할 수 있습니다.</li>
-<li><strong>결과 보장의 한계</strong>: 인터넷상의 모든 웹사이트에 대한 완벽한 접근 및 추출 정확도를 보장하지 않으며, 대상 사이트의 구조 변경이나 보안 정책에 따라 결과는 유동적일 수 있습니다.</li>
-<li><strong>결과물 활용 및 소유권</strong>: 서비스는 웹 데이터의 전처리 및 포맷 변환 기능만을 기계적으로 대행하며, 가공 및 파이프라인(LLM, RAG 등) 적용 결과물의 상업적 활용에 대한 모든 법적 책임은 이용자에게 있습니다.</li>
+<li><strong>User Responsibility</strong>: Users are solely responsible for complying with the terms of service, copyright regulations, and relevant laws of the target websites they intend to convert using the AI preprocessing features.</li>
+<li><strong>Service Stability Control</strong>: The operator may limit the request rate or block access for specific accounts to maintain overall service stability and prevent malicious resource exhaustion (Abuse).</li>
+<li><strong>Limitations of Results</strong>: Perfect access and extraction accuracy are not guaranteed for all websites on the internet. Results may fluctuate depending on structural changes or security policies of the target sites.</li>
+<li><strong>Use and Ownership of Outputs</strong>: The service merely acts as a mechanical proxy for web data preprocessing and format conversion. The user bears all legal responsibility for the commercial use of the processed outputs and their application in pipelines (e.g., LLM, RAG).</li>
 </ol>
 <hr>
-<h2 id="로컬-개발-및-실행">로컬 개발 및 실행</h2>
-<pre><code class="lang-bash"># 1. 리포지토리 클론
+<h2 id="local-development">Local Development</h2>
+<pre><code class="lang-bash"># 1. Clone the repository
 git clone https://github.com/OngsooLabs/OngsooLabs.Api.git
 
-# 2. 로컬 실행
+# 2. Run locally
 cd src/Services/Scraper/OngsooLabs.Scraper.WebApi
 dotnet run
 </code></pre>
-<p>Development 환경에서 <code>http://localhost:&lt;port&gt;/swagger</code>로 Swagger UI에 접근할 수 있습니다.</p>
+<p>In the Development environment, you can access the Swagger UI at <code>http://localhost:&lt;port&gt;/swagger</code>.</p>
 <hr>
-<h2 id="라이선스">라이선스</h2>
+<h2 id="license">License</h2>
 <p><a href="LICENSE">MIT</a></p>
 
 </article>
