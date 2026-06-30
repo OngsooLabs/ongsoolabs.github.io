@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>AI Reader API </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="AI Reader API ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/OngsooLabs.Api/blob/main/articles/ai-reader-api.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="ai-reader-api">AI Reader API</h1>
+
+<p><strong>AI Reader API</strong>는 웹페이지를 LLM(거대 언어 모델)이 바로 사용할 수 있는 최적의 형태로 변환하는 AI 전처리 서비스입니다.</p>
+<p>👉 <strong><a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">RapidAPI에서 사용해보기 (Available on RapidAPI)</a></strong></p>
+<hr>
+<h2 id="핵심-가치-및-동작-구조">핵심 가치 및 동작 구조</h2>
+<pre><code class="lang-mermaid">graph LR
+A[Web Page] --&gt; B[Content Extraction]
+B --&gt; C[Boilerplate Removal]
+C --&gt; D[Markdown Conversion]
+D --&gt; E[Metadata Analysis]
+E --&gt; F[Token Estimation]
+F --&gt; G[AI Ready Output]
+</code></pre>
+<h3 id="주요-제공-기능">주요 제공 기능</h3>
+<ul>
+<li><strong>Markdown 변환</strong>: 웹페이지의 스타일과 불필요 요소를 걷어내고 순수 마크다운으로 변환합니다.</li>
+<li><strong>본문 및 제목 추출</strong>: 노이즈를 필터링하고 실제 기사 또는 상품의 핵심 본문 및 제목을 추출합니다.</li>
+<li><strong>언어 및 지표 분석</strong>: 대상 페이지의 언어 분석, 단어 수 계산, 토큰 수 계산을 지원합니다.</li>
+<li><strong>Embedding 비용 추정</strong>: 추출된 텍스트 크기에 기초한 임베딩 비용을 추정합니다.</li>
+<li><strong>독서 시간(Reading Time) 계산</strong>: 평균 독서 속도를 기반으로 예상 시간을 제공합니다.</li>
+</ul>
+<hr>
+<h2 id="시스템-아키텍처-v10">시스템 아키텍처 (v1.0)</h2>
+<ol>
+<li><strong>Browser &amp; Context Pool</strong>: 단일 크롬 브라우저를 상시 구동하여 격리된 컨텍스트와 페이지를 풀링함으로써 초고속 렌더링을 지원합니다.</li>
+<li><strong>Site Rule Engine</strong>: 도메인별(예: 쿠팡, 아마존, MDN 등)로 수집 전략을 분리하여 유연하게 규칙을 적용합니다.</li>
+<li><strong>Proxy Router</strong>: 비용 효율과 수집 성공률 극대화를 위해 <code>No Proxy ➡️ Datacenter Proxy ➡️ Residential Proxy</code> 순으로 에스컬레이션하는 로터 필터를 지원합니다.</li>
+<li><strong>Reader Mode &amp; Output Options</strong>: 콘텐츠 형태에 따라 모드(<code>article</code>, <code>product</code> 등)를 지원하며, 출력 결과에 이미지나 링크 등을 포함할지 세밀하게 제어할 수 있습니다.</li>
+</ol>
+<hr>
+<h2 id="api-엔드포인트">API 엔드포인트</h2>
+<h3 id="ai-reader-api-1">AI Reader API</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">메서드</th>
+<th style="text-align: left;">경로</th>
+<th style="text-align: left;">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>GET</code></td>
+<td style="text-align: left;"><code>/v1/reader</code></td>
+<td style="text-align: left;">URL 파라미터를 사용한 텍스트 변환 및 분석</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>POST</code></td>
+<td style="text-align: left;"><code>/v1/reader</code></td>
+<td style="text-align: left;">JSON 바디를 통한 고급 옵션(쿠키, 헤더, 프록시) 제공</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>POST</code></td>
+<td style="text-align: left;"><code>/v1/reader/chunk</code></td>
+<td style="text-align: left;">독립된 TextProcessor 마이크로서비스를 경유한 텍스트 청킹</td>
+</tr>
+</tbody>
+</table>
+<h4 id="post-v1reader-요청-예시">POST <code>/v1/reader</code> 요청 예시</h4>
+<pre><code class="lang-http">POST /v1/reader
+Content-Type: application/json
+X-RapidAPI-Key: &lt;your-rapidapi-key&gt;
+</code></pre>
+<pre><code class="lang-json">{
+  &quot;url&quot;: &quot;https://example.com&quot;,
+  &quot;mode&quot;: &quot;article&quot;,
+  &quot;tokenizer&quot;: &quot;openai&quot;,
+  &quot;output&quot;: {
+    &quot;content&quot;: true,
+    &quot;metadata&quot;: true,
+    &quot;tables&quot;: true,
+    &quot;codeBlocks&quot;: true,
+    &quot;images&quot;: false,
+    &quot;links&quot;: false
+  }
+}
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>본 서비스는 데이터를 가공하는 파이프라인 역할을 수행하며, 생성된 결과물의 상업적 활용에 대한 모든 법적 책임은 이용자에게 있습니다. 대상 웹사이트의 이용약관 및 저작권 규정을 준수해 주세요.</p>
+</div>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/OngsooLabs/OngsooLabs.Api/blob/main/articles/ai-reader-api.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

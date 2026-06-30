@@ -24,6 +24,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/ai-reader-api.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/ai-reader-api.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/intro.md",
       "output": {
         ".html": {

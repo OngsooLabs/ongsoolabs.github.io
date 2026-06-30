@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>AI Reader API (OngsooLabs.Api v2.0) </title>
+      <title>AI Reader API (OngsooLabs.Api v1.0) </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="AI Reader API (OngsooLabs.Api v2.0) ">
+      <meta name="title" content="AI Reader API (OngsooLabs.Api v1.0) ">
       
       
       <link rel="icon" href="favicon.ico">
@@ -67,7 +67,7 @@
         </div>
 
         <article data-uid="">
-<h1 id="ai-reader-api-ongsoolabsapi-v20">AI Reader API (OngsooLabs.Api v2.0)</h1>
+<h1 id="ai-reader-api-ongsoolabsapi-v10">AI Reader API (OngsooLabs.Api v1.0)</h1>
 
 <p><strong>.NET 10</strong> 기반 AI 전처리 및 웹 콘텐츠 정제 REST API 서비스. <strong>GitHub Actions CI/CD</strong>로 <strong>AWS EC2</strong>에 자동 배포되며, Nginx 리버스 프록시를 통해 <strong>HTTPS</strong>로 서빙됩니다.</p>
 <p><strong>Base URL:</strong> <code>https://api.ongsoolabs.com</code></p>
@@ -86,7 +86,7 @@
 <li><strong>독서 시간(Reading Time) 계산</strong>: 평균 독서 속도를 기반으로 예상 시간을 제공합니다.</li>
 </ul>
 <hr>
-<h2 id="시스템-아키텍처-v20-개선-사항">시스템 아키텍처 (v2.0 개선 사항)</h2>
+<h2 id="시스템-아키텍처-v10-개선-사항">시스템 아키텍처 (v1.0 개선 사항)</h2>
 <h3 id="1-browser--context-pool">1. Browser &amp; Context Pool</h3>
 <p>매 요청마다 무겁게 브라우저를 띄우지 않고, 초기 서버 구동 시 단일 크롬 브라우저를 상시 구동하여 격리된 컨텍스트와 페이지를 풀링하여 초고속 렌더링을 지원합니다. 주기적인 브라우저 리사이클 메커니즘을 내장하여 메모리 누수를 관리합니다.</p>
 <h3 id="2-site-rule-engine">2. Site Rule Engine</h3>
