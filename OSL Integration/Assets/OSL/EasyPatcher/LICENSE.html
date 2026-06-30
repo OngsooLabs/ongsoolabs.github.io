@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Changelog </title>
+      <title> </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Changelog ">
+      <meta name="title" content=" ">
       
       
       <link rel="icon" href="../../../../favicon.ico">
@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/EasyPatcher/CHANGELOG.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/EasyPatcher/LICENSE.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -67,45 +67,29 @@
         </div>
 
         <article data-uid="">
-<h1 id="changelog">Changelog</h1>
 
-<p>All notable changes to this package are documented here.
-The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>.</p>
-<h2 id="101">[1.0.1]</h2>
-<h3 id="fixed">Fixed</h3>
-<ul>
-<li><code>OSLPatchManager</code>: HMAC verification now runs whenever the manifest declares an <code>hmacHash</code>, regardless of the <code>encrypted</code> flag. Missing keys are reported as a hard failure instead of silently passing.</li>
-<li><code>OSLPatchManager</code>: unified local cache path with the loader (<code>persistentDataPath/OSL/EasyPatcher</code>); per-file download timeout removed for large files; progress is clamped to <code>[0,1]</code>.</li>
-<li><code>OSLPatchUIController</code>: <code>Start()</code> is wrapped in try/catch so a failed patch flow no longer leaves the UI in an undefined state.</li>
-<li><code>OSLUploaderWindow</code> / <code>OSLSimpleBundleLoader</code>: AES is pinned to CBC + PKCS7 on both encrypt and decrypt paths.</li>
-<li><code>PatchTestRunner</code>: hash-mismatch scenario now skips only <code>local_version.json</code>, so corruption is applied to a real payload file.</li>
-<li><code>PatchManifest</code>: <code>files</code> list is initialized; <code>PatchFileInfo</code> carries <code>fileName</code>, <code>sizeBytes</code>, <code>sha256Hash</code>, <code>encrypted</code>, and <code>hmacHash</code> consistently across editor and runtime.</li>
-<li><code>OSL.EasyPatcher.Runtime.asmdef</code>: corrected TMP <code>versionDefines</code> wiring.</li>
-</ul>
-<h3 id="added">Added</h3>
-<ul>
-<li><code>package.json</code> for UPM compatibility.</li>
-<li>README <strong>Publishing</strong> section describing <code>.unitypackage</code> export and UPM install flows.</li>
-</ul>
-<h2 id="100---2025-01-01">[1.0.0] - 2025-01-01</h2>
-<h3 id="added-1">Added</h3>
-<ul>
-<li>Initial release.</li>
-<li>Strategy-pattern runtime loader (<code>IOSLLoader</code>) and <code>OSLSimpleBundleLoader</code>.</li>
-<li>Streaming, hash-verified <code>OSLPatchManager</code> with optional HMAC verification.</li>
-<li>Editor uploader window with Upload / Download / Versions tabs.</li>
-<li>Hierarchical tree view with per-file/folder encryption and tamper-proof toggles.</li>
-<li>Versioned patch slots.</li>
-<li>Upload backends: Local Folder, Google Cloud Storage, AWS S3, Unity CCD.</li>
-<li>TMP-friendly <code>OSLPatchUIController</code> with automatic legacy <code>UI.Text</code> fallback.</li>
-<li>Sample <code>PatchTestRunner</code> covering 5 end-to-end scenarios.</li>
-<li>Assembly definitions for clean Runtime / Editor / Sample separation.</li>
-</ul>
+<p>MIT License</p>
+<p>Copyright (c) 2025 OngsooLabs</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/EasyPatcher/CHANGELOG.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/OngsooLabs/Integration/blob/main/OSL Integration/Assets/OSL/EasyPatcher/LICENSE.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

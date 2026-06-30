@@ -4,15 +4,12 @@
     <meta charset="utf-8">
       <title>OSL Easy Patcher </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-      <meta http-equiv="Pragma" content="no-cache">
-      <meta http-equiv="Expires" content="0">
       <meta name="title" content="OSL Easy Patcher ">
       
       
       <link rel="icon" href="../../../../favicon.ico">
-      <link rel="stylesheet" href="../../../../public/docfx.min.css?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397">
-      <link rel="stylesheet" href="../../../../public/main.css?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
       <meta name="docfx:navrel" content="../../../../toc.html">
       <meta name="docfx:tocrel" content="../../../../toc.html">
       
@@ -33,7 +30,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../../../public/docfx.min.js?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397"></script>
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -94,7 +91,6 @@ Upload your patch files from the Editor, and let players automatically download 
 <li><a href="#2-google-cloud-storage">Google Cloud Storage</a></li>
 <li><a href="#3-aws-s3">AWS S3</a></li>
 <li><a href="#4-unity-ccd">Unity CCD</a></li>
-<li><a href="#5-azure-blob-storage">Azure Blob Storage</a></li>
 </ul>
 </li>
 <li><a href="#runtime-setup">Runtime Setup</a></li>
@@ -108,7 +104,7 @@ Upload your patch files from the Editor, and let players automatically download 
 <pre><code>[Editor] Build patch files
      └─▶ OSL Uploader Window
              └─▶ Generate version.json manifest
-                     └─▶ Upload to server (Local / GCS / S3 / CCD / Azure)
+                     └─▶ Upload to server (Local / GCS / S3 / CCD)
 
 [Runtime] Game starts
      └─▶ OSLPatchUIController
@@ -145,11 +141,8 @@ Upload your patch files from the Editor, and let players automatically download 
 <hr>
 <h2 id="installation">Installation</h2>
 <ol>
-<li>Open the <a href="https://assetstore.unity.com/packages/slug/378832">Unity Asset Store (OSL Easy Patcher)</a> and search for <strong>OSL Easy Patcher</strong>, or open it directly via your browser.</li>
-<li>Click <strong>Add to My Assets</strong>.</li>
-<li>Open Unity and navigate to <strong>Window &gt; Package Manager</strong>.</li>
-<li>Select <strong>Packages: My Assets</strong> from the dropdown.</li>
-<li>Locate <strong>OSL Easy Patcher</strong>, download it, and click <strong>Import</strong>.</li>
+<li>Copy the <code>Assets/OSL/EasyPatcher/</code> folder into your Unity project.</li>
+<li>Unity will compile the assembly definitions automatically.</li>
 <li><em>(Optional)</em> If you use TextMeshPro, the <code>OSL_TMP_PRESENT</code> scripting define is set automatically through the assembly definition's <code>versionDefines</code>. No manual action is needed.</li>
 </ol>
 <hr>
@@ -208,7 +201,7 @@ python -m http.server 8080
 </tr>
 <tr>
 <td><strong>Upload Backend</strong></td>
-<td>Choose one of: Local Folder, Google Cloud Storage, AWS S3, Unity CCD, Azure Blob Storage.</td>
+<td>Choose one of: Local Folder, Google Cloud Storage, AWS S3, Unity CCD.</td>
 </tr>
 <tr>
 <td><strong>Generate Manifest &amp; Upload</strong></td>
@@ -471,59 +464,6 @@ Replace <code>my-game-patches</code> with your actual bucket name.</li>
 <p><strong>Tip:</strong> Check the CCD dashboard for the exact CDN URL after your first release.</p>
 </blockquote>
 <hr>
-<h3 id="5-azure-blob-storage">5. Azure Blob Storage</h3>
-<p><strong>Use case:</strong> Production CDN via Microsoft Azure. Free tier available for small workloads.</p>
-<h4 id="step-1--create-a-storage-account-and-container">Step 1 — Create a Storage Account and Container</h4>
-<ol>
-<li>Sign in to the <a href="https://portal.azure.com/">Azure Portal</a> and search for <strong>Storage accounts</strong>.</li>
-<li>Click <strong>Create</strong>, choose a <strong>Subscription</strong> and <strong>Resource Group</strong>.</li>
-<li>Enter a globally unique <strong>Storage account name</strong> (e.g. <code>mygamepatches</code>), choose a <strong>Region</strong>, and set <strong>Performance</strong> to <em>Standard</em>.</li>
-<li>Click <strong>Review + create</strong> → <strong>Create</strong>.</li>
-<li>Once deployed, open the storage account and navigate to <strong>Data storage → Containers</strong>.</li>
-<li>Click <strong>+ Container</strong>, enter a name (e.g. <code>patches</code>), and set <strong>Public access level</strong> to <em>Blob</em> so players can download files without authentication.
-<blockquote>
-<p>For private containers, use Shared Access Signatures (SAS) instead and distribute the SAS URL as the runtime base URL.</p>
-</blockquote>
-</li>
-</ol>
-<h4 id="step-2--copy-the-account-key">Step 2 — Copy the Account Key</h4>
-<ol>
-<li>In the storage account, go to <strong>Security + networking → Access keys</strong>.</li>
-<li>Under <strong>key1</strong>, click <strong>Show</strong> and copy the <strong>Key</strong> value (a Base64-encoded string).</li>
-<li><strong>Never commit this key to source control.</strong></li>
-</ol>
-<h4 id="step-3--configure-the-editor-window-2">Step 3 — Configure the Editor window</h4>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Where to find the value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Account Name</strong></td>
-<td>The storage account name you chose in Step 1 (e.g. <code>mygamepatches</code>)</td>
-</tr>
-<tr>
-<td><strong>Account Key</strong></td>
-<td>The Base64 key copied in Step 2</td>
-</tr>
-<tr>
-<td><strong>Container Name</strong></td>
-<td>The container name from Step 1 (e.g. <code>patches</code>)</td>
-</tr>
-<tr>
-<td><strong>Blob Prefix</strong></td>
-<td><em>(Optional)</em> Subfolder inside the container (e.g. <code>v2/</code>). Leave empty to upload to the container root.</td>
-</tr>
-</tbody>
-</table>
-<h4 id="step-4--set-the-runtime-url-2">Step 4 — Set the runtime URL</h4>
-<pre><code>https://&lt;ACCOUNT_NAME&gt;.blob.core.windows.net/&lt;CONTAINER_NAME&gt;/&lt;BLOB_PREFIX&gt;
-</code></pre>
-<p>Example: <code>https://mygamepatches.blob.core.windows.net/patches/v2</code></p>
-<hr>
 <h2 id="runtime-setup">Runtime Setup</h2>
 <h3 id="1-add-oslpatchuicontroller-to-your-scene">1. Add OSLPatchUIController to your Scene</h3>
 <ol>
@@ -669,9 +609,13 @@ public class MyCustomLoader : IOSLLoader
 <li>Save as <code>OSL_EasyPatcher_&lt;version&gt;.unitypackage</code>.</li>
 <li>The Sample scene and <code>PatchTestRunner</code> are exported alongside the runtime/editor assemblies, so buyers can open <code>Sample/DemoScene.unity</code> immediately after import.</li>
 </ol>
-<h3 id="option-b--upm-local-path">Option B — UPM (Local path)</h3>
+<h3 id="option-b--upm-git-url-or-local-path">Option B — UPM (Git URL or local path)</h3>
 <p>The package root is <code>Assets/OSL/EasyPatcher/</code> and contains a valid <code>package.json</code>.</p>
 <ul>
+<li><strong>Git URL:</strong> in <strong>Window → Package Manager → + → Add package from git URL…</strong>, enter:
+<pre><code>https://github.com/OngsooLabs/EasyPatcherRepo.git?path=EasyPatcher/Assets/OSL/EasyPatcher
+</code></pre>
+</li>
 <li><strong>Local path:</strong> in <strong>Package Manager → + → Add package from disk…</strong>, select the <code>package.json</code> inside <code>Assets/OSL/EasyPatcher/</code>.</li>
 </ul>
 <p>When installed via UPM, the <code>Sample/</code> folder ships as a regular runtime folder so the demo scene remains directly browsable. If you prefer the official UPM <code>Samples~</code> convention (samples imported on demand), rename <code>Sample</code> to <code>Samples~</code> and add a <code>samples</code> array to <code>package.json</code>.</p>
