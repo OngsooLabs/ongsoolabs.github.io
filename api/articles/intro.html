@@ -84,25 +84,29 @@
 <h1 id="introduction-to-ongsoolabs-api">Introduction to OngsooLabs API</h1>
 
 <p>Welcome to the official documentation for the <strong>OngsooLabs API</strong> ecosystem.</p>
-<p>OngsooLabs API is an enterprise-grade backend platform designed as a comprehensive <strong>Knowledge Ingestion Gateway</strong>. Our architecture isolates distinct backend services—each highly specialized in data extraction, processing, and delivery—to provide robust, scalable solutions for modern AI and enterprise applications.</p>
-<h2 id="our-vision">Our Vision</h2>
-<p>In the rapidly evolving landscape of AI, LLMs, and Retrieval-Augmented Generation (RAG), the quality and structure of data are paramount. Our ultimate vision is to create a centralized <strong>AI Knowledge Platform</strong>.</p>
-<p>We aim to seamlessly gather, understand, structure, optimize, and deliver knowledge from a wide variety of heterogeneous sources—including web pages, PDF/Office documents, GitHub repositories, Notion workspaces, and YouTube transcripts. By providing pristine, AI-ready data pipelines, we empower developers to build smarter, more reliable AI systems without worrying about data preprocessing.</p>
+<p>OngsooLabs API is an enterprise-grade backend platform designed as a comprehensive <strong>Knowledge Ingestion Gateway</strong>. Our architecture isolates distinct backend services—each highly specialized in data extraction, processing, and delivery—to provide robust, scalable data pipelines for modern AI applications.</p>
+<h2 id="our-vision--roadmap">Our Vision &amp; Roadmap</h2>
+<p>In the rapidly evolving landscape of Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG), the quality and structure of data are paramount. Our ultimate vision is to create a centralized <strong>AI Knowledge Platform</strong> structured around four core pillars:</p>
+<ol>
+<li><strong>AI Reader API (Available)</strong>: Intelligent pipelines that fetch web pages, strip boilerplate noise, and convert core content into pure, token-optimized Markdown. Features include Web to Markdown conversion, Metadata extraction, Text Chunking, and Token Estimation.</li>
+<li><strong>AI Utilities API (Coming Soon)</strong>: A suite of lightweight tools for data manipulation, including Markdown ↔ HTML ↔ JSON conversions, HTML cleaning, standalone tokenizers, and embedding cost estimation.</li>
+<li><strong>Sitemap Watchdog API (Coming Soon)</strong>: Automated monitoring services for Sitemaps and RSS feeds. Features will include webpage change detection, scheduled checks, and Webhook notifications to keep your AI knowledge base constantly up to date.</li>
+<li><strong>AI Extraction API (Future)</strong>: Advanced extraction pipelines for pulling structured JSON, specific entities, and schema-based product information directly from heterogeneous web sources.</li>
+</ol>
+<p>By providing these AI-ready data pipelines, we empower developers to build smarter, more reliable AI systems without worrying about data preprocessing and infrastructure management.</p>
 <h2 id="platform-architecture">Platform Architecture</h2>
 <p>To achieve massive scalability and maintainability, the OngsooLabs API ecosystem is built upon a strict multi-service architecture:</p>
 <ul>
-<li><strong>Isolated Microservices</strong>: Each service is developed in an isolated environment within a monorepo, strictly adhering to Clean Architecture principles (Domain, Infrastructure, WebApi) with zero-dependency core layers.</li>
-<li><strong>Independent Scaling &amp; Deployment</strong>: Services are fully containerized and deployed with their own independent CI/CD pipelines, ensuring that heavy computational tasks (like web rendering) do not bottleneck lightweight data processing requests.</li>
-<li><strong>Shared Platform Services</strong>: Common technical utilities (such as token counting, text chunking, and text slicing) are decoupled into shared containerized platform services. They communicate securely over private internal networks via lightweight HTTP/JSON or gRPC.</li>
+<li><strong>Isolated Microservices</strong>: Each API service is developed in an isolated environment within a monorepo, strictly adhering to Clean Architecture principles (Domain, Infrastructure, WebApi) with zero-dependency core layers.</li>
+<li><strong>Independent Scaling &amp; Deployment</strong>: Services are fully containerized via Docker and deployed with their own independent CI/CD pipelines, ensuring heavy computational tasks (like headless web rendering) do not bottleneck lightweight utility requests.</li>
+<li><strong>Shared Platform Services</strong>: Common technical utilities are decoupled into shared containerized platform services communicating securely over private internal networks via HTTP/JSON or gRPC.</li>
 </ul>
 <h2 id="available-apis">Available APIs</h2>
-<p>Our platform is continuously expanding. Currently, we offer the following public-facing services:</p>
+<p>Currently, we offer the following public-facing service:</p>
 <ul>
-<li><strong><a href="ai-reader-api.html">AI Reader API</a></strong>: Our flagship data ingestion service. It acts as an intelligent pipeline that fetches web pages, strips away boilerplate noise, and converts the core content into pure, token-optimized Markdown ready for LLMs.</li>
+<li><strong><a href="ai-reader-api.html">AI Reader API</a></strong>: Our flagship data ingestion service for converting heterogeneous web content into AI-ready Markdown.</li>
 </ul>
-<h2 id="looking-forward">Looking Forward</h2>
-<p>As we progress through our strategic product roadmap, you can expect new APIs and features tailored for intelligent caching, automated batch crawling, change detection, and seamless enterprise workspace integrations.</p>
-<p>Explore our specific API documentations from the sidebar to get started, or visit our issue tracker to request new features and integrations.</p>
+<p>Explore the API documentation from the sidebar to get started, or visit our issue tracker to request new features and integrations as we roll out our strategic roadmap.</p>
 
 </article>
 
