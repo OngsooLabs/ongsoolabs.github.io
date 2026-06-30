@@ -1,0 +1,154 @@
+{
+  "source_base_path": "/home/runner/work/Integration/Integration",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/CHANGELOG.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/Deterministic/CHANGELOG.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/Documentation~/QuickStart.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/Deterministic/Documentation~/QuickStart.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/LICENSE.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/Deterministic/LICENSE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/Deterministic/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/Samples/LockstepDemo/README_DEMO.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/Deterministic/Samples/LockstepDemo/README_DEMO.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/EasyPatcher/CHANGELOG.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/EasyPatcher/CHANGELOG.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/EasyPatcher/LICENSE.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/EasyPatcher/LICENSE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/EasyPatcher/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/EasyPatcher/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/IapClient/Documentation/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/IapClient/Documentation/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/SecureSave/Documentation/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/SecureSave/Documentation/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/SecureSave/LICENSE.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/SecureSave/LICENSE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/Assets/OSL/SocialLogin/Docs/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/Assets/OSL/SocialLogin/Docs/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "OSL Integration/OSL_Development_Guideline_v1.1.md",
+      "output": {
+        ".html": {
+          "relative_path": "OSL Integration/OSL_Development_Guideline_v1.1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "toc.json"
+        },
+        ".html": {
+          "relative_path": "toc.html"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
