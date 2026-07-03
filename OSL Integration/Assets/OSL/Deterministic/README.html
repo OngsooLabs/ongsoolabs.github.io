@@ -4,15 +4,12 @@
     <meta charset="utf-8">
       <title>OSL Deterministic Core </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-      <meta http-equiv="Pragma" content="no-cache">
-      <meta http-equiv="Expires" content="0">
       <meta name="title" content="OSL Deterministic Core ">
       
       
       <link rel="icon" href="../../../../favicon.ico">
-      <link rel="stylesheet" href="../../../../public/docfx.min.css?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397">
-      <link rel="stylesheet" href="../../../../public/main.css?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
       <meta name="docfx:navrel" content="../../../../toc.html">
       <meta name="docfx:tocrel" content="../../../../toc.html">
       
@@ -33,7 +30,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../../../public/docfx.min.js?v=2a3f5a3ac0b6c74a7912fe0c80ac974e52312397"></script>
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -95,12 +92,15 @@ state round-trips, and pity semantics.</li>
 <li>Scripting runtime: <strong>.NET Standard 2.1</strong></li>
 </ul>
 <h2 id="installation">Installation</h2>
+<h3 id="option-a--package-manager-git-url">Option A — Package Manager (Git URL)</h3>
 <ol>
-<li>Open the <a href="https://assetstore.unity.com/packages/slug/381680">Unity Asset Store (OSL Deterministic Core)</a> and search for <strong>OSL Deterministic Core</strong>, or open it directly via your browser.</li>
-<li>Click <strong>Add to My Assets</strong>.</li>
-<li>Open Unity and navigate to <strong>Window &gt; Package Manager</strong>.</li>
-<li>Select <strong>Packages: My Assets</strong> from the dropdown.</li>
-<li>Locate <strong>OSL Deterministic Core</strong>, download it, and click <strong>Import</strong>.</li>
+<li>Open <strong>Window &gt; Package Manager</strong>.</li>
+<li>Click <strong>+ &gt; Add package from git URL...</strong></li>
+<li>Enter the repository URL pointing to <code>Assets/OSL/Deterministic</code>.</li>
+</ol>
+<h3 id="option-b--asset-store--unitypackage">Option B — Asset Store / .unitypackage</h3>
+<ol>
+<li>Import the asset into your project.</li>
 <li>Verify that the <code>Assets/OSL/Deterministic/</code> folder is present.</li>
 <li>(Optional) Import the <strong>Lockstep Demo</strong> sample from the Package Manager
 <em>Samples</em> section.</li>
@@ -223,7 +223,7 @@ sides remain bit-for-bit identical — the moment any module regresses, it turns
 <li>Maintainer: OngsooLabs</li>
 </ul>
 <h2 id="license">License</h2>
-<p>See <a href="LICENSE.md"><code>LICENSE.md</code></a>.</p>
+<p>See <a href="LICENSE.html"><code>LICENSE.md</code></a>.</p>
 
 </article>
 
