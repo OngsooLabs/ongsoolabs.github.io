@@ -1,5 +1,5 @@
 {
-  "source_base_path": "",
+  "source_base_path": "/home/runner/work/OngsooLabs.Api/OngsooLabs.Api",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -71,16 +71,6 @@
       "output": {
         ".html": {
           "relative_path": "index.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "phase1-review-report.md",
-      "output": {
-        ".html": {
-          "relative_path": "phase1-review-report.html"
         }
       },
       "version": ""
