@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/OngsooLabs.Api/blob/main/README.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/ongsoolabs.github.io/issues">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -67,78 +67,32 @@
         </div>
 
         <article data-uid="">
-<h1 id="ai-reader-api-ongsoolabsapi-v10">AI Reader API (OngsooLabs.Api v1.0)</h1>
+<h1 id="ai-reader-api">AI Reader API</h1>
 
-<p>A REST API service for AI preprocessing and web content refinement based on <strong>.NET 10</strong>. It is automatically deployed to <strong>AWS EC2</strong> via <strong>GitHub Actions CI/CD</strong> and served over <strong>HTTPS</strong> through an Nginx reverse proxy.</p>
-<p><strong>Base URL:</strong> <code>https://api.ongsoolabs.com</code></p>
+<p><strong>AI Reader API</strong> is a public Ongsoo Labs service for converting web pages into clean Markdown and metadata for AI workflows.</p>
+<p>Public access is available through <a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">RapidAPI</a>. Direct calls to <code>https://api.ongsoolabs.com</code> are reserved for platform and partner integrations unless separately arranged.</p>
 <hr>
-<h2 id="introduction">Introduction</h2>
-<p>The AI Reader API is an AI preprocessing service that transforms web pages into an optimal format ready for immediate use by Large Language Models (LLMs).</p>
-<h3 id="core-value--pipeline">Core Value &amp; Pipeline</h3>
-<pre><code>Web Page → Content Extraction → Boilerplate Removal → Markdown Conversion → Metadata Analysis → Token Estimation → AI Ready Output
+<h2 id="overview">Overview</h2>
+<pre><code>Web page -&gt; Content extraction -&gt; Boilerplate removal -&gt; Markdown conversion -&gt; Metadata analysis -&gt; AI-ready output
 </code></pre>
-<h3 id="key-features">Key Features</h3>
+<h2 id="key-features">Key Features</h2>
 <ul>
-<li><strong>Markdown Conversion</strong>: Strips away styling and unnecessary elements from web pages, converting them into pure markdown.</li>
-<li><strong>Content &amp; Title Extraction</strong>: Filters out noise to extract the core text and title of actual articles or products.</li>
-<li><strong>Language &amp; Metric Analysis</strong>: Supports language detection, word count, and token count calculations for the target page.</li>
-<li><strong>Embedding Cost Estimation</strong>: Estimates embedding costs based on the size of the extracted text.</li>
-<li><strong>Reading Time Calculation</strong>: Provides an estimated reading time based on average reading speeds.</li>
+<li><strong>Markdown conversion</strong>: Converts the main page content into Markdown suitable for AI prompts and indexing.</li>
+<li><strong>Content and title extraction</strong>: Filters common navigation, layout, and advertising noise.</li>
+<li><strong>Language and metric analysis</strong>: Returns metadata such as language, word count, token estimate, and reading time where available.</li>
+<li><strong>Output options</strong>: Lets callers choose whether to include optional links, images, tables, and code blocks.</li>
+<li><strong>Reader modes</strong>: Supports content-oriented modes such as <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, and <code>generic</code>.</li>
 </ul>
 <hr>
-<h2 id="system-architecture-v10-improvements">System Architecture (v1.0 Improvements)</h2>
-<h3 id="1-browser--context-pool">1. Browser &amp; Context Pool</h3>
-<p>Instead of launching a heavy browser for every request, a single Chrome instance runs continuously from server startup. It pools isolated contexts and pages to support ultra-fast rendering. A built-in browser recycling mechanism manages memory leaks.</p>
-<h3 id="2-site-rule-engine">2. Site Rule Engine</h3>
-<p>Extraction strategies are separated by domain (e.g., Amazon, MDN) and applied flexibly using the <code>ISiteRule</code> interface. When rules for a new domain are needed, they can be expanded simply by adding rules without modifying the main engine.</p>
-<h3 id="3-proxy-router">3. Proxy Router</h3>
-<p>To maximize cost-efficiency and collection success rates, proxies are not statically assigned. Instead, the router filter escalates sequentially from <strong>No Proxy ➡️ Datacenter Proxy ➡️ Residential Proxy</strong> depending on the target or block status.</p>
-<h3 id="4-reader-mode--output-options">4. Reader Mode &amp; Output Options</h3>
-<ul>
-<li><strong>Reader Mode</strong>: Supports <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, and <code>generic</code> modes depending on the content type. Content extraction syntax and converters operate independently for each mode.</li>
-<li><strong>Output Options</strong>: Users can precisely control whether to include images, links, tables, and code blocks in the markdown output to reduce response size and save tokens.</li>
-</ul>
+<h2 id="authentication">Authentication</h2>
+<p>Use the <code>X-RapidAPI-Key</code> and <code>X-RapidAPI-Host</code> values shown in your RapidAPI dashboard.</p>
 <hr>
 <h2 id="api-endpoints">API Endpoints</h2>
-<h3 id="1-common-system-api">1. Common System API</h3>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">Method</th>
 <th style="text-align: left;">Path</th>
-<th style="text-align: center;">Auth</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><code>GET</code></td>
-<td style="text-align: left;"><code>/</code></td>
-<td style="text-align: center;">❌</td>
-<td style="text-align: left;">Service identification info</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>GET</code></td>
-<td style="text-align: left;"><code>/health</code></td>
-<td style="text-align: center;">❌</td>
-<td style="text-align: left;">ASP.NET health check</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>GET</code></td>
-<td style="text-align: left;"><code>/ping</code></td>
-<td style="text-align: center;">❌</td>
-<td style="text-align: left;">Lightweight liveness probe</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h3 id="2-ai-reader-api">2. AI Reader API</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Method</th>
-<th style="text-align: left;">Path</th>
-<th style="text-align: center;">Auth</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
@@ -146,27 +100,25 @@
 <tr>
 <td style="text-align: left;"><code>GET</code></td>
 <td style="text-align: left;"><code>/v1/reader</code></td>
-<td style="text-align: center;">✅</td>
 <td style="text-align: left;">Text conversion and analysis using URL parameters</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
 <td style="text-align: left;"><code>/v1/reader</code></td>
-<td style="text-align: center;">✅</td>
-<td style="text-align: left;">Advanced options (cookies, headers, proxy) via JSON body</td>
+<td style="text-align: left;">Advanced options through a JSON body</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
 <td style="text-align: left;"><code>/v1/reader/chunk</code></td>
-<td style="text-align: center;">✅</td>
-<td style="text-align: left;">Text chunking via an independent TextProcessor microservice</td>
+<td style="text-align: left;">Split text into chunks for downstream AI processing</td>
 </tr>
 </tbody>
 </table>
-<h4 id="post-v1reader-request-example"><strong>POST /v1/reader Request Example</strong></h4>
+<h3 id="post-v1reader-request-example">POST <code>/v1/reader</code> Request Example</h3>
 <pre><code class="lang-http">POST /v1/reader
 Content-Type: application/json
-X-RapidAPI-Proxy-Secret: &lt;secret&gt;
+X-RapidAPI-Key: &lt;your-rapidapi-key&gt;
+X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
 </code></pre>
 <pre><code class="lang-json">{
   &quot;url&quot;: &quot;https://example.com&quot;,
@@ -184,31 +136,20 @@ X-RapidAPI-Proxy-Secret: &lt;secret&gt;
 </code></pre>
 <hr>
 <h2 id="terms--policies">Terms &amp; Policies</h2>
-<p>All users of the AI Reader API must strictly adhere to and agree with the following operational policies:</p>
 <ol>
 <li><strong>User Responsibility</strong>: Users are solely responsible for complying with the terms of service, copyright regulations, and relevant laws of the target websites they intend to convert using the AI preprocessing features.</li>
-<li><strong>Service Stability Control</strong>: The operator may limit the request rate or block access for specific accounts to maintain overall service stability and prevent malicious resource exhaustion (Abuse).</li>
-<li><strong>Limitations of Results</strong>: Perfect access and extraction accuracy are not guaranteed for all websites on the internet. Results may fluctuate depending on structural changes or security policies of the target sites.</li>
-<li><strong>Use and Ownership of Outputs</strong>: The service merely acts as a mechanical proxy for web data preprocessing and format conversion. The user bears all legal responsibility for the commercial use of the processed outputs and their application in pipelines (e.g., LLM, RAG).</li>
+<li><strong>Service Stability</strong>: Request limits may be applied to maintain service stability and prevent abuse.</li>
+<li><strong>Result Limitations</strong>: Perfect access and extraction accuracy are not guaranteed for every website. Results may change when target sites update their structure or access policies.</li>
+<li><strong>Use and Ownership of Outputs</strong>: The service performs web data preprocessing and format conversion for caller-supplied URLs. The user bears all legal responsibility for the commercial use of the processed outputs and their application in pipelines (e.g., LLM, RAG).</li>
 </ol>
 <hr>
 <h2 id="local-development">Local Development</h2>
-<pre><code class="lang-bash"># 1. Clone the repository
-git clone https://github.com/OngsooLabs/OngsooLabs.Api.git
-
-# 2. Run locally
-cd src/Services/Scraper/OngsooLabs.Scraper.WebApi
-dotnet run
-</code></pre>
-<p>In the Development environment, you can access the Swagger UI at <code>http://localhost:&lt;port&gt;/swagger</code>.</p>
-<hr>
-<h2 id="license">License</h2>
-<p><a href="LICENSE">MIT</a></p>
+<p>Source development requires the .NET 10 SDK. Docker is used for containerized local and deployment environments.</p>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/OngsooLabs/OngsooLabs.Api/blob/main/README.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/OngsooLabs/ongsoolabs.github.io/issues" class="edit-link">Report a documentation issue</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

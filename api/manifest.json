@@ -1,17 +1,7 @@
 {
-  "source_base_path": "/home/runner/work/OngsooLabs.Api/OngsooLabs.Api",
+  "source_base_path": "",
   "xrefmap": "xrefmap.yml",
   "files": [
-    {
-      "type": "Conceptual",
-      "source_relative_path": "PROJECT_GUIDELINE.md",
-      "output": {
-        ".html": {
-          "relative_path": "PROJECT_GUIDELINE.html"
-        }
-      },
-      "version": ""
-    },
     {
       "type": "Conceptual",
       "source_relative_path": "README.md",

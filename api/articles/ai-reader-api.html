@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/OngsooLabs.Api/blob/main/articles/ai-reader-api.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/ongsoolabs.github.io/issues">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -83,37 +83,26 @@
         <article data-uid="">
 <h1 id="ai-reader-api">AI Reader API</h1>
 
-<p><strong>AI Reader API</strong> is an AI preprocessing service that transforms web pages into an optimal format ready for immediate use by Large Language Models (LLMs).</p>
-<p>👉 <strong><a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">Available on RapidAPI</a></strong></p>
+<p><strong>AI Reader API</strong> converts web pages into clean Markdown and metadata for LLM, RAG, search, and summarization workflows.</p>
+<p><strong><a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">Available on RapidAPI</a></strong></p>
 <hr>
-<h2 id="core-value--pipeline">Core Value &amp; Pipeline</h2>
-<pre><code class="lang-mermaid">graph LR
-A[Web Page] --&gt; B[Content Extraction]
-B --&gt; C[Boilerplate Removal]
-C --&gt; D[Markdown Conversion]
-D --&gt; E[Metadata Analysis]
-E --&gt; F[Token Estimation]
-F --&gt; G[AI Ready Output]
+<h2 id="how-it-works">How It Works</h2>
+<pre><code>Web page -&gt; Content extraction -&gt; Boilerplate removal -&gt; Markdown conversion -&gt; Metadata analysis -&gt; AI-ready output
 </code></pre>
-<h3 id="key-features">Key Features</h3>
+<h2 id="key-features">Key Features</h2>
 <ul>
-<li><strong>Markdown Conversion</strong>: Strips away styling and unnecessary elements from web pages, converting them into pure markdown.</li>
-<li><strong>Content &amp; Title Extraction</strong>: Filters out noise to extract the core text and title of actual articles or products.</li>
-<li><strong>Language &amp; Metric Analysis</strong>: Supports language detection, word count, and token count calculations for the target page.</li>
-<li><strong>Embedding Cost Estimation</strong>: Estimates embedding costs based on the size of the extracted text.</li>
-<li><strong>Reading Time Calculation</strong>: Provides an estimated reading time based on average reading speeds.</li>
+<li><strong>Markdown conversion</strong>: Converts the main page content into Markdown suitable for AI prompts and indexing.</li>
+<li><strong>Content and title extraction</strong>: Filters common navigation, layout, and advertising noise.</li>
+<li><strong>Language and metric analysis</strong>: Returns metadata such as language, word count, token estimate, and reading time where available.</li>
+<li><strong>Output options</strong>: Lets callers choose whether to include optional links, images, tables, and code blocks.</li>
+<li><strong>Reader modes</strong>: Supports content-oriented modes such as <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, and <code>generic</code>.</li>
 </ul>
 <hr>
-<h2 id="system-architecture-v10">System Architecture (v1.0)</h2>
-<ol>
-<li><strong>Browser &amp; Context Pool</strong>: A single Chrome instance runs continuously from server startup. It pools isolated contexts and pages to support ultra-fast rendering.</li>
-<li><strong>Site Rule Engine</strong>: Extraction strategies are separated by domain (e.g., Amazon, MDN) and applied flexibly.</li>
-<li><strong>Proxy Router</strong>: To maximize cost-efficiency and collection success rates, the router filter escalates sequentially from <code>No Proxy ➡️ Datacenter Proxy ➡️ Residential Proxy</code>.</li>
-<li><strong>Reader Mode &amp; Output Options</strong>: Supports modes like <code>article</code> and <code>product</code> depending on the content type. Users can precisely control whether to include images or links in the output.</li>
-</ol>
+<h2 id="authentication">Authentication</h2>
+<p>Public access is handled by <a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">RapidAPI</a>. Use the <code>X-RapidAPI-Key</code> and <code>X-RapidAPI-Host</code> values shown in your RapidAPI dashboard.</p>
+<p>Direct calls to <code>https://api.ongsoolabs.com</code> are reserved for platform and partner integrations unless separately arranged.</p>
 <hr>
 <h2 id="api-endpoints">API Endpoints</h2>
-<h3 id="ai-reader-api-1">AI Reader API</h3>
 <table>
 <thead>
 <tr>
@@ -131,19 +120,20 @@ F --&gt; G[AI Ready Output]
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
 <td style="text-align: left;"><code>/v1/reader</code></td>
-<td style="text-align: left;">Advanced options (cookies, headers, proxy) via JSON body</td>
+<td style="text-align: left;">Advanced options through a JSON body</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
 <td style="text-align: left;"><code>/v1/reader/chunk</code></td>
-<td style="text-align: left;">Text chunking via an independent TextProcessor microservice</td>
+<td style="text-align: left;">Split text into chunks for downstream AI processing</td>
 </tr>
 </tbody>
 </table>
-<h4 id="post-v1reader-request-example">POST <code>/v1/reader</code> Request Example</h4>
+<h3 id="post-v1reader-request-example">POST <code>/v1/reader</code> Request Example</h3>
 <pre><code class="lang-http">POST /v1/reader
 Content-Type: application/json
 X-RapidAPI-Key: &lt;your-rapidapi-key&gt;
+X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
 </code></pre>
 <pre><code class="lang-json">{
   &quot;url&quot;: &quot;https://example.com&quot;,
@@ -159,15 +149,21 @@ X-RapidAPI-Key: &lt;your-rapidapi-key&gt;
   }
 }
 </code></pre>
+<h3 id="recommended-options">Recommended Options</h3>
+<ul>
+<li>Use <code>mode</code> to describe the target page type. Start with <code>article</code> for editorial pages and <code>documentation</code> for developer docs.</li>
+<li>Set <code>images</code> and <code>links</code> to <code>false</code> when you need smaller output for token-sensitive workflows.</li>
+<li>Enable <code>tables</code> and <code>codeBlocks</code> when preserving technical content matters.</li>
+</ul>
 <div class="NOTE">
 <h5>Note</h5>
-<p>This service acts as a pipeline for processing data. The user bears all legal responsibility for the commercial use of the generated outputs. Please comply with the terms of service and copyright regulations of the target websites.</p>
+<p>This service processes pages requested by the caller. Callers are responsible for complying with the terms of service, robots policies, copyright rules, and applicable laws of each target website.</p>
 </div>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/OngsooLabs/OngsooLabs.Api/blob/main/articles/ai-reader-api.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/OngsooLabs/ongsoolabs.github.io/issues" class="edit-link">Report a documentation issue</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

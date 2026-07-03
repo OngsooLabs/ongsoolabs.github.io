@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/OngsooLabs.Api/blob/main/articles/intro.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/ongsoolabs.github.io/issues">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -83,31 +83,29 @@
         <article data-uid="">
 <h1 id="introduction-to-ongsoolabs-api">Introduction to OngsooLabs API</h1>
 
-<p>Welcome to the official documentation for the <strong>OngsooLabs API</strong> ecosystem.</p>
-<p>OngsooLabs API is an enterprise-grade backend platform designed as a comprehensive <strong>Knowledge Ingestion Gateway</strong>. Our architecture isolates distinct backend services—each highly specialized in data extraction, processing, and delivery—to provide robust, scalable solutions for modern AI and enterprise applications.</p>
-<h2 id="our-vision">Our Vision</h2>
-<p>In the rapidly evolving landscape of AI, LLMs, and Retrieval-Augmented Generation (RAG), the quality and structure of data are paramount. Our ultimate vision is to create a centralized <strong>AI Knowledge Platform</strong>.</p>
-<p>We aim to seamlessly gather, understand, structure, optimize, and deliver knowledge from a wide variety of heterogeneous sources—including web pages, PDF/Office documents, GitHub repositories, Notion workspaces, and YouTube transcripts. By providing pristine, AI-ready data pipelines, we empower developers to build smarter, more reliable AI systems without worrying about data preprocessing.</p>
-<h2 id="platform-architecture">Platform Architecture</h2>
-<p>To achieve massive scalability and maintainability, the OngsooLabs API ecosystem is built upon a strict multi-service architecture:</p>
+<p>Welcome to the official documentation for public Ongsoo Labs API services.</p>
+<p>OngsooLabs API focuses on practical data preparation tools for AI applications. The first public service, <strong>AI Reader API</strong>, helps developers turn web pages into clean Markdown and metadata that can be used in LLM, RAG, search, and summarization workflows.</p>
+<h2 id="what-the-platform-provides">What the Platform Provides</h2>
 <ul>
-<li><strong>Isolated Microservices</strong>: Each service is developed in an isolated environment within a monorepo, strictly adhering to Clean Architecture principles (Domain, Infrastructure, WebApi) with zero-dependency core layers.</li>
-<li><strong>Independent Scaling &amp; Deployment</strong>: Services are fully containerized and deployed with their own independent CI/CD pipelines, ensuring that heavy computational tasks (like web rendering) do not bottleneck lightweight data processing requests.</li>
-<li><strong>Shared Platform Services</strong>: Common technical utilities (such as token counting, text chunking, and text slicing) are decoupled into shared containerized platform services. They communicate securely over private internal networks via lightweight HTTP/JSON or gRPC.</li>
+<li><strong>Content extraction</strong>: Identify the main readable content from a target web page.</li>
+<li><strong>Markdown output</strong>: Return a compact format that is easier to pass into AI pipelines.</li>
+<li><strong>Analysis metadata</strong>: Include useful signals such as title, language, word count, token estimate, and reading time where available.</li>
+<li><strong>Output controls</strong>: Let callers choose whether optional items such as links, images, tables, or code blocks should be included.</li>
 </ul>
+<h2 id="public-access">Public Access</h2>
+<p>Public API access is provided through <a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">RapidAPI</a>. Use the API key, host, quota, and pricing information shown in your RapidAPI dashboard.</p>
+<p>Direct requests to <code>https://api.ongsoolabs.com</code> are reserved for platform and partner integrations unless separately arranged.</p>
 <h2 id="available-apis">Available APIs</h2>
-<p>Our platform is continuously expanding. Currently, we offer the following public-facing services:</p>
 <ul>
-<li><strong><a href="ai-reader-api.html">AI Reader API</a></strong>: Our flagship data ingestion service. It acts as an intelligent pipeline that fetches web pages, strips away boilerplate noise, and converts the core content into pure, token-optimized Markdown ready for LLMs.</li>
+<li><strong><a href="ai-reader-api.html">AI Reader API</a></strong>: Fetches a web page, removes common boilerplate, converts the main content to Markdown, and returns analysis metadata for AI workflows.</li>
 </ul>
-<h2 id="looking-forward">Looking Forward</h2>
-<p>As we progress through our strategic product roadmap, you can expect new APIs and features tailored for intelligent caching, automated batch crawling, change detection, and seamless enterprise workspace integrations.</p>
-<p>Explore our specific API documentations from the sidebar to get started, or visit our issue tracker to request new features and integrations.</p>
+<h2 id="usage-responsibility">Usage Responsibility</h2>
+<p>Callers are responsible for complying with the terms of service, robots policies, copyright rules, and applicable laws for each target website they process.</p>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/OngsooLabs/OngsooLabs.Api/blob/main/articles/intro.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/OngsooLabs/ongsoolabs.github.io/issues" class="edit-link">Report a documentation issue</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>
