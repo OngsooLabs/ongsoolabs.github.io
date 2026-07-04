@@ -88,7 +88,7 @@
 <ul>
 <li><strong>Clean Markdown, Text, or JSON</strong>: Choose the output format that fits your workflow.</li>
 <li><strong>Boilerplate Removal</strong>: Filters common page noise such as navigation, scripts, ads, footers, and repeated layout text.</li>
-<li><strong>Metadata &amp; Usage</strong>: Returns available title, author, published date, language, excerpt, lead image, reading metrics, token usage, chunk count, credits, execution metadata, and quality signals.</li>
+<li><strong>Simple Core Response</strong>: Read the extracted content first, then use optional usage, quality, and execution metadata when you need billing, debugging, or RAG pipeline tuning.</li>
 <li><strong>Optional Chunking</strong>: Create overlapping chunks directly from extracted page content or from raw text.</li>
 <li><strong>Site-Aware Extraction Modes</strong>: Tune extraction for <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, or <code>generic</code> content.</li>
 <li><strong>Hybrid Retrieval</strong>: Uses static HTTP retrieval first and dynamic browser rendering when needed.</li>
@@ -130,42 +130,14 @@
     &quot;format&quot;: &quot;markdown&quot;,
     &quot;value&quot;: &quot;# Article Title Example\n\nCleaned article content ready for LLM use...&quot;
   },
-  &quot;metadata&quot;: {
-    &quot;author&quot;: &quot;John Doe&quot;,
-    &quot;published_at&quot;: &quot;2026-06-30&quot;,
-    &quot;language&quot;: &quot;en&quot;,
-    &quot;word_count&quot;: 559,
-    &quot;reading_time_minutes&quot;: 3
-  },
   &quot;usage&quot;: {
     &quot;characters&quot;: 3200,
     &quot;tokens&quot;: 726,
     &quot;chunks&quot;: 0,
     &quot;credits&quot;: 1
   },
-  &quot;quality&quot;: {
-    &quot;version&quot;: &quot;qv0&quot;,
-    &quot;score&quot;: null,
-    &quot;grade&quot;: null,
-    &quot;confidence&quot;: &quot;medium&quot;,
-    &quot;signals&quot;: {
-      &quot;contentLength&quot;: 3200,
-      &quot;markdownLength&quot;: 3200,
-      &quot;headingCount&quot;: 4,
-      &quot;linkDensity&quot;: 0.02,
-      &quot;boilerplateRatio&quot;: null,
-      &quot;duplicateParagraphRatio&quot;: 0,
-      &quot;codeBlockCount&quot;: 0,
-      &quot;tableCount&quot;: 0,
-      &quot;imageCount&quot;: 0,
-      &quot;languageDetected&quot;: &quot;en&quot;,
-      &quot;htmlToMarkdownRatio&quot;: 0.42,
-      &quot;mainContentExtractionRatio&quot;: 0.42
-    },
-    &quot;warnings&quot;: []
-  },
   &quot;execution&quot;: {
-    &quot;profile&quot;: &quot;article&quot;,
+    &quot;profile&quot;: &quot;fast&quot;,
     &quot;usedBrowser&quot;: false,
     &quot;cache&quot;: &quot;miss&quot;,
     &quot;retryCount&quot;: 0,
@@ -173,6 +145,23 @@
   }
 }
 </code></pre>
+<p>This example is shortened to show the fields most integrations use first. Full responses also include <code>metadata</code>, <code>quality</code>, and optionally <code>chunks</code>.</p>
+<h3 id="how-to-read-the-response">How to Read the Response</h3>
+<p>Most users only need these fields:</p>
+<ul>
+<li><code>content.value</code>: The extracted Markdown or plain text when <code>output_format</code> is <code>markdown</code> or <code>text</code>.</li>
+<li><code>content.article</code>: The structured article object when <code>output_format</code> is <code>json</code>.</li>
+<li><code>usage.credits</code>: Credits charged for the request.</li>
+<li><code>status</code>: <code>success</code> or <code>failed</code>.</li>
+</ul>
+<p>Use these fields when you need more control:</p>
+<ul>
+<li><code>metadata</code>: Page title, language, word count, reading time, and available article metadata.</li>
+<li><code>usage</code>: Character count, token estimate, chunk count, and credit usage.</li>
+<li><code>quality</code>: v0 extraction signals for debugging and pipeline tuning. <code>score</code> and <code>grade</code> are intentionally <code>null</code> in v0.</li>
+<li><code>execution</code>: Runtime details such as cache status, browser usage, retry count, and duration.</li>
+<li><code>chunks</code>: Optional overlapping chunks when <code>enable_chunking</code> is <code>true</code>.</li>
+</ul>
 <hr>
 <h2 id="1-get-v1reader">1. GET <code>/v1/reader</code></h2>
 <p>Convert and analyze a target webpage using query parameters. This is convenient for simple integrations, browser testing, and quick API calls.</p>
@@ -240,7 +229,8 @@
 <li><strong>output.images</strong> (boolean): Include image markdown. Default: <code>false</code>.</li>
 <li><strong>output.links</strong> (boolean): Include hyperlinks. Default: <code>false</code>.</li>
 </ul>
-<h3 id="markdown-response-example">Markdown Response Example</h3>
+<h3 id="full-markdown-response-example">Full Markdown Response Example</h3>
+<p>The reader always returns a stable envelope. If you only need the extracted content, start with <code>content.value</code> and <code>usage.credits</code>; the remaining fields are advanced metadata for observability and tuning.</p>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
   &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
@@ -287,12 +277,12 @@
       &quot;imageCount&quot;: 0,
       &quot;languageDetected&quot;: &quot;en&quot;,
       &quot;htmlToMarkdownRatio&quot;: 0.42,
-      &quot;mainContentExtractionRatio&quot;: 0.42
+      &quot;mainContentExtractionRatio&quot;: null
     },
     &quot;warnings&quot;: []
   },
   &quot;execution&quot;: {
-    &quot;profile&quot;: &quot;article&quot;,
+    &quot;profile&quot;: &quot;fast&quot;,
     &quot;usedBrowser&quot;: false,
     &quot;cache&quot;: &quot;miss&quot;,
     &quot;retryCount&quot;: 0,
@@ -301,7 +291,7 @@
 }
 </code></pre>
 <h3 id="structured-json-response-example">Structured JSON Response Example</h3>
-<p>When <code>output_format</code> is <code>json</code>, the response keeps the same <code>content</code> wrapper and fills <code>content.article</code> instead of <code>content.value</code>.</p>
+<p>When <code>output_format</code> is <code>json</code>, the response keeps the same <code>content</code> wrapper and fills <code>content.article</code> instead of <code>content.value</code>. Most JSON integrations can read <code>content.article.title</code> and <code>content.article.body</code> first, then ignore the advanced metadata unless needed.</p>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
   &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
@@ -345,12 +335,12 @@
       &quot;imageCount&quot;: 0,
       &quot;languageDetected&quot;: &quot;en&quot;,
       &quot;htmlToMarkdownRatio&quot;: 0.42,
-      &quot;mainContentExtractionRatio&quot;: 0.42
+      &quot;mainContentExtractionRatio&quot;: null
     },
     &quot;warnings&quot;: []
   },
   &quot;execution&quot;: {
-    &quot;profile&quot;: &quot;article&quot;,
+    &quot;profile&quot;: &quot;fast&quot;,
     &quot;usedBrowser&quot;: false,
     &quot;cache&quot;: &quot;miss&quot;,
     &quot;retryCount&quot;: 0,
@@ -359,7 +349,7 @@
 }
 </code></pre>
 <h3 id="chunking-response-example">Chunking Response Example</h3>
-<p>When <code>enable_chunking</code> is <code>true</code>, the reader response includes <code>chunks</code>.</p>
+<p>When <code>enable_chunking</code> is <code>true</code>, the reader response includes <code>chunks</code>. Use this when you want ready-to-index segments for embeddings or retrieval.</p>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
   &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
@@ -399,12 +389,12 @@
       &quot;imageCount&quot;: 0,
       &quot;languageDetected&quot;: &quot;en&quot;,
       &quot;htmlToMarkdownRatio&quot;: 0.42,
-      &quot;mainContentExtractionRatio&quot;: 0.42
+      &quot;mainContentExtractionRatio&quot;: null
     },
     &quot;warnings&quot;: []
   },
   &quot;execution&quot;: {
-    &quot;profile&quot;: &quot;article&quot;,
+    &quot;profile&quot;: &quot;fast&quot;,
     &quot;usedBrowser&quot;: false,
     &quot;cache&quot;: &quot;miss&quot;,
     &quot;retryCount&quot;: 0,
@@ -551,7 +541,7 @@
     &quot;credits&quot;: 0
   },
   &quot;execution&quot;: {
-    &quot;profile&quot;: &quot;article&quot;,
+    &quot;profile&quot;: &quot;fast&quot;,
     &quot;usedBrowser&quot;: false,
     &quot;cache&quot;: &quot;miss&quot;,
     &quot;retryCount&quot;: 0,
