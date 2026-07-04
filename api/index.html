@@ -70,15 +70,16 @@
 <h1 id="ongsoolabs-api-documentation">OngsooLabs API Documentation</h1>
 
 <p>Official developer documentation for public Ongsoo Labs API services.</p>
-<p>This site is the documentation hub for the OngsooLabs API platform. It lists available public APIs, links to service-specific guides, and provides support and release channels for developers.</p>
+<p>This site is the documentation hub for the OngsooLabs API platform. It lists available public APIs, links to service-specific guides, productization notes, and release channels for developers.</p>
 <h2 id="available-services">Available Services</h2>
 <ul>
-<li><a href="articles/ai-reader-api.html">AI Reader API</a>: Extracts the main content from a web page, removes boilerplate, converts the result to Markdown, and returns analysis metadata for AI workflows. Public access is available through <a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">RapidAPI</a>.</li>
+<li><a href="articles/ai-reader-api.html">AI Reader API</a>: Extracts the main content from a web page, removes boilerplate, returns Markdown, text, or structured JSON, and includes usage, quality, and execution metadata for AI workflows. Public access is available through <a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">RapidAPI</a>.</li>
 </ul>
 <h2 id="documentation">Documentation</h2>
 <ul>
 <li><a href="articles/intro.html">Introduction</a>: Platform overview and public API access model</li>
-<li><a href="articles/ai-reader-api.html">AI Reader API</a>: Endpoints, authentication, request examples, and usage notes</li>
+<li><a href="articles/ai-reader-api.html">AI Reader API</a>: Endpoints, authentication, request examples, response contract, and usage notes</li>
+<li><a href="docs/phase1-5-milestone1-api-contract-lock.html">Phase 1.5 Milestone 1 API Contract Lock</a>: Standard <code>/v1/reader</code> success and error response contract</li>
 </ul>
 <h2 id="support-and-changes">Support and Changes</h2>
 <ul>
@@ -86,7 +87,7 @@
 <li><a href="https://github.com/OngsooLabs/ongsoolabs.github.io/releases">Changelog &amp; Releases</a>: Published documentation and service update notes</li>
 </ul>
 <h2 id="local-development">Local Development</h2>
-<p>Source development requires the .NET 10 SDK. Docker is used for containerized local and deployment environments.</p>
+<p>Source development requires the .NET 10 SDK. For local reader development, run TextProcessor and Scraper together so token counting uses the local TextProcessor service instead of fallback approximation.</p>
 
 </article>
 

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>OngsooLabs AI Reader API 프로젝트 마스터 플랜 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="OngsooLabs AI Reader API 프로젝트 마스터 플랜 ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="ongsoolabs-ai-reader-api-프로젝트-마스터-플랜">OngsooLabs AI Reader API 프로젝트 마스터 플랜</h1>
+
+<p><strong>프로젝트:</strong> OngsooLabs AI Reader API<br>
+<strong>문서 경로:</strong> <code>docs/project-progress-master-plan.md</code><br>
+<strong>최종 업데이트:</strong> 2026-07-05<br>
+<strong>현재 상태:</strong> Phase 1 완료, Phase 1.5 Milestone 1 구현 및 검증 완료</p>
+<p>이 문서는 AI Reader API의 제품 방향, 구현 완료된 마일스톤, 남은 Phase 1.5 작업, Phase 2 진입 조건을 관리하는 기준 문서입니다.</p>
+<h2 id="현재-구현-요약">현재 구현 요약</h2>
+<p>Phase 1.5 Milestone 1, API Contract Lock은 <code>GET /v1/reader</code>와 <code>POST /v1/reader</code>에 대해 구현 완료되었습니다.</p>
+<p>구현 완료 항목:</p>
+<ul>
+<li>버전이 포함된 성공 응답 envelope.</li>
+<li>버전이 포함된 에러 응답 envelope.</li>
+<li><code>schemaVersion = 2026-07-01</code>, <code>apiVersion = v1</code>, <code>quality.version = qv0</code>.</li>
+<li>Reader 계약 버전 상수 중앙화.</li>
+<li><code>value</code>와 <code>article</code>이 상호 배타적인 <code>ReaderContent</code> wrapper.</li>
+<li>강타입 <code>QualitySignals</code>.</li>
+<li>표준 reader error code.</li>
+<li>실패 응답에서 <code>characters</code>, <code>tokens</code>, <code>chunks</code>, <code>credits</code>를 모두 0으로 반환하는 fast-fail usage 처리.</li>
+<li>응답 레벨의 <code>usage</code>, <code>quality</code>, <code>execution</code> metadata.</li>
+<li><code>execution.profile</code>은 실행 전략으로 분리: <code>fast</code> 또는 <code>standard</code>.</li>
+<li><code>contentType</code>은 추출 모드로 분리: <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, <code>generic</code>.</li>
+<li>캐시 응답 재사용 시 캐시 원본 객체를 변이하지 않도록 수정.</li>
+<li>RapidAPI 문서와 DocFX 문서 갱신.</li>
+<li><code>tests/Services/Scraper/OngsooLabs.Scraper.WebApi.Tests</code>에 계약 테스트 추가.</li>
+<li>로컬 개발 환경에서 Scraper가 TextProcessor를 <code>http://localhost:5176</code>으로 호출하도록 기본값 정리.</li>
+</ul>
+<p>알려진 후속 작업:</p>
+<ul>
+<li><code>POST /v1/reader/chunk</code>는 아직 기존 응답/에러 형식을 유지합니다.</li>
+<li>Browser fallback 차등 credit 정책은 아직 구현하지 않았습니다.</li>
+<li>Benchmark dataset과 Markdown regression test는 아직 구현하지 않았습니다.</li>
+<li>외부 telemetry sink/dashboard는 아직 구현하지 않았습니다.</li>
+</ul>
+<h2 id="제품-방향">제품 방향</h2>
+<p>AI Reader API는 OngsooLabs API 플랫폼의 첫 번째 제품입니다. 역할은 공개 웹 페이지를 LLM, RAG, 검색, 요약, 지식 수집 워크플로에 바로 사용할 수 있는 AI-ready content로 변환하는 것입니다.</p>
+<p>제품이 우선해야 할 기준:</p>
+<ul>
+<li>안정적인 공개 API 계약.</li>
+<li>설명 가능한 실패 응답.</li>
+<li>비용과 실행 과정의 가시성.</li>
+<li>반복 가능한 품질 검증.</li>
+<li>사용자가 요청한 공개 URL에 대한 안전한 처리.</li>
+</ul>
+<p>장기 확장 후보:</p>
+<ul>
+<li>AI Utilities API.</li>
+<li>Sitemap Watchdog API.</li>
+<li>AI Extraction API.</li>
+<li>Batch, crawl, async job API.</li>
+<li>Enterprise workspace와 scheduled ingestion 기능.</li>
+</ul>
+<h2 id="공개-api-계약">공개 API 계약</h2>
+<p>공개 endpoint:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/v1/reader</code></td>
+<td>v1 계약 구현 완료</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/v1/reader</code></td>
+<td>v1 계약 구현 완료</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/v1/reader/chunk</code></td>
+<td>기존 계약 유지, 추후 정렬 예정</td>
+</tr>
+</tbody>
+</table>
+<p>Endpoint 정책:</p>
+<ul>
+<li><code>/v1/reader</code>를 canonical public endpoint로 유지합니다.</li>
+<li><code>/v1/read</code> alias는 Milestone 1 범위에 포함하지 않습니다.</li>
+<li>공개 문서는 <code>/v1/reader</code> 기준으로 통일합니다.</li>
+</ul>
+<h2 id="reader-성공-응답">Reader 성공 응답</h2>
+<p><code>GET /v1/reader</code>와 <code>POST /v1/reader</code>는 표준 성공 envelope를 반환합니다.</p>
+<pre><code class="lang-json">{
+  &quot;id&quot;: &quot;read_xxx&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
+  &quot;url&quot;: &quot;https://example.com/article&quot;,
+  &quot;finalUrl&quot;: &quot;https://example.com/article&quot;,
+  &quot;status&quot;: &quot;success&quot;,
+  &quot;contentType&quot;: &quot;article&quot;,
+  &quot;title&quot;: &quot;Example Article&quot;,
+  &quot;description&quot;: &quot;Example description&quot;,
+  &quot;language&quot;: &quot;en&quot;,
+  &quot;content&quot;: {
+    &quot;format&quot;: &quot;markdown&quot;,
+    &quot;value&quot;: &quot;# Example Article\n\n...&quot;
+  },
+  &quot;metadata&quot;: {},
+  &quot;usage&quot;: {
+    &quot;characters&quot;: 16842,
+    &quot;tokens&quot;: 4210,
+    &quot;chunks&quot;: 5,
+    &quot;credits&quot;: 1
+  },
+  &quot;quality&quot;: {
+    &quot;version&quot;: &quot;qv0&quot;,
+    &quot;score&quot;: null,
+    &quot;grade&quot;: null,
+    &quot;confidence&quot;: &quot;medium&quot;,
+    &quot;signals&quot;: {
+      &quot;contentLength&quot;: 16842,
+      &quot;markdownLength&quot;: 16842,
+      &quot;headingCount&quot;: 14,
+      &quot;linkDensity&quot;: 0.08,
+      &quot;boilerplateRatio&quot;: null,
+      &quot;duplicateParagraphRatio&quot;: 0.03,
+      &quot;codeBlockCount&quot;: 5,
+      &quot;tableCount&quot;: 2,
+      &quot;imageCount&quot;: 0,
+      &quot;languageDetected&quot;: &quot;en&quot;,
+      &quot;htmlToMarkdownRatio&quot;: 0.42,
+      &quot;mainContentExtractionRatio&quot;: null
+    },
+    &quot;warnings&quot;: []
+  },
+  &quot;execution&quot;: {
+    &quot;profile&quot;: &quot;fast&quot;,
+    &quot;usedBrowser&quot;: false,
+    &quot;cache&quot;: &quot;miss&quot;,
+    &quot;retryCount&quot;: 0,
+    &quot;durationMs&quot;: 842
+  },
+  &quot;chunks&quot;: []
+}
+</code></pre>
+<p>Content 규칙:</p>
+<ul>
+<li><code>markdown</code>과 <code>text</code>는 <code>content.value</code>를 사용합니다.</li>
+<li><code>json</code>은 <code>content.article</code>을 사용합니다.</li>
+<li><code>content.value</code>와 <code>content.article</code>은 동시에 채워질 수 없습니다.</li>
+</ul>
+<h2 id="reader-실패-응답">Reader 실패 응답</h2>
+<p>Reader 실패는 표준 error envelope를 반환합니다.</p>
+<pre><code class="lang-json">{
+  &quot;id&quot;: &quot;read_xxx&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
+  &quot;url&quot;: &quot;http://127.0.0.1&quot;,
+  &quot;status&quot;: &quot;failed&quot;,
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;UNSAFE_URL&quot;,
+    &quot;message&quot;: &quot;The provided URL is unsafe or targets internal network assets.&quot;,
+    &quot;retryable&quot;: false,
+    &quot;recommendedProfile&quot;: &quot;&quot;,
+    &quot;userActionable&quot;: true
+  },
+  &quot;usage&quot;: {
+    &quot;characters&quot;: 0,
+    &quot;tokens&quot;: 0,
+    &quot;chunks&quot;: 0,
+    &quot;credits&quot;: 0
+  },
+  &quot;execution&quot;: {
+    &quot;profile&quot;: &quot;fast&quot;,
+    &quot;usedBrowser&quot;: false,
+    &quot;cache&quot;: &quot;miss&quot;,
+    &quot;retryCount&quot;: 0,
+    &quot;durationMs&quot;: 9
+  }
+}
+</code></pre>
+<p>구현된 error code:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th style="text-align: right;">HTTP status</th>
+<th>Retryable</th>
+<th style="text-align: right;">Credit policy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INVALID_URL</code></td>
+<td style="text-align: right;">400</td>
+<td>false</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>INVALID_REQUEST</code></td>
+<td style="text-align: right;">400</td>
+<td>false</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>UNSAFE_URL</code></td>
+<td style="text-align: right;">403</td>
+<td>false</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>RENDER_REQUIRED</code></td>
+<td style="text-align: right;">422</td>
+<td>true</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>BLOCKED_BY_SITE</code></td>
+<td style="text-align: right;">422</td>
+<td>false</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>FETCH_FAILED</code></td>
+<td style="text-align: right;">502</td>
+<td>true</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>INTERNAL_ERROR</code></td>
+<td style="text-align: right;">500</td>
+<td>true</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p>추후 확장할 error code:</p>
+<ul>
+<li><code>TIMEOUT</code></li>
+<li><code>CONTENT_TOO_SHORT</code></li>
+<li><code>UNSUPPORTED_CONTENT_TYPE</code></li>
+<li><code>RATE_LIMITED</code></li>
+<li><code>CACHE_ERROR</code></li>
+</ul>
+<h2 id="phase-roadmap">Phase Roadmap</h2>
+<h3 id="phase-1-product-excellence">Phase 1. Product Excellence</h3>
+<p><strong>상태:</strong> 완료.</p>
+<p>완료 항목:</p>
+<ul>
+<li>Web page to Markdown/text/JSON 변환.</li>
+<li>Metadata 추출.</li>
+<li>Token estimate와 fallback.</li>
+<li>Chunking endpoint.</li>
+<li>Output controls.</li>
+<li>Static retrieval.</li>
+<li>Browser fallback.</li>
+<li>Site-aware extraction mode.</li>
+<li>Basic cache.</li>
+<li>RapidAPI 문서 초안.</li>
+</ul>
+<h3 id="phase-15-productization-and-benchmark-lock">Phase 1.5. Productization and Benchmark Lock</h3>
+<p><strong>상태:</strong> 진행 중.</p>
+<p>Milestone 1 완료 항목:</p>
+<ul>
+<li><code>/v1/reader</code> 성공 응답 계약.</li>
+<li><code>/v1/reader</code> 실패 응답 계약.</li>
+<li>Version fields.</li>
+<li>표준 reader error code.</li>
+<li>Usage metadata.</li>
+<li>Quality signals v0.</li>
+<li>Execution metadata.</li>
+<li>RapidAPI 및 DocFX 응답 문서.</li>
+<li>Contract tests.</li>
+<li>로컬 개발 환경 정리.</li>
+</ul>
+<p>남은 Phase 1.5 작업:</p>
+<ul>
+<li>Benchmark seed dataset 30개 URL.</li>
+<li>Benchmark lock dataset 100개 URL.</li>
+<li>Markdown regression test 자동화.</li>
+<li>외부 telemetry sink/dashboard.</li>
+<li>Browser fallback rate와 cache hit ratio 집계 지표.</li>
+<li>Developer Sandbox credit policy.</li>
+<li>Error Code Guide.</li>
+<li>Quality Guide.</li>
+<li>Pricing and Credit Guide.</li>
+<li>Legal and Operational Policy 초안.</li>
+<li><code>/v1/reader/chunk</code> 표준 error envelope 정렬.</li>
+</ul>
+<h3 id="phase-2-ai-understanding">Phase 2. AI Understanding</h3>
+<p><strong>상태:</strong> Phase 1.5 benchmark와 regression gate 대기.</p>
+<p>예정 항목:</p>
+<ul>
+<li>Content type detection.</li>
+<li>Advanced quality score.</li>
+<li>Metadata expansion.</li>
+<li>Document support.</li>
+<li>Extraction profiles.</li>
+</ul>
+<h3 id="phase-3-ai-data-acquisition-platform">Phase 3. AI Data Acquisition Platform</h3>
+<p>예정 항목:</p>
+<ul>
+<li><code>POST /v1/batch</code>.</li>
+<li><code>POST /v1/crawl</code>.</li>
+<li>Async jobs.</li>
+<li>Structured extraction.</li>
+<li>Firecrawl-compatible layer.</li>
+</ul>
+<h3 id="phase-4-enterprise-platform">Phase 4. Enterprise Platform</h3>
+<p>예정 항목:</p>
+<ul>
+<li>Scheduled crawling.</li>
+<li>Webhooks.</li>
+<li>Change detection.</li>
+<li>Snapshot history.</li>
+<li>Organization workspace.</li>
+<li>Multi-source connectors.</li>
+</ul>
+<h3 id="phase-5-ai-knowledge-platform">Phase 5. AI Knowledge Platform</h3>
+<p>예정 항목:</p>
+<ul>
+<li>AI 시스템을 위한 knowledge asset의 acquire, understand, structure, optimize, deliver 흐름 완성.</li>
+</ul>
+<h2 id="progress-dashboard">Progress Dashboard</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th style="text-align: right;">Completion</th>
+<th>Risk</th>
+<th>Next Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core Reader Functionality</td>
+<td style="text-align: right;">100%</td>
+<td>Low</td>
+<td>Regression test로 유지</td>
+</tr>
+<tr>
+<td>Public API Contract</td>
+<td style="text-align: right;">100%</td>
+<td>Low</td>
+<td>DTO test와 문서 동시 유지</td>
+</tr>
+<tr>
+<td>Error Handling</td>
+<td style="text-align: right;">85%</td>
+<td>Medium</td>
+<td><code>/v1/reader/chunk</code>와 platform-level error 정렬</td>
+</tr>
+<tr>
+<td>Telemetry</td>
+<td style="text-align: right;">70%</td>
+<td>Medium</td>
+<td>외부 sink/dashboard 추가</td>
+</tr>
+<tr>
+<td>Quality Measurement</td>
+<td style="text-align: right;">60%</td>
+<td>Medium</td>
+<td>placeholder ratio 산식 추가</td>
+</tr>
+<tr>
+<td>Benchmark Regression</td>
+<td style="text-align: right;">0%</td>
+<td>High</td>
+<td>Seed 30 URL dataset 작성</td>
+</tr>
+<tr>
+<td>Pricing Defense</td>
+<td style="text-align: right;">20%</td>
+<td>Medium</td>
+<td>Credit policy와 Developer Sandbox 확정</td>
+</tr>
+<tr>
+<td>Documentation</td>
+<td style="text-align: right;">75%</td>
+<td>Medium</td>
+<td>Error/Quality/Pricing guide 추가</td>
+</tr>
+<tr>
+<td>Legal/Operational Policy</td>
+<td style="text-align: right;">20%</td>
+<td>Medium</td>
+<td>Cache/privacy/copyright policy 초안 작성</td>
+</tr>
+<tr>
+<td>Phase 2 Readiness</td>
+<td style="text-align: right;">25%</td>
+<td>High</td>
+<td>Benchmark와 regression gate 완료</td>
+</tr>
+</tbody>
+</table>
+<h2 id="phase-15-milestone-plan">Phase 1.5 Milestone Plan</h2>
+<h3 id="milestone-1-api-contract-lock">Milestone 1. API Contract Lock</h3>
+<p><strong>상태:</strong> 2026-07-05 완료.</p>
+<p>완료 항목:</p>
+<ul>
+<li>기존 response model 조사.</li>
+<li>Success response schema 확정.</li>
+<li>Error response schema 확정.</li>
+<li>Version fields 추가.</li>
+<li>API docs response 예시 업데이트.</li>
+<li>Local smoke test 완료.</li>
+<li>Automated contract test 추가.</li>
+</ul>
+<p>완료 기준:</p>
+<ul>
+<li>문서와 실제 <code>/v1/reader</code> 응답이 일치합니다.</li>
+</ul>
+<h3 id="milestone-2-failure-telemetry-and-policy">Milestone 2. Failure, Telemetry, and Policy</h3>
+<p>다음 작업:</p>
+<ul>
+<li><code>/v1/reader/chunk</code> error 정렬.</li>
+<li>Platform-level error code 추가.</li>
+<li>Aggregate telemetry sink/dashboard 추가.</li>
+<li>Browser/cache/retry 운영 지표 정의.</li>
+<li>Error Code Guide 초안.</li>
+<li>Quality Guide 초안.</li>
+</ul>
+<h3 id="milestone-3-benchmark-and-quality">Milestone 3. Benchmark and Quality</h3>
+<p>다음 작업:</p>
+<ul>
+<li>Benchmark dataset schema 작성.</li>
+<li>Seed 30 URL 수집.</li>
+<li>mustContain/mustNotContain annotation 추가.</li>
+<li>Markdown regression test runner 추가.</li>
+<li>Benchmark set을 100 URL로 확장.</li>
+</ul>
+<h3 id="milestone-4-pricing-and-launch-docs">Milestone 4. Pricing and Launch Docs</h3>
+<p>다음 작업:</p>
+<ul>
+<li>Credit model 확정.</li>
+<li>Developer Sandbox 100 credits/month policy 정의.</li>
+<li>Pricing and Credit Guide 초안.</li>
+<li>Legal and Operational Policy 초안.</li>
+<li>Launch-ready Quick Start와 API Reference 준비.</li>
+</ul>
+<h2 id="phase-2-entry-gate">Phase 2 Entry Gate</h2>
+<p>Phase 2는 아래 안정성 및 regression gate를 충족한 뒤 시작합니다.</p>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Required</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/v1/reader</code> success schema locked</td>
+<td>yes</td>
+<td>Completed</td>
+</tr>
+<tr>
+<td><code>/v1/reader</code> error schema locked</td>
+<td>yes</td>
+<td>Completed</td>
+</tr>
+<tr>
+<td>Version fields applied</td>
+<td>yes</td>
+<td>Completed</td>
+</tr>
+<tr>
+<td>Standard reader error codes applied</td>
+<td>yes</td>
+<td>Completed</td>
+</tr>
+<tr>
+<td>Response-level execution telemetry collected</td>
+<td>yes</td>
+<td>Completed</td>
+</tr>
+<tr>
+<td>Quality signals v0 returned</td>
+<td>yes</td>
+<td>Completed</td>
+</tr>
+<tr>
+<td>Quick Start/API reference updated for response contract</td>
+<td>yes</td>
+<td>Completed</td>
+</tr>
+<tr>
+<td>Benchmark URL 100+ secured</td>
+<td>yes</td>
+<td>Not started</td>
+</tr>
+<tr>
+<td>Markdown regression test automated</td>
+<td>yes</td>
+<td>Not started</td>
+</tr>
+<tr>
+<td>Browser fallback rate measurable in aggregate</td>
+<td>yes</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Cache hit ratio measurable in aggregate</td>
+<td>yes</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Developer Sandbox 100 credits/month</td>
+<td>yes</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Error Code Guide written</td>
+<td>yes</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Pricing and Credit Guide written</td>
+<td>yes</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Legal and Operational Policy draft</td>
+<td>yes</td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<p>Phase 2 준비 상태는 기능 존재 여부만이 아니라, 새 기능이 기존 추출 품질을 망가뜨릴 때 감지할 수 있는지로 판단합니다.</p>
+<h2 id="risk-register">Risk Register</h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API response와 문서 불일치</td>
+<td>고객 연동 실패</td>
+<td>Contract test와 RapidAPI 문서를 같이 갱신</td>
+</tr>
+<tr>
+<td>Browser fallback 비용 증가</td>
+<td>Margin 압박 및 로컬 리소스 불안정</td>
+<td>Credit policy, cache metric, profile control</td>
+</tr>
+<tr>
+<td>Benchmark dataset 부재</td>
+<td>품질 regression 감지 실패</td>
+<td>Seed 30 URL 즉시 작성</td>
+</tr>
+<tr>
+<td>Quality score 과신</td>
+<td>고객 신뢰 리스크</td>
+<td>qv0에서는 score/grade null 유지, signals/warnings 중심 공개</td>
+</tr>
+<tr>
+<td>Chunk endpoint 포맷 불일치</td>
+<td>Client 혼란</td>
+<td>Milestone 2에서 정렬</td>
+</tr>
+<tr>
+<td>Legal/operational policy 미비</td>
+<td>운영 및 compliance 리스크</td>
+<td>Cache, privacy, robots, copyright policy 초안 작성</td>
+</tr>
+</tbody>
+</table>
+<h2 id="recommended-next-actions">Recommended Next Actions</h2>
+<ol>
+<li>Benchmark seed dataset 30개 URL 작성.</li>
+<li>Markdown regression test runner 추가.</li>
+<li><code>/v1/reader/chunk</code> error envelope 정렬.</li>
+<li>Aggregate telemetry sink/dashboard 추가.</li>
+<li>Error Code Guide 초안 작성.</li>
+<li>Quality Guide 초안 작성.</li>
+<li>Pricing and Credit Guide 초안 작성.</li>
+<li>Legal and Operational Policy 초안 작성.</li>
+</ol>
+<h2 id="verification-commands">Verification Commands</h2>
+<pre><code class="lang-powershell">dotnet build C:\Project\OngsooLabs.Api\OngsooLabs.Api.slnx
+dotnet test C:\Project\OngsooLabs.Api\OngsooLabs.Api.slnx
+docfx C:\Project\OngsooLabs.Api\docfx.json
+</code></pre>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

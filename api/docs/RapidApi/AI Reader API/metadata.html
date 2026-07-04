@@ -11,7 +11,7 @@
       <link rel="stylesheet" href="../../../public/docfx.min.css">
       <link rel="stylesheet" href="../../../public/main.css">
       <meta name="docfx:navrel" content="../../../toc.html">
-      <meta name="docfx:tocrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
       
       
       
@@ -59,9 +59,23 @@
     </header>
 
     <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
 
       <div class="content">
         <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
 
           <nav id="breadcrumb"></nav>
         </div>
@@ -72,15 +86,18 @@
 <h2 id="short-description">Short Description</h2>
 <p>Convert public webpages into clean, LLM-ready Markdown, text, or structured JSON for RAG, AI agents, and knowledge-base ingestion.</p>
 <h2 id="long-description">Long Description</h2>
-<p>AI Reader API turns messy public webpages into clean content your AI applications can use immediately. It extracts the meaningful page body, removes common layout noise, estimates token usage and embedding cost, and can optionally split content into overlapping chunks for vector search and retrieval workflows.</p>
-<p>Use it to power AI agents, RAG pipelines, web-content ingestion jobs, automated summarizers, documentation indexers, and knowledge-base builders without building your own scraper, boilerplate cleaner, tokenizer estimator, and chunking layer.</p>
+<p>AI Reader API turns messy public webpages into clean content your AI applications can use immediately. It extracts the meaningful page body, removes common layout noise, returns usage, quality, and execution metadata, and can optionally split content into overlapping chunks for vector search and retrieval workflows.</p>
+<p>Use it to power AI agents, RAG pipelines, web-content ingestion jobs, automated summarizers, documentation indexers, and knowledge-base builders without building your own scraper, boilerplate cleaner, response contract, tokenizer estimator, and chunking layer.</p>
 <h3 id="key-capabilities">Key Capabilities</h3>
 <ul>
 <li><strong>Webpage to LLM-Ready Content</strong>: Convert public URLs into clean Markdown, plain text, or structured JSON.</li>
 <li><strong>Boilerplate Removal</strong>: Filter common navigation, ads, scripts, footers, sidebars, and repeated layout text.</li>
 <li><strong>RAG-Friendly Chunking</strong>: Split extracted page content or raw text into overlapping chunks for embedding workflows.</li>
-<li><strong>Token &amp; Cost Estimates</strong>: Estimate token usage and embedding cost before sending content into downstream AI systems.</li>
-<li><strong>Metadata Extraction</strong>: Return available title, author, published date, language, excerpt, lead image, word count, reading time, token count, and estimated embedding cost.</li>
+<li><strong>Usage Metadata</strong>: Return character count, token estimate, chunk count, and credit usage.</li>
+<li><strong>Quality Metadata</strong>: Return v0 quality signals, confidence, and warnings without overclaiming a final quality score.</li>
+<li><strong>Execution Metadata</strong>: Return execution profile, browser usage, cache status, retry count, and duration.</li>
+<li><strong>Metadata Extraction</strong>: Return available title, author, published date, language, excerpt, lead image, word count, and reading time.</li>
+<li><strong>Standard Errors</strong>: Return stable error codes with retryability, recommended profile, and user-actionable guidance.</li>
 <li><strong>Flexible Extraction Modes</strong>: Tune output for <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, or <code>generic</code> pages.</li>
 <li><strong>Hybrid Retrieval</strong>: Start with fast static retrieval and use dynamic rendering when needed.</li>
 </ul>

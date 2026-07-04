@@ -69,17 +69,18 @@
         <article data-uid="">
 <h1 id="ai-reader-api">AI Reader API</h1>
 
-<p><strong>AI Reader API</strong> is a public Ongsoo Labs service for converting web pages into clean Markdown and metadata for AI workflows.</p>
+<p><strong>AI Reader API</strong> is a public Ongsoo Labs service for converting web pages into clean Markdown, text, or structured JSON with usage, quality, and execution metadata for AI workflows.</p>
 <p>Public access is available through <a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">RapidAPI</a>. Direct calls to <code>https://api.ongsoolabs.com</code> are reserved for platform and partner integrations unless separately arranged.</p>
 <hr>
 <h2 id="overview">Overview</h2>
-<pre><code>Web page -&gt; Content extraction -&gt; Boilerplate removal -&gt; Markdown conversion -&gt; Metadata analysis -&gt; AI-ready output
+<pre><code class="lang-text">Web page -&gt; Content extraction -&gt; Boilerplate removal -&gt; Markdown/text/JSON output -&gt; Usage, quality, and execution metadata
 </code></pre>
 <h2 id="key-features">Key Features</h2>
 <ul>
-<li><strong>Markdown conversion</strong>: Converts the main page content into Markdown suitable for AI prompts and indexing.</li>
+<li><strong>AI-ready content</strong>: Converts the main page content into Markdown, text, or structured JSON suitable for AI prompts and indexing.</li>
 <li><strong>Content and title extraction</strong>: Filters common navigation, layout, and advertising noise.</li>
-<li><strong>Language and metric analysis</strong>: Returns metadata such as language, word count, token estimate, and reading time where available.</li>
+<li><strong>Contracted metadata</strong>: Returns usage, quality, and execution metadata for cost, confidence, and runtime visibility.</li>
+<li><strong>Standard errors</strong>: Returns stable error codes for invalid, unsafe, blocked, or failed reads.</li>
 <li><strong>Output options</strong>: Lets callers choose whether to include optional links, images, tables, and code blocks.</li>
 <li><strong>Reader modes</strong>: Supports content-oriented modes such as <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, and <code>generic</code>.</li>
 </ul>
@@ -122,6 +123,7 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
 </code></pre>
 <pre><code class="lang-json">{
   &quot;url&quot;: &quot;https://example.com&quot;,
+  &quot;output_format&quot;: &quot;markdown&quot;,
   &quot;mode&quot;: &quot;article&quot;,
   &quot;tokenizer&quot;: &quot;openai&quot;,
   &quot;output&quot;: {
@@ -134,17 +136,75 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
   }
 }
 </code></pre>
+<h2 id="response-contract">Response Contract</h2>
+<p><code>GET /v1/reader</code> and <code>POST /v1/reader</code> use the Phase 1.5 v1 response contract.</p>
+<pre><code class="lang-json">{
+  &quot;id&quot;: &quot;read_abc123&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
+  &quot;url&quot;: &quot;https://example.com&quot;,
+  &quot;finalUrl&quot;: &quot;https://example.com&quot;,
+  &quot;status&quot;: &quot;success&quot;,
+  &quot;contentType&quot;: &quot;article&quot;,
+  &quot;title&quot;: &quot;Example Domain&quot;,
+  &quot;language&quot;: &quot;en&quot;,
+  &quot;content&quot;: {
+    &quot;format&quot;: &quot;markdown&quot;,
+    &quot;value&quot;: &quot;# Example Domain\n\nClean content...&quot;
+  },
+  &quot;usage&quot;: {
+    &quot;characters&quot;: 147,
+    &quot;tokens&quot;: 28,
+    &quot;chunks&quot;: 0,
+    &quot;credits&quot;: 1
+  },
+  &quot;quality&quot;: {
+    &quot;version&quot;: &quot;qv0&quot;,
+    &quot;score&quot;: null,
+    &quot;grade&quot;: null,
+    &quot;confidence&quot;: &quot;medium&quot;,
+    &quot;signals&quot;: {
+      &quot;contentLength&quot;: 147,
+      &quot;markdownLength&quot;: 147,
+      &quot;headingCount&quot;: 1,
+      &quot;linkDensity&quot;: 0,
+      &quot;boilerplateRatio&quot;: null,
+      &quot;duplicateParagraphRatio&quot;: 0,
+      &quot;codeBlockCount&quot;: 0,
+      &quot;tableCount&quot;: 0,
+      &quot;imageCount&quot;: 0,
+      &quot;languageDetected&quot;: &quot;en&quot;,
+      &quot;htmlToMarkdownRatio&quot;: 0.263,
+      &quot;mainContentExtractionRatio&quot;: null
+    },
+    &quot;warnings&quot;: []
+  },
+  &quot;execution&quot;: {
+    &quot;profile&quot;: &quot;fast&quot;,
+    &quot;usedBrowser&quot;: false,
+    &quot;cache&quot;: &quot;miss&quot;,
+    &quot;retryCount&quot;: 0,
+    &quot;durationMs&quot;: 842
+  }
+}
+</code></pre>
+<p>Failures use the same versioned envelope with <code>status = failed</code>, an <code>error</code> object, zero usage, and stable error codes such as <code>INVALID_URL</code>, <code>INVALID_REQUEST</code>, and <code>UNSAFE_URL</code>.</p>
+<hr>
+<h2 id="local-development">Local Development</h2>
+<p>Source development requires the .NET 10 SDK. Docker is used for containerized local and deployment environments.</p>
+<p>For local reader development, run TextProcessor and Scraper together:</p>
+<pre><code class="lang-powershell">dotnet run --project C:\Project\OngsooLabs.Api\src\Services\TextProcessor\OngsooLabs.TextProcessor.WebApi\OngsooLabs.TextProcessor.WebApi.csproj --launch-profile http
+dotnet run --project C:\Project\OngsooLabs.Api\src\Services\Scraper\OngsooLabs.Scraper.WebApi\OngsooLabs.Scraper.WebApi.csproj --launch-profile http
+</code></pre>
+<p>In Development, Scraper uses <code>TEXT_PROCESSOR_URL = http://localhost:5176</code> from <code>appsettings.Development.json</code>.</p>
 <hr>
 <h2 id="terms-and-policies">Terms and Policies</h2>
 <ol>
 <li><strong>User Responsibility</strong>: Users are solely responsible for complying with the terms of service, copyright regulations, and relevant laws of the target websites they intend to convert using the AI preprocessing features.</li>
 <li><strong>Service Stability</strong>: Request limits may be applied to maintain service stability and prevent abuse.</li>
 <li><strong>Result Limitations</strong>: Perfect access and extraction accuracy are not guaranteed for every website. Results may change when target sites update their structure or access policies.</li>
-<li><strong>Use and Ownership of Outputs</strong>: The service performs web data preprocessing and format conversion for caller-supplied URLs. The user bears all legal responsibility for the commercial use of the processed outputs and their application in pipelines (e.g., LLM, RAG).</li>
+<li><strong>Use and Ownership of Outputs</strong>: The service performs web data preprocessing and format conversion for caller-supplied URLs. The user bears all legal responsibility for the commercial use of the processed outputs and their application in pipelines.</li>
 </ol>
-<hr>
-<h2 id="local-development">Local Development</h2>
-<p>Source development requires the .NET 10 SDK. Docker is used for containerized local and deployment environments.</p>
 
 </article>
 

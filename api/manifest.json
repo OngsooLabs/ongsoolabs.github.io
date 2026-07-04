@@ -67,6 +67,49 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "docs/phase1-5-milestone1-api-contract-lock.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/phase1-5-milestone1-api-contract-lock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/phase1-5-productization-report.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/phase1-5-productization-report.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/project-progress-master-plan.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/project-progress-master-plan.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {

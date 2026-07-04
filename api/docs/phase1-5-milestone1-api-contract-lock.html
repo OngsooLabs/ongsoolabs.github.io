@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>AI Reader API </title>
+      <title>Phase 1.5 Milestone 1: API Contract Lock </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="AI Reader API ">
+      <meta name="title" content="Phase 1.5 Milestone 1: API Contract Lock ">
       
       
       <link rel="icon" href="../favicon.ico">
@@ -81,78 +81,38 @@
         </div>
 
         <article data-uid="">
-<h1 id="ai-reader-api">AI Reader API</h1>
+<h1 id="phase-15-milestone-1-api-contract-lock">Phase 1.5 Milestone 1: API Contract Lock</h1>
 
-<p><strong>AI Reader API</strong> converts web pages into clean Markdown, text, or structured JSON with metadata for LLM, RAG, search, and summarization workflows.</p>
-<p><strong><a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">Available on RapidAPI</a></strong></p>
-<hr>
-<h2 id="how-it-works">How It Works</h2>
-<pre><code class="lang-text">Web page -&gt; Content extraction -&gt; Boilerplate removal -&gt; Markdown/text/JSON output -&gt; Usage, quality, and execution metadata
-</code></pre>
-<h2 id="key-features">Key Features</h2>
+<p>Milestone 1 locks the public <code>/v1/reader</code> response contract for AI Reader API v1. This milestone is an intentional breaking change from the earlier <code>success/content/metadata</code> shape.</p>
+<h2 id="status">Status</h2>
+<p>Implemented and locally verified.</p>
 <ul>
-<li><strong>AI-ready content</strong>: Converts the main page content into Markdown, text, or structured JSON suitable for AI prompts and indexing.</li>
-<li><strong>Content and title extraction</strong>: Filters common navigation, layout, and advertising noise.</li>
-<li><strong>Contracted metadata</strong>: Returns <code>usage</code>, <code>quality</code>, and <code>execution</code> blocks for cost, confidence, and runtime visibility.</li>
-<li><strong>Standard errors</strong>: Returns stable error codes such as <code>INVALID_URL</code>, <code>UNSAFE_URL</code>, and <code>INVALID_REQUEST</code>.</li>
-<li><strong>Output options</strong>: Lets callers choose whether to include optional links, images, tables, and code blocks.</li>
-<li><strong>Reader modes</strong>: Supports content-oriented modes such as <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, and <code>generic</code>.</li>
+<li><code>GET /v1/reader</code> and <code>POST /v1/reader</code> now use the standard success and error envelopes.</li>
+<li><code>schemaVersion</code>, <code>apiVersion</code>, and <code>quality.version</code> are centralized in domain constants.</li>
+<li>Reader failures now return structured error responses with stable error codes.</li>
+<li><code>/v1/reader/chunk</code> remains on its legacy response shape and is planned for later alignment.</li>
 </ul>
-<hr>
-<h2 id="authentication">Authentication</h2>
-<p>Public access is handled by <a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">RapidAPI</a>. Use the <code>X-RapidAPI-Key</code> and <code>X-RapidAPI-Host</code> values shown in your RapidAPI dashboard.</p>
-<p>Direct calls to <code>https://api.ongsoolabs.com</code> are reserved for platform and partner integrations unless separately arranged.</p>
-<hr>
-<h2 id="api-endpoints">API Endpoints</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Method</th>
-<th style="text-align: left;">Path</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><code>GET</code></td>
-<td style="text-align: left;"><code>/v1/reader</code></td>
-<td style="text-align: left;">Text conversion and analysis using URL parameters</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>POST</code></td>
-<td style="text-align: left;"><code>/v1/reader</code></td>
-<td style="text-align: left;">Advanced options through a JSON body</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>POST</code></td>
-<td style="text-align: left;"><code>/v1/reader/chunk</code></td>
-<td style="text-align: left;">Split text into chunks for downstream AI processing</td>
-</tr>
-</tbody>
-</table>
-<h3 id="post-v1reader-request-example">POST <code>/v1/reader</code> Request Example</h3>
-<pre><code class="lang-http">POST /v1/reader
-Content-Type: application/json
-X-RapidAPI-Key: &lt;your-rapidapi-key&gt;
-X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
-</code></pre>
-<pre><code class="lang-json">{
-  &quot;url&quot;: &quot;https://example.com&quot;,
-  &quot;output_format&quot;: &quot;markdown&quot;,
-  &quot;mode&quot;: &quot;article&quot;,
-  &quot;tokenizer&quot;: &quot;openai&quot;,
-  &quot;output&quot;: {
-    &quot;content&quot;: true,
-    &quot;metadata&quot;: true,
-    &quot;tables&quot;: true,
-    &quot;codeBlocks&quot;: true,
-    &quot;images&quot;: false,
-    &quot;links&quot;: false
-  }
-}
-</code></pre>
-<h2 id="response-contract">Response Contract</h2>
-<p><code>GET /v1/reader</code> and <code>POST /v1/reader</code> use a standardized v1 response envelope.</p>
+<h2 id="success-response-shape">Success Response Shape</h2>
+<p>All successful reader responses include:</p>
+<ul>
+<li><code>id</code></li>
+<li><code>schemaVersion</code></li>
+<li><code>apiVersion</code></li>
+<li><code>url</code></li>
+<li><code>finalUrl</code></li>
+<li><code>status</code></li>
+<li><code>contentType</code></li>
+<li><code>title</code></li>
+<li><code>description</code></li>
+<li><code>language</code></li>
+<li><code>content</code></li>
+<li><code>metadata</code></li>
+<li><code>usage</code></li>
+<li><code>quality</code></li>
+<li><code>execution</code></li>
+<li><code>chunks</code>, when chunking is enabled</li>
+</ul>
+<p>Example:</p>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
   &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
@@ -166,6 +126,11 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
   &quot;content&quot;: {
     &quot;format&quot;: &quot;markdown&quot;,
     &quot;value&quot;: &quot;# Example Domain\n\nClean content...&quot;
+  },
+  &quot;metadata&quot;: {
+    &quot;language&quot;: &quot;en&quot;,
+    &quot;word_count&quot;: 22,
+    &quot;reading_time_minutes&quot;: 1
   },
   &quot;usage&quot;: {
     &quot;characters&quot;: 147,
@@ -203,9 +168,36 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
   }
 }
 </code></pre>
-<p>When <code>output_format</code> is <code>json</code>, the response uses <code>content.article</code> instead of <code>content.value</code>.</p>
-<h2 id="error-contract">Error Contract</h2>
-<p>Reader failures use the same versioned envelope and never charge credits.</p>
+<h2 id="content-contract">Content Contract</h2>
+<p><code>content</code> is a discriminated object.</p>
+<ul>
+<li><code>markdown</code> and <code>text</code> outputs use <code>content.value</code>.</li>
+<li><code>json</code> output uses <code>content.article</code>.</li>
+<li><code>value</code> and <code>article</code> are mutually exclusive.</li>
+</ul>
+<pre><code class="lang-json">{
+  &quot;content&quot;: {
+    &quot;format&quot;: &quot;json&quot;,
+    &quot;article&quot;: {
+      &quot;title&quot;: &quot;Example Domain&quot;,
+      &quot;body&quot;: &quot;Clean body text...&quot;
+    }
+  }
+}
+</code></pre>
+<h2 id="error-response-shape">Error Response Shape</h2>
+<p>All reader failures return:</p>
+<ul>
+<li><code>id</code></li>
+<li><code>schemaVersion</code></li>
+<li><code>apiVersion</code></li>
+<li><code>url</code></li>
+<li><code>status = failed</code></li>
+<li><code>error</code></li>
+<li><code>usage</code></li>
+<li><code>execution</code></li>
+</ul>
+<p>Example:</p>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
   &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
@@ -234,20 +226,82 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
   }
 }
 </code></pre>
-<h2 id="recommended-options">Recommended Options</h2>
+<h2 id="error-codes">Error Codes</h2>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th style="text-align: right;">HTTP status</th>
+<th>Retryable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INVALID_URL</code></td>
+<td style="text-align: right;">400</td>
+<td>false</td>
+</tr>
+<tr>
+<td><code>INVALID_REQUEST</code></td>
+<td style="text-align: right;">400</td>
+<td>false</td>
+</tr>
+<tr>
+<td><code>UNSAFE_URL</code></td>
+<td style="text-align: right;">403</td>
+<td>false</td>
+</tr>
+<tr>
+<td><code>RENDER_REQUIRED</code></td>
+<td style="text-align: right;">422</td>
+<td>true</td>
+</tr>
+<tr>
+<td><code>BLOCKED_BY_SITE</code></td>
+<td style="text-align: right;">422</td>
+<td>false</td>
+</tr>
+<tr>
+<td><code>FETCH_FAILED</code></td>
+<td style="text-align: right;">502</td>
+<td>true</td>
+</tr>
+<tr>
+<td><code>INTERNAL_ERROR</code></td>
+<td style="text-align: right;">500</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+<h2 id="execution-metadata">Execution Metadata</h2>
+<p><code>execution.profile</code> describes the execution strategy, not the content mode.</p>
 <ul>
-<li>Use <code>mode</code> to describe the target page type. Start with <code>article</code> for editorial pages and <code>documentation</code> for developer docs.</li>
-<li>Set <code>images</code> and <code>links</code> to <code>false</code> when you need smaller output for token-sensitive workflows.</li>
-<li>Enable <code>tables</code> and <code>codeBlocks</code> when preserving technical content matters.</li>
+<li><code>fast</code>: static HTTP retrieval path.</li>
+<li><code>standard</code>: browser rendering or forced dynamic path.</li>
 </ul>
-<div class="IMPORTANT">
-<h5>Important</h5>
-<p><code>/v1/reader/chunk</code> currently keeps its original array response and legacy error shape. The standardized reader envelope applies to <code>GET /v1/reader</code> and <code>POST /v1/reader</code>.</p>
-</div>
-<div class="NOTE">
-<h5>Note</h5>
-<p>This service processes pages requested by the caller. Callers are responsible for complying with the terms of service, robots policies, copyright rules, and applicable laws of each target website.</p>
-</div>
+<p><code>contentType</code> continues to describe the extraction/content mode, such as <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, or <code>generic</code>.</p>
+<h2 id="local-development-notes">Local Development Notes</h2>
+<p>For local development, run TextProcessor and Scraper together if accurate token counts are required.</p>
+<pre><code class="lang-powershell">dotnet run --project C:\Project\OngsooLabs.Api\src\Services\TextProcessor\OngsooLabs.TextProcessor.WebApi\OngsooLabs.TextProcessor.WebApi.csproj --launch-profile http
+</code></pre>
+<pre><code class="lang-powershell">dotnet run --project C:\Project\OngsooLabs.Api\src\Services\Scraper\OngsooLabs.Scraper.WebApi\OngsooLabs.Scraper.WebApi.csproj --launch-profile http
+</code></pre>
+<p>In Development, Scraper uses <code>TEXT_PROCESSOR_URL = http://localhost:5176</code> from <code>appsettings.Development.json</code>.</p>
+<p>Development also skips AWS Secrets Manager loading by default. Set <code>ONGSOOLABS_LOAD_AWS_SECRETS=true</code> to opt in.</p>
+<h2 id="verification">Verification</h2>
+<p>Automated verification:</p>
+<pre><code class="lang-powershell">dotnet build C:\Project\OngsooLabs.Api\OngsooLabs.Api.slnx
+dotnet test C:\Project\OngsooLabs.Api\OngsooLabs.Api.slnx
+</code></pre>
+<p>Local smoke checks:</p>
+<pre><code class="lang-powershell">curl.exe -X POST &quot;http://localhost:5243/v1/reader&quot; `
+  -H &quot;Content-Type: application/json&quot; `
+  --% -d &quot;{\&quot;url\&quot;:\&quot;https://example.com\&quot;,\&quot;output_format\&quot;:\&quot;markdown\&quot;,\&quot;mode\&quot;:\&quot;article\&quot;,\&quot;enable_chunking\&quot;:false}&quot;
+</code></pre>
+<pre><code class="lang-powershell">curl.exe &quot;http://localhost:5243/v1/reader&quot;
+curl.exe &quot;http://localhost:5243/v1/reader?url=http://127.0.0.1&quot;
+curl.exe &quot;http://localhost:5243/v1/reader?url=https://example.com&amp;output_format=bad&quot;
+</code></pre>
 
 </article>
 

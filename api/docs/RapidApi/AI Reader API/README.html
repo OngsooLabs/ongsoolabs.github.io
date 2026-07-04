@@ -11,7 +11,7 @@
       <link rel="stylesheet" href="../../../public/docfx.min.css">
       <link rel="stylesheet" href="../../../public/main.css">
       <meta name="docfx:navrel" content="../../../toc.html">
-      <meta name="docfx:tocrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
       
       
       
@@ -59,9 +59,23 @@
     </header>
 
     <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
 
       <div class="content">
         <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
 
           <nav id="breadcrumb"></nav>
         </div>
@@ -88,7 +102,7 @@
 <ul>
 <li><strong>Clean Markdown, Text, or JSON</strong>: Choose the output format that fits your workflow.</li>
 <li><strong>Boilerplate Removal</strong>: Filters common page noise such as navigation, scripts, ads, footers, and repeated layout text.</li>
-<li><strong>Metadata &amp; Metrics</strong>: Returns available title, author, published date, language, excerpt, lead image, word count, reading time, token count, and estimated embedding cost.</li>
+<li><strong>Metadata &amp; Usage</strong>: Returns available title, author, published date, language, excerpt, lead image, reading metrics, token usage, chunk count, credits, execution metadata, and quality signals.</li>
 <li><strong>Optional Chunking</strong>: Create overlapping chunks directly from extracted page content or from raw text.</li>
 <li><strong>Site-Aware Extraction Modes</strong>: Tune extraction for <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, or <code>generic</code> content.</li>
 <li><strong>Hybrid Retrieval</strong>: Uses static HTTP retrieval first and dynamic browser rendering when needed.</li>
@@ -116,18 +130,60 @@
 </code></pre>
 <h3 id="example-response">Example Response</h3>
 <pre><code class="lang-json">{
-  &quot;success&quot;: true,
+  &quot;id&quot;: &quot;read_abc123&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;https://example.com/article-url&quot;,
+  &quot;finalUrl&quot;: &quot;https://example.com/article-url&quot;,
+  &quot;status&quot;: &quot;success&quot;,
+  &quot;contentType&quot;: &quot;article&quot;,
   &quot;title&quot;: &quot;Article Title Example&quot;,
-  &quot;content&quot;: &quot;# Article Title Example\n\nCleaned article content ready for LLM use...&quot;,
+  &quot;description&quot;: &quot;Short page description...&quot;,
+  &quot;language&quot;: &quot;en&quot;,
+  &quot;content&quot;: {
+    &quot;format&quot;: &quot;markdown&quot;,
+    &quot;value&quot;: &quot;# Article Title Example\n\nCleaned article content ready for LLM use...&quot;
+  },
   &quot;metadata&quot;: {
     &quot;author&quot;: &quot;John Doe&quot;,
     &quot;published_at&quot;: &quot;2026-06-30&quot;,
     &quot;language&quot;: &quot;en&quot;,
     &quot;word_count&quot;: 559,
-    &quot;reading_time_minutes&quot;: 3,
-    &quot;token_count&quot;: 726,
-    &quot;estimated_embedding_cost_usd&quot;: 0.00001452
+    &quot;reading_time_minutes&quot;: 3
+  },
+  &quot;usage&quot;: {
+    &quot;characters&quot;: 3200,
+    &quot;tokens&quot;: 726,
+    &quot;chunks&quot;: 0,
+    &quot;credits&quot;: 1
+  },
+  &quot;quality&quot;: {
+    &quot;version&quot;: &quot;qv0&quot;,
+    &quot;score&quot;: null,
+    &quot;grade&quot;: null,
+    &quot;confidence&quot;: &quot;medium&quot;,
+    &quot;signals&quot;: {
+      &quot;contentLength&quot;: 3200,
+      &quot;markdownLength&quot;: 3200,
+      &quot;headingCount&quot;: 4,
+      &quot;linkDensity&quot;: 0.02,
+      &quot;boilerplateRatio&quot;: null,
+      &quot;duplicateParagraphRatio&quot;: 0,
+      &quot;codeBlockCount&quot;: 0,
+      &quot;tableCount&quot;: 0,
+      &quot;imageCount&quot;: 0,
+      &quot;languageDetected&quot;: &quot;en&quot;,
+      &quot;htmlToMarkdownRatio&quot;: 0.42,
+      &quot;mainContentExtractionRatio&quot;: 0.42
+    },
+    &quot;warnings&quot;: []
+  },
+  &quot;execution&quot;: {
+    &quot;profile&quot;: &quot;article&quot;,
+    &quot;usedBrowser&quot;: false,
+    &quot;cache&quot;: &quot;miss&quot;,
+    &quot;retryCount&quot;: 0,
+    &quot;durationMs&quot;: 842
   }
 }
 </code></pre>
@@ -200,10 +256,19 @@
 </ul>
 <h3 id="markdown-response-example">Markdown Response Example</h3>
 <pre><code class="lang-json">{
-  &quot;success&quot;: true,
+  &quot;id&quot;: &quot;read_abc123&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;https://example.com/article-url&quot;,
+  &quot;finalUrl&quot;: &quot;https://example.com/article-url&quot;,
+  &quot;status&quot;: &quot;success&quot;,
+  &quot;contentType&quot;: &quot;article&quot;,
   &quot;title&quot;: &quot;Article Title Example&quot;,
-  &quot;content&quot;: &quot;# Headline\n\nThis is the cleaned main article content in markdown format...&quot;,
+  &quot;language&quot;: &quot;en&quot;,
+  &quot;content&quot;: {
+    &quot;format&quot;: &quot;markdown&quot;,
+    &quot;value&quot;: &quot;# Headline\n\nThis is the cleaned main article content in markdown format...&quot;
+  },
   &quot;metadata&quot;: {
     &quot;author&quot;: &quot;John Doe&quot;,
     &quot;published_at&quot;: &quot;2026-06-30&quot;,
@@ -211,40 +276,153 @@
     &quot;excerpt&quot;: &quot;Short page description...&quot;,
     &quot;lead_image_url&quot;: &quot;https://example.com/image.jpg&quot;,
     &quot;word_count&quot;: 559,
-    &quot;reading_time_minutes&quot;: 3,
-    &quot;token_count&quot;: 726,
-    &quot;estimated_embedding_cost_usd&quot;: 0.00001452
+    &quot;reading_time_minutes&quot;: 3
+  },
+  &quot;usage&quot;: {
+    &quot;characters&quot;: 3200,
+    &quot;tokens&quot;: 726,
+    &quot;chunks&quot;: 0,
+    &quot;credits&quot;: 1
+  },
+  &quot;quality&quot;: {
+    &quot;version&quot;: &quot;qv0&quot;,
+    &quot;score&quot;: null,
+    &quot;grade&quot;: null,
+    &quot;confidence&quot;: &quot;medium&quot;,
+    &quot;signals&quot;: {
+      &quot;contentLength&quot;: 3200,
+      &quot;markdownLength&quot;: 3200,
+      &quot;headingCount&quot;: 4,
+      &quot;linkDensity&quot;: 0.02,
+      &quot;boilerplateRatio&quot;: null,
+      &quot;duplicateParagraphRatio&quot;: 0,
+      &quot;codeBlockCount&quot;: 0,
+      &quot;tableCount&quot;: 0,
+      &quot;imageCount&quot;: 0,
+      &quot;languageDetected&quot;: &quot;en&quot;,
+      &quot;htmlToMarkdownRatio&quot;: 0.42,
+      &quot;mainContentExtractionRatio&quot;: 0.42
+    },
+    &quot;warnings&quot;: []
+  },
+  &quot;execution&quot;: {
+    &quot;profile&quot;: &quot;article&quot;,
+    &quot;usedBrowser&quot;: false,
+    &quot;cache&quot;: &quot;miss&quot;,
+    &quot;retryCount&quot;: 0,
+    &quot;durationMs&quot;: 842
   }
 }
 </code></pre>
 <h3 id="structured-json-response-example">Structured JSON Response Example</h3>
-<p>When <code>output_format</code> is <code>json</code>, the response uses <code>article</code> instead of <code>content</code>.</p>
+<p>When <code>output_format</code> is <code>json</code>, the response keeps the same <code>content</code> wrapper and fills <code>content.article</code> instead of <code>content.value</code>.</p>
 <pre><code class="lang-json">{
-  &quot;success&quot;: true,
+  &quot;id&quot;: &quot;read_abc123&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;https://example.com/article-url&quot;,
+  &quot;finalUrl&quot;: &quot;https://example.com/article-url&quot;,
+  &quot;status&quot;: &quot;success&quot;,
+  &quot;contentType&quot;: &quot;article&quot;,
   &quot;title&quot;: &quot;Article Title Example&quot;,
-  &quot;article&quot;: {
-    &quot;title&quot;: &quot;Article Title Example&quot;,
-    &quot;body&quot;: &quot;This is the cleaned main article body...&quot;
+  &quot;content&quot;: {
+    &quot;format&quot;: &quot;json&quot;,
+    &quot;article&quot;: {
+      &quot;title&quot;: &quot;Article Title Example&quot;,
+      &quot;body&quot;: &quot;This is the cleaned main article body...&quot;
+    }
   },
   &quot;metadata&quot;: {
     &quot;word_count&quot;: 559,
-    &quot;reading_time_minutes&quot;: 3,
-    &quot;token_count&quot;: 726,
-    &quot;estimated_embedding_cost_usd&quot;: 0.00001452
+    &quot;reading_time_minutes&quot;: 3
+  },
+  &quot;usage&quot;: {
+    &quot;characters&quot;: 3200,
+    &quot;tokens&quot;: 726,
+    &quot;chunks&quot;: 0,
+    &quot;credits&quot;: 1
+  },
+  &quot;quality&quot;: {
+    &quot;version&quot;: &quot;qv0&quot;,
+    &quot;score&quot;: null,
+    &quot;grade&quot;: null,
+    &quot;confidence&quot;: &quot;medium&quot;,
+    &quot;signals&quot;: {
+      &quot;contentLength&quot;: 3200,
+      &quot;markdownLength&quot;: 3200,
+      &quot;headingCount&quot;: 0,
+      &quot;linkDensity&quot;: null,
+      &quot;boilerplateRatio&quot;: null,
+      &quot;duplicateParagraphRatio&quot;: 0,
+      &quot;codeBlockCount&quot;: 0,
+      &quot;tableCount&quot;: 0,
+      &quot;imageCount&quot;: 0,
+      &quot;languageDetected&quot;: &quot;en&quot;,
+      &quot;htmlToMarkdownRatio&quot;: 0.42,
+      &quot;mainContentExtractionRatio&quot;: 0.42
+    },
+    &quot;warnings&quot;: []
+  },
+  &quot;execution&quot;: {
+    &quot;profile&quot;: &quot;article&quot;,
+    &quot;usedBrowser&quot;: false,
+    &quot;cache&quot;: &quot;miss&quot;,
+    &quot;retryCount&quot;: 0,
+    &quot;durationMs&quot;: 842
   }
 }
 </code></pre>
 <h3 id="chunking-response-example">Chunking Response Example</h3>
 <p>When <code>enable_chunking</code> is <code>true</code>, the reader response includes <code>chunks</code>.</p>
 <pre><code class="lang-json">{
-  &quot;success&quot;: true,
+  &quot;id&quot;: &quot;read_abc123&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;https://example.com/article-url&quot;,
+  &quot;finalUrl&quot;: &quot;https://example.com/article-url&quot;,
+  &quot;status&quot;: &quot;success&quot;,
   &quot;title&quot;: &quot;Article Title Example&quot;,
-  &quot;content&quot;: &quot;# Headline\n\nCleaned content...&quot;,
+  &quot;content&quot;: {
+    &quot;format&quot;: &quot;markdown&quot;,
+    &quot;value&quot;: &quot;# Headline\n\nCleaned content...&quot;
+  },
   &quot;metadata&quot;: {
     &quot;word_count&quot;: 559,
-    &quot;token_count&quot;: 726
+    &quot;reading_time_minutes&quot;: 3
+  },
+  &quot;usage&quot;: {
+    &quot;characters&quot;: 3200,
+    &quot;tokens&quot;: 726,
+    &quot;chunks&quot;: 2,
+    &quot;credits&quot;: 1
+  },
+  &quot;quality&quot;: {
+    &quot;version&quot;: &quot;qv0&quot;,
+    &quot;score&quot;: null,
+    &quot;grade&quot;: null,
+    &quot;confidence&quot;: &quot;medium&quot;,
+    &quot;signals&quot;: {
+      &quot;contentLength&quot;: 3200,
+      &quot;markdownLength&quot;: 3200,
+      &quot;headingCount&quot;: 1,
+      &quot;linkDensity&quot;: 0,
+      &quot;boilerplateRatio&quot;: null,
+      &quot;duplicateParagraphRatio&quot;: 0,
+      &quot;codeBlockCount&quot;: 0,
+      &quot;tableCount&quot;: 0,
+      &quot;imageCount&quot;: 0,
+      &quot;languageDetected&quot;: &quot;en&quot;,
+      &quot;htmlToMarkdownRatio&quot;: 0.42,
+      &quot;mainContentExtractionRatio&quot;: 0.42
+    },
+    &quot;warnings&quot;: []
+  },
+  &quot;execution&quot;: {
+    &quot;profile&quot;: &quot;article&quot;,
+    &quot;usedBrowser&quot;: false,
+    &quot;cache&quot;: &quot;miss&quot;,
+    &quot;retryCount&quot;: 0,
+    &quot;durationMs&quot;: 842
   },
   &quot;chunks&quot;: [
     {
@@ -267,6 +445,7 @@
 <hr>
 <h2 id="3-post-v1readerchunk">3. POST <code>/v1/reader/chunk</code></h2>
 <p>Split raw input text into overlapping token or character segments without fetching a webpage. Use this endpoint when you already have text and only need chunk preparation for embeddings or retrieval.</p>
+<p>This endpoint currently keeps its original array response and legacy error shape. The standardized reader success/error envelope applies to <code>GET /v1/reader</code> and <code>POST /v1/reader</code>; chunk endpoint alignment is planned for a later milestone.</p>
 <h3 id="request-example-1">Request Example</h3>
 <pre><code class="lang-json">{
   &quot;text&quot;: &quot;The long raw text content you want to split into overlapping chunks for embedding ingestion...&quot;,
@@ -308,27 +487,89 @@
 <h2 id="error-responses">Error Responses</h2>
 <h3 id="invalid-request">Invalid Request</h3>
 <pre><code class="lang-json">{
-  &quot;success&quot;: false,
-  &quot;message&quot;: &quot;URL is required.&quot;
+  &quot;id&quot;: &quot;read_abc123&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
+  &quot;url&quot;: &quot;&quot;,
+  &quot;status&quot;: &quot;failed&quot;,
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;INVALID_URL&quot;,
+    &quot;message&quot;: &quot;URL is required.&quot;,
+    &quot;retryable&quot;: false,
+    &quot;recommendedProfile&quot;: &quot;&quot;,
+    &quot;userActionable&quot;: true
+  },
+  &quot;usage&quot;: {
+    &quot;characters&quot;: 0,
+    &quot;tokens&quot;: 0,
+    &quot;chunks&quot;: 0,
+    &quot;credits&quot;: 0
+  },
+  &quot;execution&quot;: {
+    &quot;profile&quot;: &quot;standard&quot;,
+    &quot;usedBrowser&quot;: false,
+    &quot;cache&quot;: &quot;miss&quot;,
+    &quot;retryCount&quot;: 0,
+    &quot;durationMs&quot;: 2
+  }
 }
 </code></pre>
 <h3 id="unsupported-option">Unsupported Option</h3>
 <pre><code class="lang-json">{
-  &quot;success&quot;: false,
-  &quot;message&quot;: &quot;Unsupported tokenizer 'custom'. Supported tokenizers are 'openai', 'claude', 'gemini', 'llama'.&quot;
+  &quot;id&quot;: &quot;read_abc123&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
+  &quot;url&quot;: &quot;https://example.com/article-url&quot;,
+  &quot;status&quot;: &quot;failed&quot;,
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;INVALID_REQUEST&quot;,
+    &quot;message&quot;: &quot;Unsupported tokenizer 'custom'. Supported tokenizers are 'openai', 'claude', 'gemini', 'llama'.&quot;,
+    &quot;retryable&quot;: false,
+    &quot;recommendedProfile&quot;: &quot;&quot;,
+    &quot;userActionable&quot;: true
+  },
+  &quot;usage&quot;: {
+    &quot;characters&quot;: 0,
+    &quot;tokens&quot;: 0,
+    &quot;chunks&quot;: 0,
+    &quot;credits&quot;: 0
+  },
+  &quot;execution&quot;: {
+    &quot;profile&quot;: &quot;generic&quot;,
+    &quot;usedBrowser&quot;: false,
+    &quot;cache&quot;: &quot;miss&quot;,
+    &quot;retryCount&quot;: 0,
+    &quot;durationMs&quot;: 2
+  }
 }
 </code></pre>
 <h3 id="fetch-failed-or-blocked">Fetch Failed or Blocked</h3>
-<p>Some pages may block automated retrieval or fail to return usable content. In that case, the reader endpoint can return a normal JSON response with <code>success</code> set to <code>false</code>.</p>
+<p>Some pages may block automated retrieval or fail to return usable content. In that case, the reader endpoint returns a non-2xx response with the standard error body.</p>
 <pre><code class="lang-json">{
-  &quot;success&quot;: false,
+  &quot;id&quot;: &quot;read_abc123&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;https://example.com/protected-page&quot;,
-  &quot;title&quot;: &quot;Access Denied / Blocked / Fetch Failed&quot;,
-  &quot;metadata&quot;: {
-    &quot;word_count&quot;: 0,
-    &quot;reading_time_minutes&quot;: 0,
-    &quot;token_count&quot;: 0,
-    &quot;estimated_embedding_cost_usd&quot;: 0
+  &quot;status&quot;: &quot;failed&quot;,
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;BLOCKED_BY_SITE&quot;,
+    &quot;message&quot;: &quot;The target page blocked automated retrieval or did not return usable content.&quot;,
+    &quot;retryable&quot;: false,
+    &quot;recommendedProfile&quot;: &quot;&quot;,
+    &quot;userActionable&quot;: true
+  },
+  &quot;usage&quot;: {
+    &quot;characters&quot;: 0,
+    &quot;tokens&quot;: 0,
+    &quot;chunks&quot;: 0,
+    &quot;credits&quot;: 0
+  },
+  &quot;execution&quot;: {
+    &quot;profile&quot;: &quot;article&quot;,
+    &quot;usedBrowser&quot;: false,
+    &quot;cache&quot;: &quot;miss&quot;,
+    &quot;retryCount&quot;: 0,
+    &quot;durationMs&quot;: 1200
   }
 }
 </code></pre>
