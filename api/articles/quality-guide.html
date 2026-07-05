@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Quality Guide </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Quality Guide ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="quality-guide">Quality Guide</h1>
+
+<p>AI Reader API returns quality metadata to help clients judge whether extracted content is suitable for LLM, RAG, search, and summarization workflows.</p>
+<h2 id="version">Version</h2>
+<p><code>quality.version = qv0</code> means the quality block is currently signal-based. The API exposes measurable signals, but it does not yet claim a final universal quality score.</p>
+<h2 id="score-and-grade">Score And Grade</h2>
+<p><code>score</code> and <code>grade</code> are currently <code>null</code> by design.</p>
+<p>Extraction quality depends on page type, language, layout, target-site behavior, and downstream use case. Until benchmark and regression gates are mature enough, the API avoids presenting an overconfident numeric score.</p>
+<h2 id="confidence">Confidence</h2>
+<p><code>confidence</code> is a coarse indicator for how usable the extracted content appears. Treat it as a hint, not as a guarantee.</p>
+<h2 id="signals">Signals</h2>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contentLength</code></td>
+<td>Length of the cleaned extracted content.</td>
+</tr>
+<tr>
+<td><code>markdownLength</code></td>
+<td>Length of the Markdown/text output representation.</td>
+</tr>
+<tr>
+<td><code>headingCount</code></td>
+<td>Number of detected headings in the output.</td>
+</tr>
+<tr>
+<td><code>linkDensity</code></td>
+<td>Approximate share of link-heavy content.</td>
+</tr>
+<tr>
+<td><code>boilerplateRatio</code></td>
+<td>Reserved for future boilerplate estimation.</td>
+</tr>
+<tr>
+<td><code>duplicateParagraphRatio</code></td>
+<td>Approximate share of repeated paragraphs.</td>
+</tr>
+<tr>
+<td><code>codeBlockCount</code></td>
+<td>Number of detected fenced code blocks.</td>
+</tr>
+<tr>
+<td><code>tableCount</code></td>
+<td>Number of detected table-like sections.</td>
+</tr>
+<tr>
+<td><code>imageCount</code></td>
+<td>Number of image references included in the output.</td>
+</tr>
+<tr>
+<td><code>languageDetected</code></td>
+<td>Detected or extracted language hint when available.</td>
+</tr>
+<tr>
+<td><code>htmlToMarkdownRatio</code></td>
+<td>Ratio between extracted content length and original HTML length.</td>
+</tr>
+<tr>
+<td><code>mainContentExtractionRatio</code></td>
+<td>Reserved for future main-content extraction measurement.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="recommended-use">Recommended Use</h2>
+<p>For RAG pipelines, use the signals as filters or ranking hints. For example, very short content, high duplicate paragraph ratio, or unusually high link density may indicate that the page needs review or a different extraction mode.</p>
+<p>For summarization, prefer content with enough <code>contentLength</code> and a moderate structure signal such as headings, tables, or code blocks when those elements matter to the target page.</p>
+<h2 id="warnings">Warnings</h2>
+<p>The <code>warnings</code> array is reserved for explicit extraction concerns. Clients should display or record warnings when present, but should not assume that an empty warnings array means perfect extraction.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

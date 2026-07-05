@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Error Code Guide </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Error Code Guide ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="error-code-guide">Error Code Guide</h1>
+
+<p>AI Reader API failures use a stable error envelope with <code>status = failed</code>, zero usage, and an <code>error</code> object that clients can handle consistently.</p>
+<h2 id="error-response-shape">Error Response Shape</h2>
+<pre><code class="lang-json">{
+  &quot;id&quot;: &quot;read_abc123&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
+  &quot;url&quot;: &quot;https://example.com&quot;,
+  &quot;status&quot;: &quot;failed&quot;,
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;INVALID_URL&quot;,
+    &quot;message&quot;: &quot;URL is required.&quot;,
+    &quot;retryable&quot;: false,
+    &quot;recommendedProfile&quot;: &quot;&quot;,
+    &quot;userActionable&quot;: true
+  },
+  &quot;usage&quot;: {
+    &quot;characters&quot;: 0,
+    &quot;tokens&quot;: 0,
+    &quot;chunks&quot;: 0,
+    &quot;credits&quot;: 0
+  },
+  &quot;execution&quot;: {
+    &quot;profile&quot;: &quot;fast&quot;,
+    &quot;usedBrowser&quot;: false,
+    &quot;cache&quot;: &quot;miss&quot;,
+    &quot;retryCount&quot;: 0,
+    &quot;durationMs&quot;: 8
+  }
+}
+</code></pre>
+<h2 id="reader-error-codes">Reader Error Codes</h2>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th style="text-align: right;">HTTP status</th>
+<th>Retryable</th>
+<th>Recommended client action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INVALID_URL</code></td>
+<td style="text-align: right;">400</td>
+<td>No</td>
+<td>Fix the missing or malformed URL before retrying.</td>
+</tr>
+<tr>
+<td><code>INVALID_REQUEST</code></td>
+<td style="text-align: right;">400</td>
+<td>No</td>
+<td>Fix unsupported options, invalid payloads, or invalid parameters.</td>
+</tr>
+<tr>
+<td><code>UNSAFE_URL</code></td>
+<td style="text-align: right;">403</td>
+<td>No</td>
+<td>Use a public URL that does not target local, private, or metadata network ranges.</td>
+</tr>
+<tr>
+<td><code>RENDER_REQUIRED</code></td>
+<td style="text-align: right;">422</td>
+<td>Yes</td>
+<td>Retry with standard/dynamic rendering if available.</td>
+</tr>
+<tr>
+<td><code>BLOCKED_BY_SITE</code></td>
+<td style="text-align: right;">422</td>
+<td>No</td>
+<td>The target site blocked automated retrieval or returned unusable content.</td>
+</tr>
+<tr>
+<td><code>FETCH_FAILED</code></td>
+<td style="text-align: right;">502</td>
+<td>Yes</td>
+<td>Retry later or verify that the target site is reachable.</td>
+</tr>
+<tr>
+<td><code>INTERNAL_ERROR</code></td>
+<td style="text-align: right;">500</td>
+<td>Yes</td>
+<td>Retry later. Contact support if the error persists.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="retry-guidance">Retry Guidance</h2>
+<p>Retry when <code>retryable</code> is <code>true</code>, especially for transient fetch, rendering, or service errors. Use backoff and avoid aggressive repeated requests to the same target domain.</p>
+<p>Do not retry unchanged requests for <code>INVALID_URL</code>, <code>INVALID_REQUEST</code>, or <code>UNSAFE_URL</code>. These require caller-side changes.</p>
+<h2 id="user-actionability">User Actionability</h2>
+<p>When <code>userActionable</code> is <code>true</code>, the caller can usually fix the request or choose a different target URL. When it is <code>false</code>, the failure is more likely to be temporary or service-side.</p>
+<h2 id="chunk-endpoint">Chunk Endpoint</h2>
+<p><code>POST /v1/reader/chunk</code> keeps its successful array response, but failure responses use the same standard error envelope shape.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
