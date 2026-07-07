@@ -88,7 +88,7 @@
 <ul>
 <li><strong>Clean Markdown, Text, or JSON</strong>: Choose the output format that fits your workflow.</li>
 <li><strong>Boilerplate Removal</strong>: Filters common page noise such as navigation, scripts, ads, footers, and repeated layout text.</li>
-<li><strong>Simple Core Response</strong>: Read the extracted content first, then use optional usage, quality, and execution metadata when you need billing, debugging, or RAG pipeline tuning.</li>
+<li><strong>Simple Core Response</strong>: Read the extracted content first, then use optional usage, quality, and execution metadata when you need cost visibility, debugging, or RAG pipeline tuning.</li>
 <li><strong>Optional Chunking</strong>: Create overlapping chunks directly from extracted page content or from raw text.</li>
 <li><strong>Site-Aware Extraction Modes</strong>: Tune extraction for <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, or <code>generic</code> content.</li>
 <li><strong>Hybrid Retrieval</strong>: Uses static HTTP retrieval first and dynamic browser rendering when needed.</li>
@@ -157,7 +157,7 @@
 <p>Use these fields when you need more control:</p>
 <ul>
 <li><code>metadata</code>: Page title, language, word count, reading time, and available article metadata.</li>
-<li><code>usage</code>: Character count, token estimate, chunk count, and credit usage.</li>
+<li><code>usage</code>: Character count, token estimate, chunk count, and response credit metadata.</li>
 <li><code>quality</code>: v0 extraction signals for debugging and pipeline tuning. <code>score</code> and <code>grade</code> are intentionally <code>null</code> in v0.</li>
 <li><code>execution</code>: Runtime details such as cache status, browser usage, retry count, and duration.</li>
 <li><code>chunks</code>: Optional overlapping chunks when <code>enable_chunking</code> is <code>true</code>.</li>
