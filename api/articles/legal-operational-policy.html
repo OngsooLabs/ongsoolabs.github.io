@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Legal and Operational Policy </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Legal and Operational Policy ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="legal-and-operational-policy">Legal and Operational Policy</h1>
+
+<p>AI Reader API processes caller-supplied public URLs and converts retrieved content into AI-ready Markdown, text, or structured JSON.</p>
+<p>This document is an operational product policy, not legal advice. Callers are responsible for confirming that their use is permitted for each target website, jurisdiction, and downstream workflow.</p>
+<h2 id="caller-responsibility">Caller Responsibility</h2>
+<p>Callers are responsible for:</p>
+<ul>
+<li>Complying with applicable laws.</li>
+<li>Complying with target website terms of service.</li>
+<li>Respecting copyright, database rights, licensing terms, and attribution requirements.</li>
+<li>Ensuring they have rights to store, transform, embed, summarize, redistribute, or commercially use processed outputs.</li>
+<li>Avoiding requests that target private, local, internal, or metadata network resources.</li>
+</ul>
+<p>OngsooLabs API does not grant rights to third-party content.</p>
+<h2 id="target-site-access-limits">Target-Site Access Limits</h2>
+<p>AI Reader API is designed for safe processing of public webpages. It may refuse, fail, or limit requests when a target page:</p>
+<ul>
+<li>Blocks automated retrieval.</li>
+<li>Requires authentication or private session state.</li>
+<li>Appears to target local, private, or cloud metadata network ranges.</li>
+<li>Produces unusable or unsafe content.</li>
+<li>Requires access behavior outside the product's AI data acquisition scope.</li>
+</ul>
+<p>The service should not be used to bypass paywalls, authentication, authorization, bot protections, or technical access controls.</p>
+<h2 id="content-accuracy">Content Accuracy</h2>
+<p>Web extraction is not guaranteed to be perfect.</p>
+<p>Results can vary because of:</p>
+<ul>
+<li>Target-site layout changes.</li>
+<li>JavaScript rendering behavior.</li>
+<li>Regional or network-dependent content.</li>
+<li>Anti-automation controls.</li>
+<li>Duplicated layout text.</li>
+<li>Missing metadata.</li>
+<li>Language or formatting ambiguity.</li>
+</ul>
+<p>Use <code>quality</code>, <code>usage</code>, and <code>execution</code> metadata to decide whether a result is suitable for the caller's workflow.</p>
+<h2 id="privacy-and-logging">Privacy and Logging</h2>
+<p>The reader should keep logs focused on operational telemetry.</p>
+<p>Allowed aggregate telemetry includes:</p>
+<ul>
+<li>HTTP method.</li>
+<li>Target domain.</li>
+<li>Success or failure.</li>
+<li>Public error code.</li>
+<li>HTTP status code.</li>
+<li>Duration.</li>
+<li>Execution profile.</li>
+<li>Browser usage.</li>
+<li>Cache status.</li>
+<li>Retry count.</li>
+<li>Reader mode.</li>
+<li>Output option flags.</li>
+<li>Character, token, and chunk counts.</li>
+</ul>
+<p>Logs must not include:</p>
+<ul>
+<li>Request bodies.</li>
+<li>Response bodies.</li>
+<li>Raw HTML.</li>
+<li>Extracted content.</li>
+<li>Cookies.</li>
+<li>Custom headers.</li>
+<li>Proxy data.</li>
+<li>Raw query strings.</li>
+</ul>
+<h2 id="cache-policy">Cache Policy</h2>
+<p>Reader caching is a performance optimization, not archival storage.</p>
+<p>Current cache policy:</p>
+<ul>
+<li>Cache keys hash the target URL and include response-shaping options.</li>
+<li>Cached reader entries can include the processed response and HTTP cache validation metadata.</li>
+<li>Entries use a short operational TTL.</li>
+<li>Requests with sensitive context skip reader result caching.</li>
+<li>Cache failures should fall back to direct execution where possible.</li>
+</ul>
+<p>The service should not market cache behavior as long-term storage, compliance retention, or customer-controlled archival history.</p>
+<h2 id="abuse-and-stability">Abuse and Stability</h2>
+<p>OngsooLabs may limit or block traffic that threatens service stability, violates policy, or attempts to use the product outside its AI data acquisition scope.</p>
+<p>Examples include:</p>
+<ul>
+<li>High-volume crawling outside the active plan.</li>
+<li>Repeated requests to blocked or unsafe targets.</li>
+<li>Attempts to access internal network resources.</li>
+<li>Automated stress testing without coordination.</li>
+<li>Attempts to use the service as a generic proxy.</li>
+</ul>
+<h2 id="support-and-incident-handling">Support and Incident Handling</h2>
+<p>For persistent failures, callers should provide:</p>
+<ul>
+<li>Request ID when available.</li>
+<li>Endpoint and timestamp.</li>
+<li>Public target domain.</li>
+<li>Public error code.</li>
+<li>Execution metadata such as profile, cache status, retry count, and duration.</li>
+</ul>
+<p>Callers should not send secrets, cookies, private authorization headers, raw personal data, or proprietary source content in support requests unless a separate secure support process exists.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

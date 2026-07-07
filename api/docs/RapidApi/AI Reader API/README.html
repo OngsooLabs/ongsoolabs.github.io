@@ -151,7 +151,7 @@
 <ul>
 <li><code>content.value</code>: The extracted Markdown or plain text when <code>output_format</code> is <code>markdown</code> or <code>text</code>.</li>
 <li><code>content.article</code>: The structured article object when <code>output_format</code> is <code>json</code>.</li>
-<li><code>usage.credits</code>: Credits charged for the request.</li>
+<li><code>usage.credits</code>: OngsooLabs reader response credit metadata.</li>
 <li><code>status</code>: <code>success</code> or <code>failed</code>.</li>
 </ul>
 <p>Use these fields when you need more control:</p>
@@ -162,6 +162,16 @@
 <li><code>execution</code>: Runtime details such as cache status, browser usage, retry count, and duration.</li>
 <li><code>chunks</code>: Optional overlapping chunks when <code>enable_chunking</code> is <code>true</code>.</li>
 </ul>
+<h3 id="credits-and-rapidapi-quota">Credits and RapidAPI Quota</h3>
+<p>The v1 launch credit model is intentionally simple:</p>
+<ul>
+<li>Successful <code>GET /v1/reader</code> and <code>POST /v1/reader</code> calls return <code>usage.credits = 1</code>.</li>
+<li>Failed reader calls return <code>usage.credits = 0</code>.</li>
+<li>Output format, reader mode, optional metadata, optional chunking, browser fallback, and cache validation do not change the launch credit value.</li>
+<li>RapidAPI counts endpoint calls through the Requests quota object.</li>
+<li>RapidAPI also manages bandwidth platform fees separately from reader response credits.</li>
+</ul>
+<p>Your active RapidAPI plan controls gateway quota, hard limits, overage pricing, bandwidth fees, and currency pricing.</p>
 <hr>
 <h2 id="1-get-v1reader">1. GET <code>/v1/reader</code></h2>
 <p>Convert and analyze a target webpage using query parameters. This is convenient for simple integrations, browser testing, and quick API calls.</p>
@@ -421,7 +431,7 @@
 <hr>
 <h2 id="3-post-v1readerchunk">3. POST <code>/v1/reader/chunk</code></h2>
 <p>Split raw input text into overlapping token or character segments without fetching a webpage. Use this endpoint when you already have text and only need chunk preparation for embeddings or retrieval.</p>
-<p>This endpoint currently keeps its original array response and legacy error shape. The standardized reader success/error envelope applies to <code>GET /v1/reader</code> and <code>POST /v1/reader</code>; chunk endpoint alignment is planned for a later milestone.</p>
+<p>This endpoint keeps its original successful array response. Failure responses use the standardized error envelope. Full success-envelope alignment for chunking is outside the v1 launch baseline.</p>
 <h3 id="request-example-1">Request Example</h3>
 <pre><code class="lang-json">{
   &quot;text&quot;: &quot;The long raw text content you want to split into overlapping chunks for embedding ingestion...&quot;,
@@ -556,6 +566,8 @@
 <li><strong>Compliance</strong>: Users are responsible for ensuring their use complies with applicable laws and target site terms.</li>
 <li><strong>Abuse Prevention</strong>: We may limit or rate limit accounts to preserve service stability.</li>
 <li><strong>No Accuracy Guarantee</strong>: As a web content transformation service, AI Reader API does not guarantee perfect extraction accuracy for every page structure.</li>
+<li><strong>No Access Bypass</strong>: The service must not be used to bypass paywalls, authentication, authorization, bot protections, or technical access controls.</li>
+<li><strong>Operational Logging</strong>: Operational logs are limited to aggregate telemetry such as target domain, status, error code, execution profile, cache status, and usage counts. Request bodies, response bodies, raw HTML, extracted content, cookies, custom headers, proxy data, and raw query strings must not be logged.</li>
 </ol>
 
 </article>

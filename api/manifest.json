@@ -24,6 +24,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/credit-usage-guide.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/credit-usage-guide.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/error-code-guide.md",
       "output": {
         ".html": {
@@ -38,6 +48,16 @@
       "output": {
         ".html": {
           "relative_path": "articles/intro.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/legal-operational-policy.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/legal-operational-policy.html"
         }
       },
       "version": ""

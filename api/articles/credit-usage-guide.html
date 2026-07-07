@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Credit Usage Guide </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Credit Usage Guide ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="credit-usage-guide">Credit Usage Guide</h1>
+
+<p>AI Reader API exposes <code>usage.credits</code> as response metadata. It helps clients understand whether a reader operation succeeded and how OngsooLabs classifies that operation internally.</p>
+<p>RapidAPI is the source of truth for public plan names, prices, request quota enforcement, overage pricing, bandwidth platform fees, billing, and subscription state. This document does not define a separate OngsooLabs pricing table.</p>
+<h2 id="rapidapi-metering">RapidAPI Metering</h2>
+<p>The active RapidAPI configuration has two relevant metering objects:</p>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>RapidAPI meaning</th>
+<th>OngsooLabs documentation rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Requests</td>
+<td>A call to any endpoint is one request.</td>
+<td>Treat this as the public quota and billing meter.</td>
+</tr>
+<tr>
+<td>Bandwidth Platform Fee</td>
+<td>RapidAPI platform bandwidth usage. Each unit is 1 MB.</td>
+<td>Do not describe this as AI Reader API pricing.</td>
+</tr>
+</tbody>
+</table>
+<p>Plan names, monthly prices, included request counts, overage rates, enabled/disabled plan state, and bandwidth fee values should be maintained in RapidAPI. Public docs should point users to their RapidAPI dashboard for those values instead of duplicating them.</p>
+<h2 id="response-credit-semantics">Response Credit Semantics</h2>
+<p>For the v1 launch baseline, successful page reads use a simple fixed reader credit model.</p>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th style="text-align: right;">Success credit policy</th>
+<th style="text-align: right;">Failure credit policy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /v1/reader</code></td>
+<td style="text-align: right;">1 credit</td>
+<td style="text-align: right;">0 credits</td>
+</tr>
+<tr>
+<td><code>POST /v1/reader</code></td>
+<td style="text-align: right;">1 credit</td>
+<td style="text-align: right;">0 credits</td>
+</tr>
+<tr>
+<td><code>POST /v1/reader/chunk</code></td>
+<td style="text-align: right;">Not represented in <code>usage.credits</code> because the success response is the legacy chunk array</td>
+<td style="text-align: right;">0 credits in the standard error envelope</td>
+</tr>
+</tbody>
+</table>
+<p>The reader charges the same <code>1</code> credit for a successful page read whether the request uses Markdown, text, JSON, optional metadata, optional chunking, static retrieval, browser fallback, or a validated cache refresh.</p>
+<p>Do not treat <code>usage.credits</code> as the RapidAPI billing engine. RapidAPI request quota is counted at the gateway level, and the current RapidAPI Requests object says that any endpoint call is one request.</p>
+<h2 id="no-charge-failures">No-Charge Failures</h2>
+<p>Reader failures return <code>usage.credits = 0</code>.</p>
+<p>No-charge failures include:</p>
+<ul>
+<li>Invalid URLs.</li>
+<li>Invalid request options or payloads.</li>
+<li>Unsafe URLs that target local, private, or metadata network ranges.</li>
+<li>Target-site blocks.</li>
+<li>Fetch failures.</li>
+<li>Internal service failures.</li>
+</ul>
+<p>RapidAPI gateway-level quota behavior can still apply according to the caller's active RapidAPI plan. The <code>usage.credits</code> field describes OngsooLabs reader credit usage, not every RapidAPI gateway-level accounting rule.</p>
+<h2 id="basic-plan-evaluation">Basic Plan Evaluation</h2>
+<p>The Basic plan is the current public evaluation path in RapidAPI.</p>
+<p>Basic plan baseline:</p>
+<ul>
+<li>Included request quota is configured in RapidAPI.</li>
+<li>Intended for evaluation, integration testing, and small prototypes.</li>
+<li>RapidAPI counts endpoint calls through its Requests object.</li>
+<li>Successful <code>GET /v1/reader</code> and <code>POST /v1/reader</code> calls return <code>usage.credits = 1</code>.</li>
+<li>Failed reader calls return <code>usage.credits = 0</code>.</li>
+<li>Abuse, automated stress testing, or attempts to bypass target-site access controls can be limited or suspended.</li>
+</ul>
+<p>The Basic plan is not intended for production ingestion jobs, resale, high-volume crawling, or automated monitoring.</p>
+<h2 id="production-plan-interpretation">Production Plan Interpretation</h2>
+<p>Paid plans are controlled by RapidAPI plan configuration, not by this repository.</p>
+<p>The public plan should not promise:</p>
+<ul>
+<li>Guaranteed access to every target website.</li>
+<li>Guaranteed extraction quality for every page layout.</li>
+<li>Lowest-price scraping proxy behavior.</li>
+<li>Browser automation as a standalone product.</li>
+</ul>
+<p>The product value is AI-ready data acquisition: clean output, stable response contracts, usage metadata, quality signals, execution metadata, benchmark discipline, and documentation quality.</p>
+<h2 id="future-credit-adjustments">Future Credit Adjustments</h2>
+<p>The fixed <code>1</code> credit reader model can be revisited after operational data shows a clear need.</p>
+<p>Possible future dimensions:</p>
+<ul>
+<li>Dynamic rendering cost.</li>
+<li>Very large page size.</li>
+<li>Advanced extraction profiles.</li>
+<li>Batch or async ingestion.</li>
+<li>Structured extraction.</li>
+<li>Higher support or retention requirements.</li>
+</ul>
+<p>Any future change to public reader credit semantics should update this guide, the RapidAPI listing, the README, and the decision log together.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

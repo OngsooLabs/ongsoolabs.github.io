@@ -87,6 +87,7 @@
 <li><strong>Standard Errors</strong>: Return stable error codes with retryability, recommended profile, and user-actionable guidance.</li>
 <li><strong>Flexible Extraction Modes</strong>: Tune output for <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, or <code>generic</code> pages.</li>
 <li><strong>Hybrid Retrieval</strong>: Start with fast static retrieval and use dynamic rendering when needed.</li>
+<li><strong>Predictable Credits</strong>: Successful reader calls use 1 credit in the v1 launch model, while failed reader calls return 0 reader credits.</li>
 </ul>
 <h3 id="public-endpoints">Public Endpoints</h3>
 <ul>
@@ -95,6 +96,9 @@
 <li><code>POST /v1/reader/chunk</code>: Split raw text into overlapping chunks.</li>
 </ul>
 <p>The public API is designed for safe processing of public webpages and focuses on URL-based extraction, output formatting, token estimation, and chunking controls.</p>
+<h3 id="credit-and-policy-baseline">Credit and Policy Baseline</h3>
+<p>Successful reader calls return <code>usage.credits = 1</code> and failed reader calls return <code>usage.credits = 0</code>. Public request quota, enabled plans, overage pricing, bandwidth platform fees, and currency pricing are controlled by the active RapidAPI plan.</p>
+<p>Users are responsible for complying with applicable laws and target-site terms. The API must not be used to bypass paywalls, authentication, authorization, bot protections, or technical access controls.</p>
 
 </article>
 
