@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Reader Benchmark Datasets </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Reader Benchmark Datasets ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="reader-benchmark-datasets">Reader Benchmark Datasets</h1>
+
+<p>This directory stores benchmark inputs for <code>/v1/reader</code> regression checks.</p>
+<h2 id="files">Files</h2>
+<ul>
+<li><code>reader-seed-dataset.json</code>: 30 URL seed dataset for Phase 1.5 Milestone 3.</li>
+<li><code>reader-lock-dataset.json</code>: 100 URL lock dataset for release-gate regression checks.</li>
+<li><code>reader-lock-candidate-batch-001.json</code>: 18 verified URLs for the first lock expansion batch.</li>
+<li><code>reader-lock-candidate-batch-002.json</code>: 19 verified URLs for the second lock expansion batch.</li>
+<li><code>reader-lock-candidate-batch-003.json</code>: 17 verified URLs for the third lock expansion batch.</li>
+<li><code>reader-lock-candidate-batch-004.json</code>: 16 verified URLs for the final lock expansion batch.</li>
+<li><code>reader-seed-dataset.schema.json</code>: JSON Schema for benchmark dataset files.</li>
+<li><code>reader-lock-dataset-plan.md</code>: Category mix, promotion workflow, and exit criteria for the 100 URL lock dataset.</li>
+</ul>
+<h2 id="dataset-intent">Dataset Intent</h2>
+<p>The seed dataset is not the final lock dataset. It exists to make the first Markdown regression runner reviewable before expanding coverage to 100 URLs.</p>
+<p>The lock dataset should be created only after candidate batches pass locally. Use <code>reader-lock-dataset-plan.md</code> to keep category coverage balanced while expanding from 30 to 100 URLs.</p>
+<p>Current local baseline:</p>
+<ul>
+<li>Date: 2026-07-06</li>
+<li>Scraper: <code>http://localhost:5243</code></li>
+<li>TextProcessor: <code>http://localhost:5176</code></li>
+<li>Result: 30 passed, 0 failed</li>
+</ul>
+<p>Current lock candidate baseline:</p>
+<ul>
+<li>Date: 2026-07-06</li>
+<li>Batch: <code>reader-lock-candidate-batch-001.json</code></li>
+<li>Result: 18 passed, 0 failed</li>
+<li>Batch: <code>reader-lock-candidate-batch-002.json</code></li>
+<li>Result: 19 passed, 0 failed</li>
+<li>Batch: <code>reader-lock-candidate-batch-003.json</code></li>
+<li>Result: 17 passed, 0 failed</li>
+<li>Batch: <code>reader-lock-candidate-batch-004.json</code></li>
+<li>Result: 16 passed, 0 failed</li>
+<li>Lock dataset: <code>reader-lock-dataset.json</code></li>
+<li>Result: 100 passed, 0 failed</li>
+</ul>
+<p>Each item captures:</p>
+<ul>
+<li>A public HTTPS URL.</li>
+<li>The intended <code>/v1/reader</code> request shape.</li>
+<li>Stable content expectations through <code>mustContain</code>.</li>
+<li>Failure and boilerplate guards through <code>mustNotContain</code>.</li>
+<li>Risk tags that explain why the page belongs in the benchmark.</li>
+</ul>
+<h2 id="runner-policy">Runner Policy</h2>
+<p>The first automated runner should treat this file as data, not as test code. It should call <code>/v1/reader</code>, extract the returned content, and verify:</p>
+<ul>
+<li>Response status is <code>success</code>.</li>
+<li>Markdown or text content length is at least <code>minCharacters</code>.</li>
+<li>Every <code>mustContain</code> value is present.</li>
+<li>No <code>mustNotContain</code> value is present.</li>
+<li>Dataset item failures report <code>id</code>, <code>url</code>, and the failed expectation.</li>
+</ul>
+<p>The runner must not log request bodies, response bodies, raw HTML, cookies, custom headers, proxy configuration, or extracted content.</p>
+<h2 id="local-runner">Local Runner</h2>
+<p>Run the scraper API locally, then execute:</p>
+<pre><code class="lang-powershell">.\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243
+</code></pre>
+<p>If local PowerShell execution policy blocks direct script execution, use:</p>
+<pre><code class="lang-powershell">powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243
+</code></pre>
+<p>Useful options:</p>
+<pre><code class="lang-powershell">.\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243 -IncludeId seed-001,seed-002
+.\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243 -StopOnFirstFailure
+.\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243 -RapidApiProxySecret $env:RAPIDAPI_PROXY_SECRET
+.\scripts\run-reader-benchmark.ps1 -DryRun
+</code></pre>
+<p>The script exits with code <code>0</code> when all selected items pass and <code>1</code> when any item fails.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

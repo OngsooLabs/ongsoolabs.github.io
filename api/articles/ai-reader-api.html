@@ -128,6 +128,11 @@
 <td style="text-align: left;"><code>/v1/reader/chunk</code></td>
 <td style="text-align: left;">Split text into chunks for downstream AI processing</td>
 </tr>
+<tr>
+<td style="text-align: left;"><code>GET</code></td>
+<td style="text-align: left;"><code>/v1/diagnostics</code></td>
+<td style="text-align: left;">Deployment smoke diagnostics for direct platform operations</td>
+</tr>
 </tbody>
 </table>
 <h3 id="post-v1reader-request-example">POST <code>/v1/reader</code> Request Example</h3>
@@ -244,6 +249,26 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
 <h5>Important</h5>
 <p><code>/v1/reader/chunk</code> keeps its original successful array response. Failure responses use the standardized error envelope.</p>
 </div>
+<h2 id="deployment-diagnostics">Deployment Diagnostics</h2>
+<p><code>GET /v1/diagnostics</code> is a low-cost smoke check for deployment verification. It is intended for direct platform and partner operations, not public RapidAPI traffic.</p>
+<p>The endpoint does not scrape an external webpage. It checks the API pipeline, reader service registration, required configuration, cache read/write behavior, and TextProcessor token-count connectivity.</p>
+<pre><code class="lang-http">GET /v1/diagnostics
+X-RapidAPI-Proxy-Secret: &lt;proxy-secret&gt;
+</code></pre>
+<p>Successful diagnostics return HTTP <code>200</code> with <code>status = ok</code>. If any check fails, the endpoint returns HTTP <code>503</code> with <code>status = needs_attention</code>; the failing check also uses <code>status = needs_attention</code>.</p>
+<pre><code class="lang-json">{
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;checkedAtUtc&quot;: &quot;2026-07-07T00:00:00Z&quot;,
+  &quot;durationMs&quot;: 24,
+  &quot;checks&quot;: [
+    { &quot;name&quot;: &quot;api_pipeline&quot;, &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;API routing and controller execution are available.&quot;, &quot;durationMs&quot;: 0 },
+    { &quot;name&quot;: &quot;reader_service&quot;, &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;Reader service dependency is registered.&quot;, &quot;durationMs&quot;: 0 },
+    { &quot;name&quot;: &quot;configuration&quot;, &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;Required deployment configuration is present.&quot;, &quot;durationMs&quot;: 0 },
+    { &quot;name&quot;: &quot;cache&quot;, &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;Cache read/write round trip succeeded.&quot;, &quot;durationMs&quot;: 2 },
+    { &quot;name&quot;: &quot;text_processor&quot;, &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;TextProcessor token count check succeeded.&quot;, &quot;durationMs&quot;: 22 }
+  ]
+}
+</code></pre>
 <div class="NOTE">
 <h5>Note</h5>
 <p>This service processes pages requested by the caller. Callers are responsible for complying with the terms of service, robots policies, copyright rules, and applicable laws of each target website.</p>

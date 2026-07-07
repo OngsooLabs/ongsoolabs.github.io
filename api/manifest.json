@@ -67,6 +67,26 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "artifacts/benchmarks/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "artifacts/benchmarks/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "artifacts/benchmarks/reader-lock-dataset-plan.md",
+      "output": {
+        ".html": {
+          "relative_path": "artifacts/benchmarks/reader-lock-dataset-plan.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "docs/RapidApi/AI Reader API/README.md",
       "output": {
         ".html": {

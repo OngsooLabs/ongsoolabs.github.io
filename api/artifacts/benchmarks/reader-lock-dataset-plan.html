@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Reader Lock Dataset Plan </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Reader Lock Dataset Plan ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="reader-lock-dataset-plan">Reader Lock Dataset Plan</h1>
+
+<p>This plan defines how the seed benchmark grows from 30 URLs to a 100 URL lock dataset.</p>
+<h2 id="goal">Goal</h2>
+<p>The lock dataset is the release gate for reader quality drift. It should remain stable enough to run before Phase 2 work that changes extraction, quality scoring, site rules, dynamic rendering, or output formatting.</p>
+<h2 id="current-baseline">Current Baseline</h2>
+<ul>
+<li>Seed dataset: <code>reader-seed-dataset.json</code></li>
+<li>Seed size: 30 URLs</li>
+<li>Verified lock candidate batch 001: <code>reader-lock-candidate-batch-001.json</code></li>
+<li>Verified lock candidate batch 002: <code>reader-lock-candidate-batch-002.json</code></li>
+<li>Verified lock candidate batch 003: <code>reader-lock-candidate-batch-003.json</code></li>
+<li>Verified lock candidate batch 004: <code>reader-lock-candidate-batch-004.json</code></li>
+<li>Verified candidate size: 70 URLs</li>
+<li>Current verified total: 100 URLs</li>
+<li>Local baseline date: 2026-07-06</li>
+<li>Local seed result: 30 passed, 0 failed</li>
+<li>Local candidate batch 001 result: 18 passed, 0 failed</li>
+<li>Local candidate batch 002 result: 19 passed, 0 failed</li>
+<li>Local candidate batch 003 result: 17 passed, 0 failed</li>
+<li>Local candidate batch 004 result: 16 passed, 0 failed</li>
+<li>Local lock dataset result: 100 passed, 0 failed</li>
+<li>Runner: <code>scripts/run-reader-benchmark.ps1</code></li>
+</ul>
+<h2 id="target-mix">Target Mix</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th style="text-align: right;">Seed Count</th>
+<th style="text-align: right;">Lock Target</th>
+<th style="text-align: right;">Additional Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>documentation</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td>api-reference</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td>standards</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>reference</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>tutorial</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>product-docs</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>encyclopedia</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>article</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td style="text-align: right;"><strong>100</strong></td>
+<td style="text-align: right;"><strong>92</strong></td>
+<td style="text-align: right;"><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The category target intentionally reserves 8 of the 100 URLs for capability-coverage slots below, so the category total stops at 92 rather than 100.</p>
+<p>The remaining 8 URLs should be selected by capability coverage rather than category:</p>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th style="text-align: right;">Seed Count</th>
+<th style="text-align: right;">Lock Target</th>
+<th style="text-align: right;">Additional Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dynamic-candidate</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td>Korean/CJK</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>chunking-enabled long content</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>table-heavy content</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td>code-block-heavy content</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p>Capability rows can overlap with category rows. A single URL can count as documentation, dynamic-candidate, and code-block-heavy.</p>
+<h2 id="candidate-rules">Candidate Rules</h2>
+<p>The initial lock dataset is complete. Add or replace a URL only when it meets all rules:</p>
+<ul>
+<li>It is public HTTPS content.</li>
+<li>It does not require authentication, cookies, custom headers, or proxy settings.</li>
+<li>It has stable page semantics and a stable title or heading.</li>
+<li>It is appropriate to store as a benchmark target.</li>
+<li>It can pass with <code>mustContain</code>, <code>mustNotContain</code>, and <code>minCharacters</code> checks.</li>
+<li>It does not require logging response body, raw HTML, or extracted content for diagnosis.</li>
+</ul>
+<p>Prefer official documentation, standards bodies, public encyclopedias, and government or institutional articles. Avoid pages that routinely block automation, personalize content, rotate major text, or intentionally serve anti-bot challenges.</p>
+<h2 id="promotion-workflow">Promotion Workflow</h2>
+<ol>
+<li>Add candidate URLs in batches of 10 to 20.</li>
+<li>Run the candidate batch with the local runner.</li>
+<li>Replace blocked or unstable pages rather than weakening expectations.</li>
+<li>Keep <code>mustContain</code> values broad but meaningful, usually the product, standard, article, or concept name.</li>
+<li>Use <code>mustNotContain</code> for retrieval failure markers such as <code>Access Denied</code> and <code>Too Many Requests</code>.</li>
+<li>Promote candidates to the lock dataset only after a clean local pass.</li>
+</ol>
+<h2 id="runner-commands">Runner Commands</h2>
+<p>Run a dry run first:</p>
+<pre><code class="lang-powershell">powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-reader-benchmark.ps1 -DatasetPath .\artifacts\benchmarks\reader-seed-dataset.json -DryRun
+</code></pre>
+<p>Run a real benchmark after Scraper and TextProcessor are running:</p>
+<pre><code class="lang-powershell">powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243 -DatasetPath .\artifacts\benchmarks\reader-seed-dataset.json
+</code></pre>
+<h2 id="lock-dataset-exit-criteria">Lock Dataset Exit Criteria</h2>
+<p>The 100 URL lock dataset is complete when:</p>
+<ul>
+<li><code>reader-lock-dataset.json</code> contains exactly 100 URLs. Completed.</li>
+<li>All items pass dataset shape tests. Completed.</li>
+<li>A local full run passes 100/100. Completed.</li>
+<li>Known flaky pages are replaced or marked for exclusion before lock. Completed.</li>
+<li>The README records the lock baseline date and result. Completed.</li>
+<li>The Phase 2 entry gate marks <code>Benchmark URL 100+ secured</code> as completed. Completed.</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
