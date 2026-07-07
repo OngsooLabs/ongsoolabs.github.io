@@ -24,16 +24,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "articles/credit-usage-guide.md",
-      "output": {
-        ".html": {
-          "relative_path": "articles/credit-usage-guide.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "articles/error-code-guide.md",
       "output": {
         ".html": {
