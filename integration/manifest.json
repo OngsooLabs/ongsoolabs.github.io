@@ -14,20 +14,20 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/Documentation~/QuickStart.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/Documentation/QuickStart.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/Deterministic/Documentation~/QuickStart.html"
+          "relative_path": "OSL Integration/Assets/OSL/Deterministic/Documentation/QuickStart.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/README.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/Deterministic/Documentation/README.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/Deterministic/README.html"
+          "relative_path": "OSL Integration/Assets/OSL/Deterministic/Documentation/README.html"
         }
       },
       "version": ""
@@ -54,10 +54,10 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/EasyPatcher/README.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/EasyPatcher/Documentation/README.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/EasyPatcher/README.html"
+          "relative_path": "OSL Integration/Assets/OSL/EasyPatcher/Documentation/README.html"
         }
       },
       "version": ""
@@ -94,10 +94,10 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/SocialLogin/Docs/README.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/SocialLogin/Documentation/README.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/SocialLogin/Docs/README.html"
+          "relative_path": "OSL Integration/Assets/OSL/SocialLogin/Documentation/README.html"
         }
       },
       "version": ""
@@ -114,10 +114,10 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "OSL Integration/Assets/OSL/SocialLoginPro/README.md",
+      "source_relative_path": "OSL Integration/Assets/OSL/SocialLoginPro/Documentation/README.md",
       "output": {
         ".html": {
-          "relative_path": "OSL Integration/Assets/OSL/SocialLoginPro/README.html"
+          "relative_path": "OSL Integration/Assets/OSL/SocialLoginPro/Documentation/README.html"
         }
       },
       "version": ""
@@ -138,16 +138,6 @@
       "output": {
         ".html": {
           "relative_path": "OSL Integration/Assets/OSL/TokenVerification/Documentation/README.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "OSL Integration/OSL_Development_Guideline_v1.1.md",
-      "output": {
-        ".html": {
-          "relative_path": "OSL Integration/OSL_Development_Guideline_v1.1.html"
         }
       },
       "version": ""
@@ -254,6 +244,456 @@
         },
         ".json": {
           "relative_path": "articles/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Deterministic/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Deterministic/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Deterministic/Description.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Deterministic/Description.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Deterministic/Submission_Comments.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Deterministic/Submission_Comments.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Deterministic/Summary.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Deterministic/Summary.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Deterministic/Technical_details.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Deterministic/Technical_details.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/EasyPatcher/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/EasyPatcher/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/EasyPatcher/Description.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/EasyPatcher/Description.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/EasyPatcher/Submission_Comments.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/EasyPatcher/Submission_Comments.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/EasyPatcher/Summary.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/EasyPatcher/Summary.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/EasyPatcher/Technical_details.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/EasyPatcher/Technical_details.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Folder_Management_Rules_EN.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Folder_Management_Rules_EN.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Folder_Management_Rules_KO.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Folder_Management_Rules_KO.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/IapClient/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/IapClient/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/IapClient/Description.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/IapClient/Description.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/IapClient/Submission_Comments.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/IapClient/Submission_Comments.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/IapClient/Summary.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/IapClient/Summary.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/IapClient/Technical_details.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/IapClient/Technical_details.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Project_Overview_EN.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Project_Overview_EN.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Project_Overview_KO.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Project_Overview_KO.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Project_Rules_EN.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Project_Rules_EN.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Project_Rules_KO.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Project_Rules_KO.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Roadmap_EN.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Roadmap_EN.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Roadmap_KO.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Roadmap_KO.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SecureSave/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SecureSave/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SecureSave/Description.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SecureSave/Description.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SecureSave/Submission_Comments.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SecureSave/Submission_Comments.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SecureSave/Summary.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SecureSave/Summary.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SecureSave/Technical_details.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SecureSave/Technical_details.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SocialLogin/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SocialLogin/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SocialLogin/Description.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SocialLogin/Description.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SocialLogin/Submission_Comments.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SocialLogin/Submission_Comments.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SocialLogin/Summary.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SocialLogin/Summary.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SocialLogin/Technical_details.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SocialLogin/Technical_details.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SocialLoginPro/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SocialLoginPro/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SocialLoginPro/Description.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SocialLoginPro/Description.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SocialLoginPro/Submission_Comments.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SocialLoginPro/Submission_Comments.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SocialLoginPro/Summary.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SocialLoginPro/Summary.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SocialLoginPro/Technical_details.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SocialLoginPro/Technical_details.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/TokenVerification/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/TokenVerification/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/TokenVerification/Description.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/TokenVerification/Description.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/TokenVerification/Submission_Comments.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/TokenVerification/Submission_Comments.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/TokenVerification/Summary.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/TokenVerification/Summary.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/TokenVerification/Technical_details.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/TokenVerification/Technical_details.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Work_Log_EN.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Work_Log_EN.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Work_Log_KO.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Work_Log_KO.html"
         }
       },
       "version": ""

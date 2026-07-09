@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>프로젝트 규칙 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+      <meta http-equiv="Pragma" content="no-cache">
+      <meta http-equiv="Expires" content="0">
+      <meta name="title" content="프로젝트 규칙 ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=80e8ee24de8119e95d4a0fef62a15ec643bd6a6f">
+      <link rel="stylesheet" href="../public/main.css?v=80e8ee24de8119e95d4a0fef62a15ec643bd6a6f">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/blob/main/docs/Project_Rules_KO.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js?v=80e8ee24de8119e95d4a0fef62a15ec643bd6a6f"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="프로젝트-규칙">프로젝트 규칙</h1>
+
+<h2 id="개발-규칙">개발 규칙</h2>
+<h3 id="1-네임스페이스namespace-표준화">1. 네임스페이스(Namespace) 표준화</h3>
+<p>모듈 간 충돌을 방지하고 코드 자동 완성을 쾌적하게 만들기 위해, 모든 프로젝트의 루트 네임스페이스는 <code>OSL</code>로 시작합니다.</p>
+<ul>
+<li><strong>패턴:</strong> <code>OSL.[ProjectName].[Module]</code> (예: <code>OSL.EasyPatcher.Runtime</code>)</li>
+</ul>
+<h3 id="2-폴더-구조folder-structure-표준화">2. 폴더 구조(Folder Structure) 표준화</h3>
+<p>에셋 스토어 검수를 통과하고 유저 환경에서의 가시성을 확보하기 위해 아래의 디렉토리 구조를 강제합니다:</p>
+<pre><code class="lang-plaintext">Assets/OSL/
+  ├── Core/                       # 공통 유틸리티 (로깅, 암호화 등)
+  ├── Editor/                     # 글로벌 에디터 유틸리티 (규칙 예외)
+  └── [ProjectName]/              # 개별 에셋 패키지
+       ├── package.json           # UPM 호환
+       ├── Runtime/               # 메인 로직 (.asmdef)
+       ├── Editor/                # 에디터 로직 (.Editor.asmdef)
+       ├── Plugins/               # 외부 SDK AAR, DLL 등 격리
+       ├── Samples/               # 데모 씬
+       ├── Server~/               # 백엔드 서버 소스 (유니티 임포트 제외)
+       └── Documentation/         # 문서 공간
+</code></pre>
+<h3 id="3-assembly-definition-asmdef-관리-원칙">3. Assembly Definition (ASMDEF) 관리 원칙</h3>
+<ul>
+<li><strong>네이밍 규칙:</strong> <code>OSL.[ProjectName].asmdef</code> 및 <code>OSL.[ProjectName].Editor.asmdef</code></li>
+<li><strong>성능 최적화 스펙:</strong>
+<ul>
+<li><code>Auto Referenced</code>: <strong>False</strong> 강제 (명시적 참조 필수).</li>
+<li><code>Use GUIDs</code>: <strong>True</strong>.</li>
+</ul>
+</li>
+<li><strong>외부 라이브러리 (Soft Dependency):</strong>
+<ul>
+<li>외부 SDK가 없는 상태에서 임포트해도 컴파일 에러가 나지 않아야 합니다.</li>
+<li><strong>Version Defines (Define Constraints)</strong> 활용 (예: Steamworks 감지 시 <code>OSL_HAS_STEAM</code> 활성화). 코드 내부에서 <code>#if</code> 문으로 분기 처리.</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-언어-및-주석-규칙-language--commenting-rules">4. 언어 및 주석 규칙 (Language &amp; Commenting Rules)</h3>
+<ul>
+<li>프로젝트 내의 모든 문서(마크다운, PDF 등)와 소스 코드의 주석(Comments)은 유니티 에셋 스토어 글로벌 배포를 위해 <strong>반드시 영어로 작성</strong>해야 합니다. (단, 개발자 참고용 내부 <code>_KO.md</code> 문서는 예외)</li>
+</ul>
+<h2 id="배포-및-협업-규칙">배포 및 협업 규칙</h2>
+<h3 id="1-버전-관리-packagejson">1. 버전 관리 (package.json)</h3>
+<p>모든 에셋 폴더에는 유니티 패키지 매니저(UPM)와 호환되는 <code>package.json</code>을 작성해야 합니다.</p>
+<h3 id="2-스토어-배포용-추출export-체크리스트">2. 스토어 배포용 추출(Export) 체크리스트</h3>
+<ol>
+<li><strong>의존성 자동 포함 검증:</strong> 상위 패키지 추출 시 <code>OSL.Core</code> 등의 필수 폴더가 포함되었는지 확인.</li>
+<li><strong>Samples 격리 확인:</strong> 샘플 씬의 테스트 코드가 <code>Runtime</code> 폴더를 오염시키지 않았는지 검증.</li>
+<li><strong>Third-Party SDK 배제:</strong> 에셋 스토어 규정상 타사의 SDK는 재배포가 불가하므로, Export 시 <strong>반드시 체크 해제</strong>합니다.</li>
+<li><strong>민감 데이터 검열:</strong> API Key나 크레덴셜이 남아있는지 검사.</li>
+<li><strong>문서(Docs) 검수:</strong> 디렉토리 내 <code>Documentation/README.pdf</code> 유무 및 영문 작성 여부 확인.</li>
+</ol>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/OngsooLabs/Integration/blob/main/docs/Project_Rules_KO.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

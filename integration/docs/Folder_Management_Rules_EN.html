@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Folder Management Rules </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+      <meta http-equiv="Pragma" content="no-cache">
+      <meta http-equiv="Expires" content="0">
+      <meta name="title" content="Folder Management Rules ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=80e8ee24de8119e95d4a0fef62a15ec643bd6a6f">
+      <link rel="stylesheet" href="../public/main.css?v=80e8ee24de8119e95d4a0fef62a15ec643bd6a6f">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/blob/main/docs/Folder_Management_Rules_EN.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js?v=80e8ee24de8119e95d4a0fef62a15ec643bd6a6f"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="folder-management-rules">Folder Management Rules</h1>
+
+<h2 id="1-purpose">1. Purpose</h2>
+<p>This document defines the folder structure and rules for managing internal documentation and Unity Asset Store submission assets within the <code>docs</code> directory.</p>
+<ul>
+<li>Note: All root management documents are maintained in two versions: English (<code>_EN.md</code>) for AI agents, and Korean (<code>_KO.md</code>) for developers.</li>
+</ul>
+<h2 id="2-directory-structure">2. Directory Structure</h2>
+<h3 id="21-root-directory-docs">2.1. Root Directory (<code>/docs/</code>)</h3>
+<p>The root directory is strictly reserved for global project management documents that apply to all packages.</p>
+<ul>
+<li><code>Project_Overview_EN.md</code>: Project goals and high-level descriptions.</li>
+<li><code>Roadmap_EN.md</code>: Long-term milestones and current status.</li>
+<li><code>Project_Rules_EN.md</code>: Collaboration and coding guidelines.</li>
+<li><code>Work_Log_EN.md</code>: Daily/Weekly task logs.</li>
+<li><code>Folder_Management_Rules_EN.md</code>: This document.</li>
+</ul>
+<h3 id="22-package-directories-docspackagename">2.2. Package Directories (<code>/docs/{PackageName}/</code>)</h3>
+<p>Each isolated Unity asset package must have its own subdirectory. These folders contain store-ready documentation and submission metadata.
+<strong>Required Files:</strong></p>
+<ol>
+<li><code>Summary.md</code>: Short description for the asset store. Must be under 200 characters.</li>
+<li><code>Description.md</code>: Long description including features and requirements.</li>
+<li><code>Technical_details.md</code>: Technical specifications and algorithms used.</li>
+<li><code>Changelog.md</code>: Release notes strictly following Semantic Versioning.</li>
+<li><code>Submission_Comments.md</code>: Notes to the Asset Store reviewer.</li>
+</ol>
+<h2 id="3-maintenance-rules">3. Maintenance Rules</h2>
+<ul>
+<li>Always update the package <code>Changelog.md</code> before initiating an export for the Asset Store.</li>
+<li>All package-specific files must be written in English to comply with Unity Asset Store guidelines.</li>
+<li>Do not place binary files (images, PDFs) directly in these markdown directories unless strictly necessary for internal preview; prefer the project's actual <code>Documentation~</code> folder for user-facing PDFs.</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/OngsooLabs/Integration/blob/main/docs/Folder_Management_Rules_EN.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

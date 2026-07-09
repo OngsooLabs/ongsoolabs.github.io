@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>프로젝트 개요 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+      <meta http-equiv="Pragma" content="no-cache">
+      <meta http-equiv="Expires" content="0">
+      <meta name="title" content="프로젝트 개요 ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=80e8ee24de8119e95d4a0fef62a15ec643bd6a6f">
+      <link rel="stylesheet" href="../public/main.css?v=80e8ee24de8119e95d4a0fef62a15ec643bd6a6f">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/blob/main/docs/Project_Overview_KO.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js?v=80e8ee24de8119e95d4a0fef62a15ec643bd6a6f"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="프로젝트-개요">프로젝트 개요</h1>
+
+<h2 id="프로젝트-설명">프로젝트 설명</h2>
+<p>OSL Integration은 네트워킹, 보안, 소셜 로그인 등을 위한 견고하고 프로덕션 수준의 모듈을 제공하는 유니티 에셋 스토어 패키지 모음입니다.</p>
+<h2 id="목표">목표</h2>
+<p>가능한 한 무거운 서드파티 SDK에 의존하지 않고, 가볍고 서버 권한(Server-authoritative)을 가진 모듈식 솔루션을 개발자에게 제공하는 것입니다.</p>
+<h2 id="방향-아키텍처">방향 (아키텍처)</h2>
+<p>이 프로젝트는 고객의 프로젝트에 불필요한 코드가 들어가지 않도록 <strong>계층형 Core 아키텍처</strong>를 따릅니다. 상위 모듈은 하위 모듈만 참조할 수 있습니다(단방향 의존성).</p>
+<ul>
+<li><strong>Layer 0: <code>OSL.Core</code> (Shared Utility):</strong> 모든 에셋이 사용하는 초경량 공용 모음집 (예: OSLCrypto, OSLLogger).</li>
+<li><strong>Layer 1: <code>OSL.Auth.Base</code> (Domain Core):</strong> 소셜 로그인 모듈들을 묶어주는 인증 베이스 (<code>ISignin</code>, 토큰 검증).</li>
+<li><strong>Layer 2: <code>OSL.Product</code> (End Product):</strong> 단일 목적을 수행하는 배포 단위 (예: <code>OSL.EasyPatcher</code>, <code>OSL.SecureSave</code>). Layer 0이나 Layer 1만 선별적으로 참조.</li>
+</ul>
+<h2 id="진행도">진행도</h2>
+<p>현재 모든 레거시 패키지를 새로운 OSL 표준으로 마이그레이션하고 에셋 스토어 등록용 문서를 생성 중입니다.</p>
+<h2 id="구현할-것들">구현할 것들</h2>
+<ul>
+<li>에디터 스크립트를 통한 <code>.unitypackage</code> 추출(Export) 프로세스 자동화.</li>
+</ul>
+<h2 id="패키지-세부-사항-개별-모듈">패키지 세부 사항 (개별 모듈)</h2>
+<p>OSL Integration 제품군에 포함된 각 패키지들의 세부 설명과 나아갈 방향은 다음과 같습니다.</p>
+<h3 id="1-deterministic">1. Deterministic</h3>
+<ul>
+<li><strong>설명:</strong> 외부 의존성이나 런타임 메모리 할당(Allocation)이 없는 순수 결정론적 난수 생성(RNG) 스위트.</li>
+<li><strong>방향:</strong> 디바이스 간 소수점 오차(Drift) 없는 수학적 일관성을 제공하여 Lockstep 멀티플레이어, 롤백(Rollback) 넷코드, 그리고 절차적 생성을 안정적으로 구축하는 기반을 마련합니다.</li>
+</ul>
+<h3 id="2-easypatcher">2. EasyPatcher</h3>
+<ul>
+<li><strong>설명:</strong> 매우 가볍고 직관적인 런타임 패치 다운로드 및 배포 시스템.</li>
+<li><strong>방향:</strong> 어드레서블(Addressables)과 같은 무거운 시스템 없이도 변경된 파일만 클라우드에서 안전하게(AES/HMAC) 다운로드할 수 있도록 하여 소규모/인디 게임의 패치 편의성을 극대화합니다.</li>
+</ul>
+<h3 id="3-iapclient">3. IapClient</h3>
+<ul>
+<li><strong>설명:</strong> 클라이언트의 영수증 조작을 방지하는 서버 권한(Server-authoritative) 인앱 결제 검증 래퍼.</li>
+<li><strong>방향:</strong> Unity IAP에서 결제 성공 시 클라이언트를 맹신하지 않고, 보상을 지급하기 전 반드시 백엔드 서버를 거쳐 Apple/Google 영수증의 진위를 확인하도록 강제합니다.</li>
+</ul>
+<h3 id="4-securesave">4. SecureSave</h3>
+<ul>
+<li><strong>설명:</strong> Unity Gaming Services(UGS) 기반의 노코드(No-code) 안티 치트 클라우드 세이브 패키지.</li>
+<li><strong>방향:</strong> 클라이언트 단의 세이브 파일 조작을 원천 차단합니다. UGS Cloud Code를 거쳐 값의 타입, 최대 증감량(Delta), 범위 등을 서버가 엄격히 검증한 후 저장하도록 유도합니다.</li>
+</ul>
+<h3 id="5-sociallogin">5. SocialLogin</h3>
+<ul>
+<li><strong>설명:</strong> Apple, Facebook, Google, Steam, Discord 로그인을 묶은 통합 소셜 로그인 솔루션.</li>
+<li><strong>방향:</strong> <code>ISignin</code>이라는 단일 인터페이스로 파편화된 SDK를 추상화합니다. Soft Dependency(어셈블리 조건부 컴파일) 구조를 채택하여, 사용하지 않는 플랫폼의 코드가 프로젝트 빌드를 오염시키지 않도록 보호합니다.</li>
+</ul>
+<h3 id="6-socialloginpro">6. SocialLoginPro</h3>
+<ul>
+<li><strong>설명:</strong> <code>SocialLogin</code> 모듈과 <code>TokenVerification</code> 모듈을 하나로 묶은 통합 엔드투엔드 보안 로그인 번들.</li>
+<li><strong>방향:</strong> 클라이언트에서 획득한 소셜 로그인 토큰을 자체 백엔드 서버에서 암호학적으로 검증하는 과정까지 &quot;턴키(Turn-key)&quot;로 제공하여, 멀티플레이 게임의 인증 인프라 구축 시간을 대폭 단축시킵니다.</li>
+</ul>
+<h3 id="7-tokenverification">7. TokenVerification</h3>
+<ul>
+<li><strong>설명:</strong> 스탠드얼론 <code>.NET 8</code> 웹 API 서버 보일러플레이트와 Unity 클라이언트 통신 매니저 패키지.</li>
+<li><strong>방향:</strong> 클라이언트 사이드 변조 공격을 막기 위해, 즉시 배포 가능한 ASP.NET 서버 템플릿을 개발자에게 제공함으로써 토큰 유효성 검사를 빠르고 안전하게 수행할 수 있도록 돕습니다.</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/OngsooLabs/Integration/blob/main/docs/Project_Overview_KO.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
