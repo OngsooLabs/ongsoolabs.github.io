@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
-      <link rel="stylesheet" href="../public/main.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=bc969599a40a2b151e0be7ab246740cac8b6e7ba">
+      <link rel="stylesheet" href="../public/main.css?v=bc969599a40a2b151e0be7ab246740cac8b6e7ba">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=7978fc379801e7992a89565912e1d37d981fab4d"></script>
+      <script type="module" src="./../public/docfx.min.js?v=bc969599a40a2b151e0be7ab246740cac8b6e7ba"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -92,6 +92,7 @@
 <li>Phase 3은 UI, 콘솔 플랫폼, 운영 대시보드, 커스텀 백엔드처럼 유지보수 부담이 큰 확장 기능을 다룹니다.</li>
 <li>구현 전에는 항상 기존 코드와 Changelog를 먼저 확인하여 이미 완료된 기능을 다시 구현하지 않습니다.</li>
 <li>에이전트는 작업을 시작하기 전 이 문서의 <code>Current Focus</code>와 해당 패키지의 <code>완료 기준</code>을 우선 확인합니다.</li>
+<li><code>Current Focus</code>와 <code>Phase 1</code>은 같은 실행 우선순위를 따릅니다. 단, <code>Current Focus</code>는 지금 당장 착수할 세부 작업을 더 구체적으로 적은 목록입니다.</li>
 </ol>
 <hr>
 <h2 id="-current-focus">🎯 Current Focus</h2>
@@ -143,38 +144,51 @@
 <h3 id="phase-1-인프라-안정성-및-필수-사용성-확보-core-reliability--dx">Phase 1: 인프라 안정성 및 필수 사용성 확보 (Core Reliability &amp; DX)</h3>
 <p>목표: 각 패키지가 실제 유저 프로젝트에서 실패 상황을 견디고, 문제 원인을 빠르게 진단할 수 있게 만드는 단계입니다.</p>
 <ol>
-<li><p><strong>IapClient &amp; Secure Save</strong></p>
+<li><p><strong>IapClient</strong></p>
 <ul>
-<li>Pending Receipt / Pending Write Queue 구현</li>
-<li>자동 재시도 및 실패 복구 흐름 정리</li>
-<li>결제/세이브 유실 위험 감소</li>
+<li>Pending Receipt Queue 구현</li>
+<li>지수 백오프 기반 자동 재시도</li>
+<li>transaction id / receipt idempotency 기준 정리</li>
+<li>앱 재시작 후 미처리 결제 복구 흐름 추가</li>
 </ul>
 </li>
 <li><p><strong>EasyPatcher</strong></p>
 <ul>
 <li>HTTP 이어받기 지원</li>
 <li>다운로드 중단 후 재개 처리</li>
+<li>다운로드 완료 후 SHA256/HMAC 재검증</li>
 <li>병렬 다운로드는 안정성 검증 후 적용</li>
 </ul>
 </li>
-<li><p><strong>Token Verification</strong></p>
+<li><p><strong>TokenVerification</strong></p>
 <ul>
-<li>JWKS 캐싱 안정화</li>
+<li>JWKS 캐싱 안정화 및 검증 테스트 보강</li>
 <li>Self-contained 배포 프로필 정리</li>
 <li>기본 Rate Limiting 및 보안 미들웨어 기준 추가</li>
+<li><code>.NET 8</code> 유지와 <code>.NET 10</code> LTS 호환 경로 추적</li>
 </ul>
 </li>
-<li><p><strong>SocialLogin</strong></p>
+<li><p><strong>SecureSave</strong></p>
+<ul>
+<li>Pending Write Queue 구현</li>
+<li>재접속 후 자동 동기화</li>
+<li>재시도/실패/충돌 처리 정책 정의</li>
+<li>선택적 키(Multi-key) 로드 기능 추가</li>
+</ul>
+</li>
+<li><p><strong>SocialLogin / SocialLoginPro</strong></p>
 <ul>
 <li>자동 로그인 및 토큰 갱신 매니저</li>
 <li>에디터 진단 도구</li>
 <li>Provider별 설정 누락 탐지</li>
+<li>Soft Dependency 활성화 상태 표시</li>
+<li><code>SocialLoginPro</code>는 <code>SocialLogin + TokenVerification</code> 조합 배포 형태로 검증</li>
 </ul>
 </li>
 <li><p><strong>Deterministic Core</strong></p>
 <ul>
 <li>RNG 상태 직렬화/복원 편의 기능</li>
-<li>동일 seed 재현성 테스트 보강</li>
+<li>동일 seed / 동일 stream 재현성 테스트 보강</li>
 <li>샘플 씬의 동기화 검증 강화</li>
 </ul>
 </li>
@@ -188,13 +202,6 @@
 <h3 id="phase-2-비즈니스-로직-고도화-및-최적화-advanced-logic--optimization">Phase 2: 비즈니스 로직 고도화 및 최적화 (Advanced Logic &amp; Optimization)</h3>
 <p>목표: Phase 1의 안정적인 기반 위에 성능, 편의성, 고급 검증 로직을 추가합니다.</p>
 <ol>
-<li><p><strong>EasyPatcher</strong></p>
-<ul>
-<li>Manifest GZip/Brotli 압축</li>
-<li>S3 호환 Custom Endpoint 옵션</li>
-<li>Binary Diffing은 즉시 구현보다 사전 검증/Feature Flag 기반으로 접근</li>
-</ul>
-</li>
 <li><p><strong>IapClient</strong></p>
 <ul>
 <li>구독 상태 로컬 캐싱 및 TTL</li>
@@ -202,23 +209,31 @@
 <li>서버 검증을 대체하지 않는 사전 필터링 구조 유지</li>
 </ul>
 </li>
-<li><p><strong>Secure Save</strong></p>
+<li><p><strong>EasyPatcher</strong></p>
+<ul>
+<li>Manifest GZip/Brotli 압축</li>
+<li>S3 호환 Custom Endpoint 옵션</li>
+<li>Binary Diffing은 즉시 구현보다 사전 검증/Feature Flag 기반으로 접근</li>
+</ul>
+</li>
+<li><p><strong>TokenVerification</strong></p>
+<ul>
+<li>Provider별 검증 로직 hardening</li>
+<li>구조화된 에러 응답 및 감사 로그 포맷 정리</li>
+<li>Rate Limiting 정책 고도화</li>
+</ul>
+</li>
+<li><p><strong>SecureSave</strong></p>
 <ul>
 <li>Regex 및 Whitelist 검증 룰</li>
 <li>Cloud Code 로컬 단위 테스트 유틸리티</li>
 </ul>
 </li>
-<li><p><strong>SocialLogin</strong></p>
+<li><p><strong>SocialLogin / SocialLoginPro</strong></p>
 <ul>
 <li>에디터 전용 Mock 로그인 Provider</li>
 <li>Provider별 테스트 편의성 강화</li>
-</ul>
-</li>
-<li><p><strong>Token Verification</strong></p>
-<ul>
-<li>Provider별 검증 로직 hardening</li>
-<li>구조화된 에러 응답 및 감사 로그 포맷 정리</li>
-<li>Rate Limiting 정책 고도화</li>
+<li><code>SocialLoginPro</code> 조합 샘플 검증</li>
 </ul>
 </li>
 <li><p><strong>Deterministic Core</strong></p>
