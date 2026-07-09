@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
-      <link rel="stylesheet" href="../public/main.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
+      <link rel="stylesheet" href="../public/main.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=189554f7a85dcd486e2c9760d83edcceaf77c607"></script>
+      <script type="module" src="./../public/docfx.min.js?v=0c0634cdb4c939fa7fe3291344c8a06303833caa"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -86,35 +86,174 @@
         <article data-uid="">
 <h1 id="quick-start">Quick Start</h1>
 
-<p>This guide helps you set up Ongsoo Labs packages quickly in a Unity project.</p>
+<p>This guide helps you set up Ongsoo Labs packages quickly in a Unity project and confirms that the project is ready for the module-specific guides.</p>
+<p>Use this page as the shared setup checklist. After the baseline setup passes, continue with the guide for the package you are integrating.</p>
 <h2 id="prerequisites">Prerequisites</h2>
-<ul>
-<li>Unity 2021.3 LTS or later</li>
-<li>.NET Standard 2.1 compatible project settings</li>
-<li>Basic familiarity with Unity package and assembly definition workflows</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th style="text-align: right;">Recommended baseline</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unity</td>
+<td style="text-align: right;">2021.3 LTS or later</td>
+<td>Some packages require 2022.3 LTS or later. Check each module guide.</td>
+</tr>
+<tr>
+<td>Scripting Runtime</td>
+<td style="text-align: right;">.NET Standard 2.1</td>
+<td>Required by the shared runtime assemblies.</td>
+</tr>
+<tr>
+<td>Project Structure</td>
+<td style="text-align: right;">Assembly Definitions recommended</td>
+<td>OSL packages are designed around explicit assembly references.</td>
+</tr>
+<tr>
+<td>Package Source</td>
+<td style="text-align: right;">Unity Asset Store / imported package</td>
+<td>Import only the modules you actually need.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="choose-the-right-module">Choose the Right Module</h2>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Start with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deterministic random numbers, gacha, shuffling, replay, rollback, QA reproduction</td>
+<td><a href="deterministic.html">Deterministic</a></td>
+</tr>
+<tr>
+<td>Runtime patch distribution and changed-file downloads</td>
+<td><a href="easypatcher.html">EasyPatcher</a></td>
+</tr>
+<tr>
+<td>Google, Apple, Facebook, Steam, Discord login integration</td>
+<td><a href="sociallogin.html">SocialLogin</a></td>
+</tr>
+<tr>
+<td>In-app purchase flow with backend receipt verification</td>
+<td><a href="iapclient.html">IapClient</a></td>
+</tr>
+<tr>
+<td>Server-validated player save writes using Unity Gaming Services</td>
+<td><a href="securesave.html">SecureSave</a></td>
+</tr>
+</tbody>
+</table>
 <h2 id="installation">Installation</h2>
 <ol>
-<li>Import the required Ongsoo Labs package(s) into your project.</li>
-<li>Open Unity and allow script compilation to complete.</li>
-<li>Resolve any package dependency prompts shown by Unity.</li>
+<li>Import the required Ongsoo Labs package into your project.</li>
+<li>Open Unity and wait until script compilation completes.</li>
+<li>Install any Unity Registry or third-party SDK dependencies required by that module.</li>
+<li>Resolve Unity package dependency prompts before opening sample scenes or editor tools.</li>
+<li>Commit or back up your project before changing scripting define symbols or assembly references.</li>
 </ol>
-<h2 id="assembly-definition-asmdef-setup">Assembly Definition (asmdef) Setup</h2>
+<h2 id="assembly-definition-asmdef-setup">Assembly Definition (<code>asmdef</code>) Setup</h2>
+<p>Most OSL modules are split into runtime, editor, sample, and provider-specific assemblies. If your own game code uses an <code>.asmdef</code>, add references only to the assemblies you need.</p>
+<table>
+<thead>
+<tr>
+<th>If your code uses...</th>
+<th>Reference this kind of assembly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runtime APIs</td>
+<td><code>OSL.&lt;Module&gt;.Runtime</code> or module-specific runtime assemblies</td>
+</tr>
+<tr>
+<td>Editor tooling</td>
+<td><code>OSL.&lt;Module&gt;.Editor</code> from editor-only assemblies</td>
+</tr>
+<tr>
+<td>Shared utilities</td>
+<td><code>OSL.Core</code></td>
+</tr>
+<tr>
+<td>Samples</td>
+<td>Sample assemblies only inside sample scenes or test projects</td>
+</tr>
+</tbody>
+</table>
+<p>Recommended workflow:</p>
 <ol>
 <li>Select your project's <code>.asmdef</code> file.</li>
-<li>Add references to the required OSL assemblies for the module you are integrating.</li>
-<li>Save and recompile.</li>
+<li>Add the required OSL assembly references.</li>
+<li>Save the asset and allow Unity to recompile.</li>
+<li>Fix missing references before continuing with runtime setup.</li>
 </ol>
-<h2 id="verify-the-setup">Verify the Setup</h2>
+<h2 id="configuration-pattern">Configuration Pattern</h2>
+<p>Most OSL packages use explicit configuration assets or editor setup windows. The common pattern is:</p>
 <ol>
-<li>Open a sample scene (if provided by the package).</li>
-<li>Enter Play Mode and confirm there are no missing reference or compile errors.</li>
-<li>Check the Console for runtime initialization logs.</li>
+<li>Create or open the module-specific setup asset/window.</li>
+<li>Enter project IDs, server URLs, product IDs, provider credentials, or backend endpoints.</li>
+<li>Keep development, staging, and production values separate.</li>
+<li>Avoid hardcoding secrets in scenes, prefabs, or source files.</li>
 </ol>
+<p>For security-sensitive modules, prefer backend validation and environment-specific configuration over client-only checks.</p>
+<h2 id="verify-the-setup">Verify the Setup</h2>
+<p>Before testing the actual feature, confirm the project baseline:</p>
+<ol>
+<li>Unity finishes compilation with no missing assembly or namespace errors.</li>
+<li>The relevant OSL menu item appears under <strong>Tools &gt; OSL</strong> when the package provides editor tooling.</li>
+<li>Any sample scene opens without missing scripts.</li>
+<li>Play Mode starts without initialization exceptions.</li>
+<li>The Console shows expected setup warnings only, not fatal configuration errors.</li>
+</ol>
+<h2 id="common-troubleshooting">Common Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Namespace or type not found</td>
+<td>Missing <code>.asmdef</code> reference</td>
+<td>Add the module runtime assembly to your project <code>.asmdef</code>.</td>
+</tr>
+<tr>
+<td>Editor menu is missing</td>
+<td>Editor assembly did not compile</td>
+<td>Check Console errors and confirm editor-only dependencies are installed.</td>
+</tr>
+<tr>
+<td>Runtime feature is disabled</td>
+<td>Required dependency package is missing</td>
+<td>Install the Unity Registry or third-party SDK package listed in the module guide.</td>
+</tr>
+<tr>
+<td>Sample scene has missing scripts</td>
+<td>Partial import or assembly compile failure</td>
+<td>Re-import the package and resolve compile errors first.</td>
+</tr>
+<tr>
+<td>Works in Editor but fails on device</td>
+<td>Platform-specific setup is incomplete</td>
+<td>Recheck Android manifest, iOS plist, store console, or provider console settings.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="next-steps">Next Steps</h2>
 <ul>
 <li>Read <a href="core_concepts.html">Core Concepts</a> to understand shared architecture patterns.</li>
 <li>Continue with the relevant guide under <strong>Asset-specific Guides</strong>.</li>
+<li>Use the generated <strong>API Reference</strong> when you need method signatures, class members, or extension points.</li>
 </ul>
 
 </article>

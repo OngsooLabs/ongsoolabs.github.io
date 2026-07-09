@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
-      <link rel="stylesheet" href="../public/main.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
+      <link rel="stylesheet" href="../public/main.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=189554f7a85dcd486e2c9760d83edcceaf77c607"></script>
+      <script type="module" src="./../public/docfx.min.js?v=0c0634cdb4c939fa7fe3291344c8a06303833caa"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -88,6 +88,18 @@
 
 <p>IapClient is a Unity package that integrates in-app purchase (IAP) functionality into your project.<br>
 It is built on top of Unity IAP v5 and Unity Services Core, and provides a server-side receipt verification workflow against your own backend.</p>
+<h2 id="who-should-use-this">Who Should Use This</h2>
+<p>Use IapClient when your project needs:</p>
+<ul>
+<li>Google Play and Apple App Store purchase flows in Unity</li>
+<li>A client-to-backend receipt verification handoff</li>
+<li>Duplicate reward prevention across purchase retries</li>
+<li>A test window for backend verification endpoints during development</li>
+<li>Clear separation between store purchase completion and reward granting</li>
+</ul>
+<h2 id="when-not-to-use-this">When Not to Use This</h2>
+<p>Do not use this package as the only authority for paid rewards. The client can start a purchase flow, but the backend must verify receipts and enforce duplicate transaction protection.</p>
+<p>If your game has no backend and grants valuable paid currency or inventory directly on the client, the design is not production-safe. Treat that as a prototype-only setup.</p>
 <h2 id="features">Features</h2>
 <ul>
 <li>Google Play and Apple App Store purchase flow integration</li>
@@ -368,7 +380,50 @@ void OnItemGranted(string productId)
 <li>Enable <strong>Force Apple Sandbox</strong> only during development; disable it in release builds.</li>
 <li><strong>Current User ID</strong> must be set before any purchase is initiated — verification is aborted if it is empty.</li>
 <li>The in-memory <code>_grantedTransactionIds</code> set prevents duplicate rewards within a session but is cleared on app restart. Ensure your backend handles <code>AlreadyProcessed</code> responses correctly.</li>
+<li>Treat the backend as the final source of truth for reward grants, subscriptions, refunds, and duplicate transaction handling.</li>
 </ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IapManager</code> compiles but purchases are disabled</td>
+<td>Unity Purchasing or Unity Services Core is missing</td>
+<td>Install the required packages from Unity Registry.</td>
+</tr>
+<tr>
+<td>Purchase starts but reward is not granted</td>
+<td>Backend response does not set <code>ShouldGrantReward</code></td>
+<td>Check backend verification response and transaction state.</td>
+</tr>
+<tr>
+<td>Same purchase grants reward twice after app restart</td>
+<td>Duplicate prevention exists only in memory on the client</td>
+<td>Enforce idempotency on the backend by transaction ID.</td>
+</tr>
+<tr>
+<td>Apple sandbox purchase behaves like production</td>
+<td>Sandbox flags are not configured correctly</td>
+<td>Check debug build state, <code>Use Debug Build For Apple Sandbox</code>, and <code>Force Apple Sandbox</code>.</td>
+</tr>
+<tr>
+<td>API tester reaches wrong server</td>
+<td><code>Server URL</code> still uses the default placeholder</td>
+<td>Set a real backend URL in <code>IapSetupConfig</code>.</td>
+</tr>
+<tr>
+<td>Product not found</td>
+<td>Store console product ID does not match local catalog</td>
+<td>Compare the store product ID with the <code>IapSetupConfig</code> product catalog.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="related-documentation">Related Documentation</h2>
 <ul>
 <li><a href="quick_start.html">Quick Start</a></li>

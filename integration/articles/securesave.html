@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
-      <link rel="stylesheet" href="../public/main.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
+      <link rel="stylesheet" href="../public/main.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=189554f7a85dcd486e2c9760d83edcceaf77c607"></script>
+      <script type="module" src="./../public/docfx.min.js?v=0c0634cdb4c939fa7fe3291344c8a06303833caa"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -89,10 +89,15 @@
 <p>Server-authoritative save system for Unity using <strong>Unity Gaming Services (UGS)</strong>.<br>
 All write operations are validated by a Cloud Code script before being committed to Cloud Save.<br>
 Reads are performed directly via the Cloud Save SDK on the client.</p>
+<blockquote>
+<p><strong>Clarification:</strong> OSL Secure Save is not a local encrypted save-file package. It is designed for server-validated Cloud Save writes through Unity Cloud Code.</p>
+</blockquote>
 <hr>
 <h2 id="table-of-contents">Table of Contents</h2>
 <ol>
 <li><a href="#overview">Overview</a></li>
+<li><a href="#who-should-use-this">Who Should Use This</a></li>
+<li><a href="#when-not-to-use-this">When Not to Use This</a></li>
 <li><a href="#architecture">Architecture</a></li>
 <li><a href="#requirements">Requirements</a></li>
 <li><a href="#ugs-project-setup">UGS Project Setup</a></li>
@@ -102,6 +107,7 @@ Reads are performed directly via the Cloud Save SDK on the client.</p>
 <li><a href="#assembly-definition-setup">Assembly Definition Setup</a></li>
 <li><a href="#using-oslsavemanager">Using OSLSaveManager</a></li>
 <li><a href="#demo-scene">Demo Scene</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
 </ol>
 <hr>
 <h2 id="overview">Overview</h2>
@@ -112,6 +118,17 @@ Reads are performed directly via the Cloud Save SDK on the client.</p>
 <li><strong>Delta validation</strong> — for <code>AddOnly</code> keys, the increment cannot exceed <code>MaxDelta</code></li>
 <li><strong>Operation validation</strong> — each key is locked to <code>AddOnly</code>, <code>Replace</code>, or <code>Both</code></li>
 </ul>
+<h2 id="who-should-use-this">Who Should Use This</h2>
+<p>Use OSL Secure Save when your project needs:</p>
+<ul>
+<li>Server-side validation before committing player save changes</li>
+<li>Guardrails against simple client-side currency, level, or inventory tampering</li>
+<li>Unity Gaming Services based Cloud Code and Cloud Save integration</li>
+<li>Rule-driven validation that can be updated without rebuilding the client</li>
+</ul>
+<h2 id="when-not-to-use-this">When Not to Use This</h2>
+<p>Do not use this package when you need purely offline local saves with no network dependency. Reads can be client-side through Cloud Save, but writes depend on Unity Cloud Code.</p>
+<p>This package also does not replace a full custom authoritative backend for complex economies, trading, multiplayer inventories, fraud review, or cross-platform account systems.</p>
 <hr>
 <h2 id="architecture">Architecture</h2>
 <pre><code>Client (Unity)
@@ -157,6 +174,7 @@ Reads are performed directly via the Cloud Save SDK on the client.</p>
 </tr>
 </tbody>
 </table>
+<p>This module has a newer Unity baseline than some other OSL packages because it depends on current Unity Gaming Services workflows.</p>
 <hr>
 <h2 id="ugs-project-setup">UGS Project Setup</h2>
 <ol>
@@ -202,6 +220,13 @@ Reads are performed directly via the Cloud Save SDK on the client.</p>
 </code></pre>
 <p><strong>Type:</strong> <code>0</code> = Int, <code>1</code> = Float, <code>2</code> = String, <code>3</code> = Bool<br>
 <strong>AllowedOp:</strong> <code>0</code> = AddOnly, <code>1</code> = Replace, <code>2</code> = Both</p>
+<p>Rule design tips:</p>
+<ul>
+<li>Use <code>AddOnly</code> for soft currency increments that should be bounded.</li>
+<li>Use <code>Replace</code> for state values such as level, display name, or flags.</li>
+<li>Keep <code>MaxDelta</code> small enough to catch obvious tampering but large enough for legitimate rewards.</li>
+<li>Treat Remote Config rules as operational policy, not as a substitute for business logic review.</li>
+</ul>
 <hr>
 <h2 id="assembly-definition-setup">Assembly Definition Setup</h2>
 <p>Open <code>Assets/OSL/SecureSave/Runtime/OSL.SecureSave.Runtime.asmdef</code> and ensure it references:</p>
@@ -236,6 +261,54 @@ Dictionary&lt;string, object&gt; all = await OSLSaveManager.Instance.LoadAllAsyn
 <li>Create an empty scene and attach <code>OSLBasicUsageSample</code> to a GameObject.</li>
 <li>Enter Play mode and use the on-screen buttons to test Sign In, Add Gold, and Level Up operations.</li>
 </ol>
+<hr>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Write operation fails immediately</td>
+<td>Unity Services or Authentication was not initialized</td>
+<td>Call <code>UnityServices.InitializeAsync()</code> and sign in before using <code>OSLSaveManager</code>.</td>
+</tr>
+<tr>
+<td>Cloud Code endpoint not found</td>
+<td><code>osl_master_save</code> was not deployed or name does not match</td>
+<td>Confirm the Cloud Code script name and deployment status.</td>
+</tr>
+<tr>
+<td>Value is rejected by the server</td>
+<td>Remote Config rule blocks type, range, delta, or operation</td>
+<td>Review <code>osl_secure_save_rules</code> and the operation being sent.</td>
+</tr>
+<tr>
+<td>Reads work but writes fail</td>
+<td>Client can read Cloud Save, but Cloud Code write path is misconfigured</td>
+<td>Check Cloud Code parameters, service permissions, and deployment logs.</td>
+</tr>
+<tr>
+<td>Works in Editor but fails in build</td>
+<td>UGS project/environment mismatch</td>
+<td>Confirm the Unity project is linked to the correct UGS project and environment.</td>
+</tr>
+<tr>
+<td>Players can still modify local display state</td>
+<td>UI state is not the authoritative save state</td>
+<td>Reload from Cloud Save after accepted writes and treat Cloud Code results as the source of truth.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="quick_start.html">Quick Start</a></li>
+<li><a href="core_concepts.html">Core Concepts</a></li>
+</ul>
 
 </article>
 

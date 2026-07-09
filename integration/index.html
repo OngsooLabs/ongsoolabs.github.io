@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="favicon.ico">
-      <link rel="stylesheet" href="public/docfx.min.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
-      <link rel="stylesheet" href="public/main.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
+      <link rel="stylesheet" href="public/docfx.min.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
+      <link rel="stylesheet" href="public/main.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
       <meta name="docfx:navrel" content="toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./public/docfx.min.js?v=189554f7a85dcd486e2c9760d83edcceaf77c607"></script>
+      <script type="module" src="./public/docfx.min.js?v=0c0634cdb4c939fa7fe3291344c8a06303833caa"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -73,16 +73,22 @@
 <h1 id="ongsoo-labs-integration-framework-documentation">Ongsoo Labs Integration Framework Documentation</h1>
 
 <p>Ongsoo Labs' official technical documentation for the Unity asset integration framework.
-This website is powered by DocFX and provides the latest API references and integration guides.</p>
+This website is powered by DocFX and provides integration guides, package manuals, and generated API references for the OSL Unity asset ecosystem.</p>
 <h2 id="asset-ecosystem">Asset Ecosystem</h2>
-<p>The Ongsoo Labs integration framework is designed so each module works together seamlessly.
+<p>The Ongsoo Labs integration framework is designed so each module can work independently while still sharing common runtime, configuration, and integration patterns through OSL.Core.
 Browse the asset guides below by category.</p>
 <ul>
-<li><a href="articles/deterministic.html">Deterministic</a>: Zero-dependency, zero-allocation deterministic RNG suite</li>
-<li><a href="articles/easypatcher.html">EasyPatcher</a>: Runtime resource patching and integrity validation</li>
-<li><a href="articles/sociallogin.html">SocialLogin</a>: Social platform authentication (Google, Apple, and more)</li>
-<li><a href="articles/iapclient.html">IapClient</a>: In-app purchase client module</li>
-<li><a href="articles/securesave.html">SecureSave</a>: Local data encryption and secure storage</li>
+<li><a href="articles/deterministic.html">Deterministic</a>: Deterministic RNG, weighted draws, shuffling, and replay-friendly random state management</li>
+<li><a href="articles/easypatcher.html">EasyPatcher</a>: Runtime patch distribution, manifest generation, download verification, and custom loader integration</li>
+<li><a href="articles/sociallogin.html">SocialLogin</a>: Multi-platform authentication adapters for Google, Apple, Facebook, Steam, Discord, and related backend verification flows</li>
+<li><a href="articles/iapclient.html">IapClient</a>: In-app purchase client workflow with backend receipt verification and duplicate reward protection</li>
+<li><a href="articles/securesave.html">SecureSave</a>: Server-authoritative Cloud Code and Cloud Save workflow for validated player data writes</li>
+</ul>
+<h2 id="documentation-structure">Documentation Structure</h2>
+<ul>
+<li><strong>Manuals</strong>: Setup guides, operating notes, troubleshooting, and product-specific integration instructions.</li>
+<li><strong>API Reference</strong>: Generated C# API documentation from the source repository.</li>
+<li><strong>Repository Management</strong>: Links for issue tracking, release notes, and documentation operations.</li>
 </ul>
 <h2 id="repository-management">Repository Management</h2>
 <p>Use the links below to manage documentation updates, issue tracking, release history, and project operations.</p>
@@ -91,10 +97,13 @@ Browse the asset guides below by category.</p>
 <li><a href="https://github.com/OngsooLabs/ongsoolabs.github.io/releases">Changelog &amp; Releases</a>: Published release notes and artifacts</li>
 </ul>
 <h2 id="system-requirements">System Requirements</h2>
+<p>The shared baseline for most OSL packages is:</p>
 <ul>
-<li>Unity 2021.3 LTS or later (recommended)</li>
-<li>.NET Standard 2.1 compatible environment</li>
+<li>Unity 2021.3 LTS or later</li>
+<li>.NET Standard 2.1 compatible project settings</li>
+<li>Assembly Definition (<code>.asmdef</code>) based project structure recommended</li>
 </ul>
+<p>Some modules require newer Unity or Unity Gaming Services packages. Always check the <strong>Requirements</strong> section in each module guide before importing a package into production projects.</p>
 
 </article>
 

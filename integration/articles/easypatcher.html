@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
-      <link rel="stylesheet" href="../public/main.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
+      <link rel="stylesheet" href="../public/main.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=189554f7a85dcd486e2c9760d83edcceaf77c607"></script>
+      <script type="module" src="./../public/docfx.min.js?v=0c0634cdb4c939fa7fe3291344c8a06303833caa"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -92,6 +92,8 @@ Upload your patch files from the Editor, and let players automatically download 
 <h2 id="table-of-contents">Table of Contents</h2>
 <ol>
 <li><a href="#overview">Overview</a></li>
+<li><a href="#who-should-use-this">Who Should Use This</a></li>
+<li><a href="#when-not-to-use-this">When Not to Use This</a></li>
 <li><a href="#requirements">Requirements</a></li>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#quick-start">Quick Start</a></li>
@@ -102,6 +104,7 @@ Upload your patch files from the Editor, and let players automatically download 
 <li><a href="#custom-loader-ioslloader">Custom Loader (IOSLLoader)</a></li>
 <li><a href="#publishing--installation-options">Publishing &amp; Installation Options</a></li>
 <li><a href="#frequently-asked-questions">Frequently Asked Questions</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
 </ol>
 <hr>
 <h2 id="overview">Overview</h2>
@@ -118,6 +121,18 @@ Upload your patch files from the Editor, and let players automatically download 
                      ├─▶ Download changed files
                      └─▶ IOSLLoader.InitializeAsync()
 </code></pre>
+<h2 id="who-should-use-this">Who Should Use This</h2>
+<p>Use OSL Easy Patcher when your Unity project needs:</p>
+<ul>
+<li>Runtime delivery of changed files without shipping a full client update</li>
+<li>A lightweight alternative to a full Addressables migration</li>
+<li>Manifest-based patch checks and download verification</li>
+<li>Editor-driven upload flows for local folders, GCS, S3, or Unity CCD</li>
+<li>A custom loader hook for your own asset loading strategy</li>
+</ul>
+<h2 id="when-not-to-use-this">When Not to Use This</h2>
+<p>Do not use this package as a substitute for platform store updates when native binaries, managed code, app permissions, or platform compliance metadata must change.</p>
+<p>If your project already uses Addressables and Cloud Content Delivery deeply, keep that architecture unless you specifically need this package's simpler manifest-first patch flow.</p>
 <hr>
 <h2 id="requirements">Requirements</h2>
 <table>
@@ -251,6 +266,13 @@ python -m http.server 8080
 </tr>
 </tbody>
 </table>
+<p>Security notes:</p>
+<ul>
+<li>Do not ship encryption or HMAC keys inside the Unity client.</li>
+<li>Serve production patch files over HTTPS.</li>
+<li>Verify downloaded file integrity before applying the patch.</li>
+<li>Use platform app updates for executable code, native plugins, or permission changes.</li>
+</ul>
 <hr>
 <h2 id="custom-loader-ioslloader">Custom Loader (IOSLLoader)</h2>
 <p>Implement <code>IOSLLoader</code> to use Addressables, a custom bundle system, or any other asset loading strategy:</p>
@@ -274,6 +296,53 @@ A: <code>Application.persistentDataPath/OSL/EasyPatcher/</code> by default.</p>
 A: The local <code>version.json</code> is only written after all files are verified. On next launch, the version check detects a mismatch and retries.</p>
 <p><strong>Q: Can I patch non-AssetBundle files?</strong>
 A: Yes. The patch system transfers any file type. Loading is handled by your <code>IOSLLoader</code> implementation.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Remote manifest cannot be downloaded</td>
+<td>Remote Base URL is wrong or server is not running</td>
+<td>Confirm <code>version.json</code> is reachable from a browser.</td>
+</tr>
+<tr>
+<td>Local test works but device test fails</td>
+<td>Device cannot access <code>localhost</code> on the PC</td>
+<td>Use a LAN-accessible IP or hosted test server.</td>
+</tr>
+<tr>
+<td>Files download every launch</td>
+<td>Local <code>version.json</code> is not written or verification fails</td>
+<td>Check persistent data path permissions and integrity errors.</td>
+</tr>
+<tr>
+<td>Patch applies but assets do not load</td>
+<td>Loader does not know how to load the downloaded files</td>
+<td>Implement or assign the correct <code>IOSLLoader</code>.</td>
+</tr>
+<tr>
+<td>Upload to GCS/S3/CCD fails</td>
+<td>Credentials, bucket, or permission scope is wrong</td>
+<td>Verify backend-specific access keys and write permissions.</td>
+</tr>
+<tr>
+<td>TextMeshPro UI references are missing</td>
+<td>TMP is not installed or define was not generated</td>
+<td>Install TextMeshPro or use non-TMP UI fields.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="quick_start.html">Quick Start</a></li>
+<li><a href="core_concepts.html">Core Concepts</a></li>
+</ul>
 
 </article>
 

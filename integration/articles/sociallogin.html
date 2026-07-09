@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
-      <link rel="stylesheet" href="../public/main.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
+      <link rel="stylesheet" href="../public/main.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=189554f7a85dcd486e2c9760d83edcceaf77c607"></script>
+      <script type="module" src="./../public/docfx.min.js?v=0c0634cdb4c939fa7fe3291344c8a06303833caa"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -89,6 +89,17 @@
 <p>A unified multi-platform social login solution for Unity.</p>
 <h2 id="overview">Overview</h2>
 <p>OSL Social Login provides a single, unified interface for integrating various social login platforms (Apple, Facebook, Google, Steam, Discord) into your Unity project. It abstracts specific SDK implementations behind a common interface, making it easy to selectively enable, disable, and manage platform-specific code without breaking your build.</p>
+<h2 id="who-should-use-this">Who Should Use This</h2>
+<p>Use OSL Social Login when your Unity project needs:</p>
+<ul>
+<li>One login-facing API across multiple providers</li>
+<li>Optional provider SDKs that can be enabled only when needed</li>
+<li>Build-time setup automation for Android and iOS metadata</li>
+<li>A clean separation between Unity-side login and backend-side token verification</li>
+</ul>
+<h2 id="when-not-to-use-this">When Not to Use This</h2>
+<p>This package is not a replacement for backend account security. Do not use client-side login results alone to grant account access, paid entitlements, inventory, currency, or administrator privileges.</p>
+<p>If your project supports only one provider and already has a stable first-party integration, a direct SDK integration may be simpler.</p>
 <h2 id="features">Features</h2>
 <ul>
 <li><strong>Unified Interface</strong>: Use the ISocialLoginProvider adapter to perform login operations across any supported platform with identical method signatures and callbacks.</li>
@@ -134,6 +145,8 @@ googleProvider.Signin((result) =&gt;
 <h3 id="global-security-standard">Global Security Standard</h3>
 <ul>
 <li><strong>Backend Verification is Mandatory</strong>: Never trust the Identity Token (JWT), Access Token, or Session Ticket returned directly to the Unity client. You <strong>MUST</strong> send these tokens to your secure backend server and verify them using the respective platform's Official Auth API. Relying solely on client-side authentication is a critical vulnerability.</li>
+<li><strong>Store Only Stable Account Identifiers</strong>: Provider display names, profile images, and email addresses can change. Store the verified provider user ID as the stable identity link.</li>
+<li><strong>Do Not Log Raw Tokens</strong>: Access tokens and identity tokens must not be printed to production logs.</li>
 </ul>
 <h3 id="-apple-sign-in">🍎 Apple Sign-In</h3>
 <ul>
@@ -165,6 +178,53 @@ googleProvider.Signin((result) =&gt;
 <li><strong>Zero-SDK Architecture</strong>: Handles authentication strictly via local HttpListener and browser redirection, eliminating external plugin dependencies.</li>
 <li><strong>Port Fallback &amp; Dynamic Redirect URI</strong>: Automatically probes ports from 50000 to 50009 to prevent port collision. Ensure all matching loopback addresses (e.g., <code>http://localhost:50000/</code> to <code>http://localhost:50009/</code>) are registered in the Discord Developer Portal.</li>
 <li><strong>CSRF Protection &amp; Timeouts</strong>: Generates cryptographic state tokens to verify response integrity and terminates listener execution after 180 seconds to prevent resource leakage.</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Provider class does not compile</td>
+<td>Matching SDK or scripting define is missing</td>
+<td>Import the provider SDK, then enable the provider in the setup window.</td>
+</tr>
+<tr>
+<td>Google Android login returns Status Code 10</td>
+<td>SHA-1 fingerprint is not registered</td>
+<td>Add both debug and release SHA-1 fingerprints to the Google Cloud Console.</td>
+</tr>
+<tr>
+<td>Facebook WebGL login is blocked</td>
+<td>Test page is served over HTTP</td>
+<td>Serve the page over HTTPS.</td>
+</tr>
+<tr>
+<td>Apple login returns no email after first login</td>
+<td>Apple only returns profile data once</td>
+<td>Store the email/name from the first successful sign-in if your backend needs it.</td>
+</tr>
+<tr>
+<td>Steam login fails in Editor</td>
+<td>Steam client or <code>steam_appid.txt</code> is missing</td>
+<td>Run Steam, log in, and place <code>steam_appid.txt</code> at the project root.</td>
+</tr>
+<tr>
+<td>Discord redirect fails</td>
+<td>Redirect URI or port range is not registered</td>
+<td>Register the local callback URLs for ports 50000-50009.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="quick_start.html">Quick Start</a></li>
+<li><a href="core_concepts.html">Core Concepts</a></li>
 </ul>
 
 </article>

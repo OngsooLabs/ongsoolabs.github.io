@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
-      <link rel="stylesheet" href="../public/main.css?v=189554f7a85dcd486e2c9760d83edcceaf77c607">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
+      <link rel="stylesheet" href="../public/main.css?v=0c0634cdb4c939fa7fe3291344c8a06303833caa">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=189554f7a85dcd486e2c9760d83edcceaf77c607"></script>
+      <script type="module" src="./../public/docfx.min.js?v=0c0634cdb4c939fa7fe3291344c8a06303833caa"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -86,19 +86,124 @@
         <article data-uid="">
 <h1 id="core-concepts">Core Concepts</h1>
 
-<p>Ongsoo Labs modules share a common foundation through <strong>OSL.Core</strong>.</p>
+<p>Ongsoo Labs modules share a common foundation through <strong>OSL.Core</strong> and a consistent Unity integration style.</p>
+<p>This page explains the architectural assumptions used across the documentation so each product guide can focus on its own feature area.</p>
 <h2 id="shared-runtime-foundation">Shared Runtime Foundation</h2>
-<p>OSL.Core provides reusable runtime services that reduce duplicate implementation across modules.</p>
-<h2 id="logging">Logging</h2>
-<p>The logging layer provides a consistent way to record diagnostics and runtime events in both development and production flows.</p>
-<h2 id="security-and-encryption">Security and Encryption</h2>
-<p>Core security utilities are used by data-oriented modules to protect sensitive values and reduce exposure risk.</p>
-<h2 id="network-base">Network Base</h2>
-<p>The network base layer standardizes request/response handling patterns so module-level APIs can be implemented consistently.</p>
+<p><code>OSL.Core</code> provides reusable runtime services that reduce duplicate implementation across modules.</p>
+<p>Typical shared concerns include:</p>
+<ul>
+<li>Common result and error handling patterns</li>
+<li>Logging and diagnostics</li>
+<li>Network request/response conventions</li>
+<li>Security helpers for validation, signing, encryption, or integrity checks</li>
+<li>Configuration and initialization utilities</li>
+</ul>
+<p>The goal is not to force every module into one large framework. Each module should remain usable on its own, while shared behavior stays predictable across the ecosystem.</p>
+<h2 id="module-independence">Module Independence</h2>
+<p>Each asset module should be treated as an independent product:</p>
+<table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Import only what you need</td>
+<td>Do not add unused provider SDKs or sample assemblies to production builds.</td>
+</tr>
+<tr>
+<td>Keep setup explicit</td>
+<td>Prefer setup assets, inspector fields, and editor windows over hidden global state.</td>
+</tr>
+<tr>
+<td>Separate runtime and editor code</td>
+<td>Runtime assemblies should not depend on editor-only APIs.</td>
+</tr>
+<tr>
+<td>Backend-sensitive flows stay backend-sensitive</td>
+<td>Login tokens, purchase receipts, and authoritative save writes require server-side verification where applicable.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="assembly-definition-strategy">Assembly Definition Strategy</h2>
+<p>OSL packages are designed for <code>.asmdef</code> based Unity projects.</p>
+<p>Recommended assembly layout:</p>
+<ul>
+<li><code>OSL.Core</code>: shared runtime contracts and utilities</li>
+<li><code>OSL.&lt;Module&gt;.Runtime</code>: runtime APIs used by game code</li>
+<li><code>OSL.&lt;Module&gt;.Editor</code>: editor windows, build processors, import tools, and setup helpers</li>
+<li><code>OSL.&lt;Module&gt;.Samples</code>: demo-only code and scenes</li>
+<li>Provider-specific assemblies when a module supports optional SDKs</li>
+</ul>
+<p>This keeps optional dependencies from leaking into projects that do not use them.</p>
+<h2 id="soft-dependencies-and-scripting-defines">Soft Dependencies and Scripting Defines</h2>
+<p>Some modules support platform or provider-specific features through soft dependencies.</p>
+<p>For example, a social login module can compile Google, Facebook, Apple, Steam, or Discord support only when the matching SDK and scripting define are present. This avoids forcing every supported provider into every project.</p>
+<p>When using soft dependencies:</p>
+<ol>
+<li>Import the third-party SDK first.</li>
+<li>Enable the module's provider option through its setup window or scripting define.</li>
+<li>Confirm Unity recompiles without missing namespace errors.</li>
+<li>Test the provider on an actual supported platform.</li>
+</ol>
 <h2 id="configuration-pattern">Configuration Pattern</h2>
 <p>Most modules use configuration assets and inspector-driven setup to keep runtime behavior explicit and manageable.</p>
+<p>Common configuration values include:</p>
+<ul>
+<li>Backend server base URL</li>
+<li>Environment name or project ID</li>
+<li>Store product IDs</li>
+<li>Provider client IDs and app IDs</li>
+<li>Timeout and retry settings</li>
+<li>Security keys loaded from environment variables or backend configuration</li>
+</ul>
+<p>Do not store production secrets directly inside Unity scenes, prefabs, or public source files. Client configuration is visible to users once the app is shipped.</p>
+<h2 id="logging">Logging</h2>
+<p>The logging layer provides a consistent way to record diagnostics and runtime events in both development and production flows.</p>
+<p>Good logs should answer:</p>
+<ul>
+<li>Which module emitted the event?</li>
+<li>Which setup value is missing or invalid?</li>
+<li>Is the error recoverable?</li>
+<li>What should the developer check next?</li>
+</ul>
+<p>Avoid logging access tokens, identity tokens, receipts, private keys, or raw secrets.</p>
+<h2 id="security-and-encryption">Security and Encryption</h2>
+<p>Security-sensitive OSL modules are designed around defense-in-depth rather than client trust.</p>
+<p>Important rules:</p>
+<ul>
+<li>Social login tokens must be verified by a backend server before granting account access.</li>
+<li>IAP receipts must be verified by the relevant store or a trusted backend before granting rewards.</li>
+<li>Server-authoritative save systems should validate write operations before committing player data.</li>
+<li>File patching systems should verify integrity before applying downloaded content.</li>
+</ul>
+<p>Client-side checks improve user experience, but they are not a security boundary.</p>
+<h2 id="network-base">Network Base</h2>
+<p>The network base layer standardizes request/response handling patterns so module-level APIs can be implemented consistently.</p>
+<p>Recommended behavior:</p>
+<ul>
+<li>Use explicit request and response models.</li>
+<li>Set reasonable timeouts.</li>
+<li>Treat retries as bounded and observable.</li>
+<li>Return structured result codes instead of relying only on exception text.</li>
+<li>Keep backend endpoints environment-specific.</li>
+</ul>
 <h2 id="integration-philosophy">Integration Philosophy</h2>
-<p>Each asset module is designed to work independently while still fitting into a shared ecosystem for easier long-term maintenance.</p>
+<p>The Ongsoo Labs integration framework follows a practical rule:</p>
+<blockquote>
+<p>A module should be simple enough to test in a sample scene, but structured enough to survive a production game project.</p>
+</blockquote>
+<p>That means each guide should document:</p>
+<ul>
+<li>What the module solves</li>
+<li>Who should use it</li>
+<li>When not to use it</li>
+<li>Required setup steps</li>
+<li>Security or platform-specific precautions</li>
+<li>Common troubleshooting paths</li>
+</ul>
 
 </article>
 
