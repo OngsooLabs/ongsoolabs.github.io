@@ -110,10 +110,103 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "docs/Deterministic/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Deterministic/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/EasyPatcher/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/EasyPatcher/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/IapClient/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/IapClient/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SecureSave/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SecureSave/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SocialLogin/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SocialLogin/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SocialLoginPro/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SocialLoginPro/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/TokenVerification/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/TokenVerification/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
           "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "releases/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "releases/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "releases/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "releases/toc.html"
+        },
+        ".json": {
+          "relative_path": "releases/toc.json"
         }
       },
       "version": ""

@@ -11,10 +11,10 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=18d2196376a48407f2ca0199d1a4e5e0caa0623e">
-      <link rel="stylesheet" href="../../public/main.css?v=18d2196376a48407f2ca0199d1a4e5e0caa0623e">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=e7054eb642d435631994eee0dbe4bfabfde95d13">
+      <link rel="stylesheet" href="../../public/main.css?v=e7054eb642d435631994eee0dbe4bfabfde95d13">
       <meta name="docfx:navrel" content="../../toc.html">
-      <meta name="docfx:tocrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../../releases/toc.html">
       
       
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=18d2196376a48407f2ca0199d1a4e5e0caa0623e"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=e7054eb642d435631994eee0dbe4bfabfde95d13"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -62,9 +62,23 @@
     </header>
 
     <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
 
       <div class="content">
         <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
 
           <nav id="breadcrumb"></nav>
         </div>
@@ -72,21 +86,40 @@
         <article data-uid="">
 <h1 id="changelog">Changelog</h1>
 
+<p>All notable changes to this package are documented here.
+The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>.</p>
 <h2 id="110---2026-06-16">[1.1.0] - 2026-06-16</h2>
+<h3 id="added">Added</h3>
 <ul>
-<li><strong>Added:</strong> Discord Sign-In Support (Zero-SDK) via pure HTTP loopback with port fallback (<code>50000</code>-<code>50009</code>) and cryptographic CSRF protection.</li>
-<li><strong>Changed:</strong> Centralized Discord configuration in <code>SocialLoginSetup</code> window.</li>
+<li><strong>Discord Sign-In Support (Zero-SDK)</strong>: Integrated a pure HTTP loopback auth provider with port fallback support (probing ports <code>50000</code>-<code>50009</code>), cryptographic CSRF protection, and automatic timeout handling.</li>
+<li>Centralized editor configuration in <a href="file:///c:/Project/OSLIntegration/OSL%20Integration/Assets/OSL/SocialLogin/Editor/SocialLoginSetup.cs">SocialLoginSetup.cs</a> for enabling Discord Sign-In (<code>OSL_DISCORD</code> define symbol) and setting credentials.</li>
 </ul>
+<h3 id="changed">Changed</h3>
+<ul>
+<li><strong>Fast Enter Play Mode Support</strong>: Removed static instance backing fields in <code>SocialLoginSettings</code> to comply with Unity Project Auditor rules.</li>
+<li><code>package.json</code> version bumped to <code>1.1.0</code> and description updated to include Discord support.</li>
+<li>Documentation updated (<a href="file:///c:/Project/OSLIntegration/OSL%20Integration/Assets/OSL/SocialLogin/Docs/README.md">README.md</a> and <a href="file:///c:/Project/OSLIntegration/articles/sociallogin.md">sociallogin.md</a>) with comprehensive Discord integration and loopback redirect setup guidelines.</li>
+</ul>
+<hr>
 <h2 id="101---2025-06-10">[1.0.1] - 2025-06-10</h2>
+<h3 id="added-1">Added</h3>
 <ul>
-<li><strong>Added:</strong> UPM compatibility configuration (<code>package.json</code>).</li>
-<li><strong>Fixed:</strong> Google standalone PC loopback handling for high-latency networks.</li>
+<li>UPM compatibility configuration (<code>package.json</code>).</li>
+<li>Packaging guide for UPM installation.</li>
 </ul>
-<h2 id="100---initial-release">[1.0.0] - Initial Release</h2>
+<h3 id="fixed">Fixed</h3>
 <ul>
-<li><strong>Added:</strong> Unified social login contract interfaces (<code>ISocialLoginProvider</code>).</li>
-<li><strong>Added:</strong> Platform adapters for Google, Facebook, Apple, and Steam.</li>
-<li><strong>Added:</strong> Centralized configuration UI and soft-dependency compilation architecture.</li>
+<li>Google standalone PC local loopback handling to properly process redirect callback under high-latency network conditions.</li>
+</ul>
+<hr>
+<h2 id="100---2025-01-01">[1.0.0] - 2025-01-01</h2>
+<h3 id="added-2">Added</h3>
+<ul>
+<li>Initial release.</li>
+<li>Unified social login contract interfaces (<code>ISocialLoginProvider</code> and <code>ISignin</code>).</li>
+<li>Platform authentication adapters: Google (<code>GProvider</code>), Facebook (<code>FBProvider</code>), Apple (<code>AProvider</code>), and Steam (<code>StProvider</code>).</li>
+<li>Centralized configuration UI via the <code>SocialLoginSetup</code> editor window.</li>
+<li>Soft-dependency compilation architecture with assembly definitions using conditional define constraints.</li>
 </ul>
 
 </article>
