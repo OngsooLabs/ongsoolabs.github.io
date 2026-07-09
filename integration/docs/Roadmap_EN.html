@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=40f4d621a3aeb4bd305f569f3760b5e845aa145a">
-      <link rel="stylesheet" href="../public/main.css?v=40f4d621a3aeb4bd305f569f3760b5e845aa145a">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=eeec35ef273a8bb35214e0f2785cc097f320552d">
+      <link rel="stylesheet" href="../public/main.css?v=eeec35ef273a8bb35214e0f2785cc097f320552d">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=40f4d621a3aeb4bd305f569f3760b5e845aa145a"></script>
+      <script type="module" src="./../public/docfx.min.js?v=eeec35ef273a8bb35214e0f2785cc097f320552d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -92,50 +92,83 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li>Phase 3 covers higher-maintenance expansions such as UI templates, console platforms, admin dashboards, and custom backend integrations.</li>
 <li>Before implementation, always inspect existing code and changelogs to avoid re-implementing already completed features.</li>
 <li>Agents must review <code>Current Focus</code> and the target package's <code>Done Criteria</code> before starting work.</li>
-<li><code>Current Focus</code> and <code>Phase 1</code> follow the same execution priority. <code>Current Focus</code> simply lists the immediate implementation details in a more concrete form.</li>
+<li><code>Current Focus</code> is the current execution order. Sort priority is <strong>new-version upload value → improvement impact → low demo/test burden</strong>.</li>
+<li>Items marked <code>🚀 Release Candidate</code> can be treated as new version upload candidates after implementation, testing, changelog, package version, and export validation are complete.</li>
+<li>Items marked <code>🧪 Lightweight Validation</code> do not require a new demo scene or can be verified mostly through editor, unit, or API tests.</li>
+</ol>
+<hr>
+<h2 id="-recently-completed">✅ Recently Completed</h2>
+<ol>
+<li><strong>IapClient</strong> — <code>🚀 Release Candidate: IapClient 1.1.0</code>
+<ul>
+<li>Pending Receipt local queueing completed</li>
+<li>Exponential backoff retry completed</li>
+<li>Transaction id / receipt idempotency logic completed to prevent duplicate rewards</li>
+<li>Before release: update changelog, update package version, verify purchase recovery sample flow, and validate exported package</li>
+</ul>
+</li>
 </ol>
 <hr>
 <h2 id="-current-focus">🎯 Current Focus</h2>
-<p>The current execution targets are:</p>
+<p>Current work priority is ordered primarily by release-upload value.</p>
 <ol>
-<li><p><strong><del>IapClient</del> (Completed)</strong></p>
-<ul>
-<li><del>Pending Receipt local queueing</del></li>
-<li><del>Exponential backoff retry</del></li>
-<li><del>Transaction id / receipt idempotency logic to prevent duplicate rewards</del></li>
-</ul>
-</li>
-<li><p><strong>EasyPatcher</strong></p>
+<li><p><strong>EasyPatcher — Reliable Download Recovery</strong> <code>🚀 Release Candidate: EasyPatcher 1.2.0</code></p>
 <ul>
 <li>HTTP resumable download support</li>
-<li>Final hash/HMAC verification after completion</li>
-<li>Concurrent downloads only after the resumable flow is stable</li>
+<li>Resume after interrupted downloads</li>
+<li>SHA256/HMAC verification after download completion</li>
+<li>Retry only failed files independently</li>
+<li>Add concurrent downloads only after the resumable flow is stable</li>
+<li>Reason: This is the most visible reliability improvement for the patching product.</li>
 </ul>
 </li>
-<li><p><strong>TokenVerification</strong></p>
+<li><p><strong>SecureSave — Pending Write Queue &amp; Reconnection Sync</strong> <code>🚀 Release Candidate: SecureSave 1.1.0</code></p>
 <ul>
-<li>JWKS cache validation tests</li>
+<li>Pending Write Queue implementation</li>
+<li>Automatic synchronization after reconnection</li>
+<li>Retry/failure/conflict handling policy</li>
+<li>Multi-key selective load functionality</li>
+<li>Reason: This strengthens the core reliability promise of a server-authoritative save product.</li>
+</ul>
+</li>
+<li><p><strong>TokenVerification — Deployment &amp; Baseline Security Hardening</strong> <code>🚀 Release Candidate: TokenVerification 1.1.0</code> <code>🧪 Lightweight Validation</code></p>
+<ul>
 <li>Self-contained publish profile cleanup</li>
 <li>Baseline Rate Limiting / security middleware rules</li>
-<li>Track <code>.NET 8</code> maintenance and <code>.NET 10</code> LTS compatibility path</li>
+<li>Common error response rules</li>
+<li>JWKS cache validation tests</li>
+<li>Reason: This lowers backend adoption friction and can be validated mainly through server/API tests without a new Unity demo scene.</li>
 </ul>
 </li>
-<li><p><strong>SecureSave</strong></p>
-<ul>
-<li>Clarify the offline-save concept as a <code>Pending Write Queue</code></li>
-<li>Define reconnection sync, conflict handling, and retry behavior</li>
-</ul>
-</li>
-<li><p><strong>SocialLogin / SocialLoginPro</strong></p>
+<li><p><strong>SocialLogin / SocialLoginPro — Diagnostics &amp; Auto-Login</strong> <code>🚀 Release Candidate: SocialLogin 1.2.0 / SocialLoginPro 1.3.0</code></p>
 <ul>
 <li>Auto-login and token refresh flow</li>
-<li>Editor diagnostics for Manifest, Info.plist, and Provider configuration issues</li>
-<li>Manage <code>SocialLoginPro</code> as a combined distribution of <code>SocialLogin + TokenVerification</code>, not as a separate implementation track</li>
+<li>Editor diagnostics for Manifest, Info.plist, Redirect URI, and Provider configuration issues</li>
+<li>Display Soft Dependency activation state</li>
+<li>Verify <code>SocialLoginPro</code> as a combined distribution of <code>SocialLogin + TokenVerification</code></li>
+<li>Reason: This reduces the setup failures that buyers are most likely to encounter.</li>
 </ul>
 </li>
-<li><p><strong>Deterministic Core</strong></p>
+<li><p><strong>Deterministic Core — State Serialization &amp; Reproducibility Validation</strong> <code>🚀 Release Candidate: Deterministic Core 1.1.0</code> <code>🧪 Lightweight Validation</code></p>
 <ul>
-<li>Strengthen state serialization, reproducibility tests, and sample validation before prioritizing Burst/Job optimization</li>
+<li>RNG state serialization/restore convenience</li>
+<li>Same-seed / same-stream reproducibility tests</li>
+<li>Lockstep sample state-hash validation flow</li>
+<li>Reason: This improves reliability mainly through tests and API convenience without requiring a new demo scene.</li>
+</ul>
+</li>
+<li><p><strong>EasyPatcher — Manifest Optimization &amp; S3 Compatibility</strong> <code>🚀 Release Candidate: EasyPatcher 1.3.0</code> <code>🧪 Lightweight Validation</code></p>
+<ul>
+<li>Manifest GZip/Brotli compression</li>
+<li>S3-compatible Custom Endpoint option</li>
+<li>Reason: This is a clear follow-up improvement after EasyPatcher 1.2.0 stabilizes download recovery.</li>
+</ul>
+</li>
+<li><p><strong>IapClient — Subscription &amp; Local Validation Helpers</strong> <code>🚀 Release Candidate: IapClient 1.2.0</code></p>
+<ul>
+<li>Subscription Status local caching with TTL</li>
+<li>Client-side local receipt validation option</li>
+<li>Reason: This is a follow-up feature after the IapClient 1.1.0 payment recovery release. Local validation must remain a pre-check, never a replacement for server validation.</li>
 </ul>
 </li>
 </ol>
@@ -144,7 +177,7 @@ Each package functions independently (decoupled) so developers can pick only wha
 <h3 id="phase-1-core-reliability--dx-foundation">Phase 1: Core Reliability &amp; DX (Foundation)</h3>
 <p>Goal: Make each package resilient to real-world failure cases and easy to diagnose inside Unity projects.</p>
 <ol>
-<li><p><strong><del>IapClient</del> (Completed)</strong></p>
+<li><p><strong><del>IapClient</del> (Completed)</strong> <code>🚀 Release Candidate: IapClient 1.1.0</code></p>
 <ul>
 <li><del>Pending Receipt Queue implementation</del></li>
 <li><del>Exponential backoff automatic retry</del></li>
@@ -152,23 +185,16 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li><del>Recover pending purchases after app restart</del></li>
 </ul>
 </li>
-<li><p><strong>EasyPatcher</strong></p>
+<li><p><strong>EasyPatcher</strong> <code>🚀 Release Candidate: EasyPatcher 1.2.0</code></p>
 <ul>
 <li>HTTP resumable download support</li>
 <li>Resume after interrupted downloads</li>
 <li>SHA256/HMAC verification after download completion</li>
+<li>Retry failed files independently</li>
 <li>Add concurrent downloads only after reliability validation</li>
 </ul>
 </li>
-<li><p><strong>TokenVerification</strong></p>
-<ul>
-<li>JWKS cache hardening and validation tests</li>
-<li>Self-contained publish profile cleanup</li>
-<li>Baseline Rate Limiting and security middleware rules</li>
-<li>Track <code>.NET 8</code> maintenance and <code>.NET 10</code> LTS compatibility path</li>
-</ul>
-</li>
-<li><p><strong>SecureSave</strong></p>
+<li><p><strong>SecureSave</strong> <code>🚀 Release Candidate: SecureSave 1.1.0</code></p>
 <ul>
 <li>Pending Write Queue implementation</li>
 <li>Automatic synchronization after reconnection</li>
@@ -176,7 +202,16 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li>Multi-key selective load functionality</li>
 </ul>
 </li>
-<li><p><strong>SocialLogin / SocialLoginPro</strong></p>
+<li><p><strong>TokenVerification</strong> <code>🚀 Release Candidate: TokenVerification 1.1.0</code> <code>🧪 Lightweight Validation</code></p>
+<ul>
+<li>JWKS cache hardening and validation tests</li>
+<li>Self-contained publish profile cleanup</li>
+<li>Baseline Rate Limiting and security middleware rules</li>
+<li>Common error response rules</li>
+<li>Track <code>.NET 8</code> maintenance and <code>.NET 10</code> LTS compatibility path</li>
+</ul>
+</li>
+<li><p><strong>SocialLogin / SocialLoginPro</strong> <code>🚀 Release Candidate: SocialLogin 1.2.0 / SocialLoginPro 1.3.0</code></p>
 <ul>
 <li>Auto-login and token refresh manager</li>
 <li>Editor diagnostics tooling</li>
@@ -185,7 +220,7 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li>Verify <code>SocialLoginPro</code> as a <code>SocialLogin + TokenVerification</code> combined distribution</li>
 </ul>
 </li>
-<li><p><strong>Deterministic Core</strong></p>
+<li><p><strong>Deterministic Core</strong> <code>🚀 Release Candidate: Deterministic Core 1.1.0</code> <code>🧪 Lightweight Validation</code></p>
 <ul>
 <li>RNG state serialization/restore convenience</li>
 <li>Same-seed / same-stream reproducibility test coverage</li>
@@ -198,45 +233,46 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li>Payment, save, and patch workflows must be recoverable after network interruption, app restart, or reconnection.</li>
 <li>At least one sample or test must validate each critical failure scenario.</li>
 <li>Configuration mistakes must be diagnosable through Editor tooling or clear logs.</li>
+<li><code>🚀 Release Candidate</code> items are only considered upload candidates after changelog and package version updates are also complete.</li>
 </ul>
 <h3 id="phase-2-advanced-logic--optimization">Phase 2: Advanced Logic &amp; Optimization</h3>
 <p>Goal: Add performance improvements, convenience features, and advanced validation logic on top of stable Phase 1 workflows.</p>
 <ol>
-<li><p><strong>IapClient</strong></p>
+<li><p><strong>IapClient</strong> <code>🚀 Release Candidate: IapClient 1.2.0</code></p>
 <ul>
 <li>Subscription Status local caching with TTL</li>
 <li>Client-side local receipt validation option</li>
 <li>Keep local validation as a pre-check or UX helper, never as a replacement for server verification</li>
 </ul>
 </li>
-<li><p><strong>EasyPatcher</strong></p>
+<li><p><strong>EasyPatcher</strong> <code>🚀 Release Candidate: EasyPatcher 1.3.0</code> <code>🧪 Lightweight Validation</code></p>
 <ul>
-<li>Manifest GZip/Brotli compression</li>
+<li>Manifest (version.json) GZip/Brotli compression support</li>
 <li>S3-compatible Custom Endpoint option</li>
 <li>Binary Diffing should begin as feasibility validation or a feature-flagged experiment, not as an immediate core feature</li>
 </ul>
 </li>
-<li><p><strong>TokenVerification</strong></p>
+<li><p><strong>TokenVerification</strong> <code>🚀 Release Candidate: TokenVerification 1.2.0</code></p>
 <ul>
 <li>Provider validation hardening</li>
 <li>Structured error response and audit-log format</li>
 <li>Advanced Rate Limiting policies</li>
 </ul>
 </li>
-<li><p><strong>SecureSave</strong></p>
+<li><p><strong>SecureSave</strong> <code>🚀 Release Candidate: SecureSave 1.2.0</code></p>
 <ul>
 <li>Regex and Whitelist validation rules</li>
 <li>Local unit testing utility for Cloud Code scripts</li>
 </ul>
 </li>
-<li><p><strong>SocialLogin / SocialLoginPro</strong></p>
+<li><p><strong>SocialLogin / SocialLoginPro</strong> <code>🚀 Release Candidate: SocialLogin 1.3.0 / SocialLoginPro 1.4.0</code></p>
 <ul>
 <li>Mock Social Login Provider for Editor</li>
 <li>Better Provider-specific testing convenience</li>
 <li>Verify combined <code>SocialLoginPro</code> sample flow</li>
 </ul>
 </li>
-<li><p><strong>Deterministic Core</strong></p>
+<li><p><strong>Deterministic Core</strong> <code>🚀 Release Candidate: Deterministic Core 1.2.0</code></p>
 <ul>
 <li>Burst Compiler and C# Job System support</li>
 <li>Soft Pity logic</li>
@@ -262,6 +298,7 @@ Each package functions independently (decoupled) so developers can pick only wha
 <ul>
 <li>Start only after core module reliability is sufficiently proven.</li>
 <li>Prioritize UI/platform expansions based on actual sales signal, user requests, or usage frequency.</li>
+<li>Treat breaking API or package-structure changes as possible major-version candidates.</li>
 </ul>
 <hr>
 <h2 id="1-deterministic-core">1. Deterministic Core</h2>
@@ -273,7 +310,7 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li>Fixed-Point Math and Noise can expand the product scope too aggressively and increase maintenance cost.</li>
 <li>Math/probability modules require strong tests before new feature expansion.</li>
 </ul>
-<h3 id="priority-1-core-reproducibility--usability">Priority 1: Core Reproducibility &amp; Usability</h3>
+<h3 id="priority-1-core-reproducibility--usability--release-candidate-deterministic-core-110--lightweight-validation">Priority 1: Core Reproducibility &amp; Usability <code>🚀 Release Candidate: Deterministic Core 1.1.0</code> <code>🧪 Lightweight Validation</code></h3>
 <ul>
 <li>[ ] Add RNG state serialization convenience features</li>
 <li>[ ] Strengthen same-seed / same-stream reproducibility tests</li>
@@ -283,8 +320,9 @@ Each package functions independently (decoupled) so developers can pick only wha
 <ul>
 <li>Seed, stream, and restored state must produce deterministic results covered by tests.</li>
 <li>The sample must make synchronization failure clearly visible to the user.</li>
+<li>Consider this a <code>1.1.0</code> release candidate after changelog, package version, and export validation are complete.</li>
 </ul>
-<h3 id="priority-2-performance--mathematical-extensions">Priority 2: Performance &amp; Mathematical Extensions</h3>
+<h3 id="priority-2-performance--mathematical-extensions--release-candidate-deterministic-core-120">Priority 2: Performance &amp; Mathematical Extensions <code>🚀 Release Candidate: Deterministic Core 1.2.0</code></h3>
 <ul>
 <li>[ ] Burst Compiler and C# Job System support</li>
 <li>[ ] Soft Pity logic implementation</li>
@@ -305,7 +343,7 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li>Deployment convenience, baseline security middleware, and error diagnostics should come before adding more provider features.</li>
 <li>If a provider already exists according to the changelog, the roadmap should not list it again as a new provider-addition task.</li>
 </ul>
-<h3 id="priority-1-backend-reliability--deployment-convenience">Priority 1: Backend Reliability &amp; Deployment Convenience</h3>
+<h3 id="priority-1-backend-reliability--deployment-convenience--release-candidate-tokenverification-110--lightweight-validation">Priority 1: Backend Reliability &amp; Deployment Convenience <code>🚀 Release Candidate: TokenVerification 1.1.0</code> <code>🧪 Lightweight Validation</code></h3>
 <ul>
 <li>[ ] Strengthen JWKS in-memory cache tests</li>
 <li>[ ] Clean up self-contained executable and Visual Studio Publish Profile support</li>
@@ -317,8 +355,9 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li>The server must run locally through <code>dotnet run</code> or a self-contained executable.</li>
 <li>JWKS cache refresh/expiration/failure cases must be observable through tests or logs.</li>
 <li>Invalid requests must return consistent error responses.</li>
+<li>Consider this a <code>1.1.0</code> release candidate after changelog, package version, and export validation are complete.</li>
 </ul>
-<h3 id="priority-2-provider-validation-hardening">Priority 2: Provider Validation Hardening</h3>
+<h3 id="priority-2-provider-validation-hardening--release-candidate-tokenverification-120">Priority 2: Provider Validation Hardening <code>🚀 Release Candidate: TokenVerification 1.2.0</code></h3>
 <ul>
 <li>[ ] Organize provider-specific validation options</li>
 <li>[ ] Add structured audit-log format</li>
@@ -339,7 +378,7 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li>UGS Cloud Code, Cloud Save, and Remote Config dependencies create many possible setup-failure points.</li>
 <li>Conflict handling must be explicit to preserve user trust in saved data.</li>
 </ul>
-<h3 id="priority-1-pending-write-queue--load-optimization">Priority 1: Pending Write Queue &amp; Load Optimization</h3>
+<h3 id="priority-1-pending-write-queue--load-optimization--release-candidate-securesave-110">Priority 1: Pending Write Queue &amp; Load Optimization <code>🚀 Release Candidate: SecureSave 1.1.0</code></h3>
 <ul>
 <li>[ ] Add Pending Write Queue and automatic synchronization</li>
 <li>[ ] Define retry/failure/conflict handling policy</li>
@@ -350,8 +389,9 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li>Writes made while offline must be processed in order after reconnection.</li>
 <li>Failed writes must remain visible to the user or be safely retried.</li>
 <li>Cloud Code validation failures and network failures must be distinguishable.</li>
+<li>Consider this a <code>1.1.0</code> release candidate after changelog, package version, and export validation are complete.</li>
 </ul>
-<h3 id="priority-2-validation-rule-expansion">Priority 2: Validation Rule Expansion</h3>
+<h3 id="priority-2-validation-rule-expansion--release-candidate-securesave-120">Priority 2: Validation Rule Expansion <code>🚀 Release Candidate: SecureSave 1.2.0</code></h3>
 <ul>
 <li>[ ] Add Regex and Whitelist validation rules</li>
 <li>[ ] Add Local Unit Testing Utility for Cloud Code scripts</li>
@@ -371,22 +411,24 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li>File-level resume, verification, and retry flows must be solid before delta patching.</li>
 <li>Concurrent downloads are performance features, but they can amplify cache and failure-handling bugs if added too early.</li>
 </ul>
-<h3 id="priority-1-reliable-download-recovery">Priority 1: Reliable Download Recovery</h3>
+<h3 id="priority-1-reliable-download-recovery--release-candidate-easypatcher-120">Priority 1: Reliable Download Recovery <code>🚀 Release Candidate: EasyPatcher 1.2.0</code></h3>
 <ul>
 <li>[ ] HTTP Resumable Download support</li>
 <li>[ ] SHA256/HMAC verification after download completion</li>
+<li>[ ] Retry failed files independently</li>
 <li>[ ] Add concurrent downloads only after the resumable flow is stable</li>
-<li>[ ] Add S3-compatible Custom Endpoint URL option</li>
 </ul>
 <p><strong>Done Criteria:</strong></p>
 <ul>
 <li>Interrupted downloads must resume from partial files.</li>
 <li>Resumed files must pass final hash/HMAC verification.</li>
 <li>Failed files must be retryable independently.</li>
+<li>Consider this a <code>1.2.0</code> release candidate after changelog, package version, and export validation are complete.</li>
 </ul>
-<h3 id="priority-2-patch-efficiency-optimization">Priority 2: Patch Efficiency Optimization</h3>
+<h3 id="priority-2-patch-efficiency-optimization--release-candidate-easypatcher-130--lightweight-validation">Priority 2: Patch Efficiency Optimization <code>🚀 Release Candidate: EasyPatcher 1.3.0</code> <code>🧪 Lightweight Validation</code></h3>
 <ul>
 <li>[ ] Manifest (version.json) GZip/Brotli compression support</li>
+<li>[ ] Add S3-compatible Custom Endpoint URL option</li>
 <li>[ ] Delta Patching / Binary Diffing feasibility validation</li>
 <li>[ ] Keep Binary Diffing behind a feature flag or experiment branch before promoting it to a core feature</li>
 </ul>
@@ -405,20 +447,21 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li>Local receipt validation must never replace server validation. It should only be used as a pre-check or UX helper.</li>
 <li>Pending Receipt Queue must be designed together with transaction idempotency.</li>
 </ul>
-<h3 id="priority-1-payment-loss-prevention--retry">Priority 1: Payment Loss Prevention &amp; Retry</h3>
+<h3 id="priority-1-payment-loss-prevention--retry--completed--release-candidate-iapclient-110">Priority 1: Payment Loss Prevention &amp; Retry <code>✅ Completed</code> <code>🚀 Release Candidate: IapClient 1.1.0</code></h3>
 <ul>
-<li>[ ] Local queueing for Pending Receipts</li>
-<li>[ ] Exponential Backoff network retry logic</li>
-<li>[ ] Define transaction id / receipt-based idempotency rules</li>
-<li>[ ] Recover pending purchases after app restart</li>
+<li>[x] Local queueing for Pending Receipts</li>
+<li>[x] Exponential Backoff network retry logic</li>
+<li>[x] Define transaction id / receipt-based idempotency rules</li>
+<li>[x] Recover pending purchases after app restart</li>
 </ul>
 <p><strong>Done Criteria:</strong></p>
 <ul>
 <li>Rewards must not be lost when server validation or the network temporarily fails after purchase success.</li>
 <li>The same transaction must not grant duplicate rewards.</li>
 <li>Pending receipts must survive app restart and resume verification.</li>
+<li>Consider this a <code>1.1.0</code> release candidate after changelog, package version, and export validation are complete.</li>
 </ul>
-<h3 id="priority-2-subscription--local-validation-helpers">Priority 2: Subscription &amp; Local Validation Helpers</h3>
+<h3 id="priority-2-subscription--local-validation-helpers--release-candidate-iapclient-120">Priority 2: Subscription &amp; Local Validation Helpers <code>🚀 Release Candidate: IapClient 1.2.0</code></h3>
 <ul>
 <li>[ ] Subscription Status local caching with TTL</li>
 <li>[ ] Client-side Local Receipt Validation option</li>
@@ -439,7 +482,7 @@ SocialLoginPro is a combined distribution package that includes SocialLogin and 
 <li>Diagnostic tooling can provide more buyer value than adding another provider too early.</li>
 <li>SocialLoginPro should avoid duplicate code and remain a packaging/documentation/sample-level combination of SocialLogin and TokenVerification.</li>
 </ul>
-<h3 id="priority-1-core-usability--diagnostics">Priority 1: Core Usability &amp; Diagnostics</h3>
+<h3 id="priority-1-core-usability--diagnostics--release-candidate-sociallogin-120--socialloginpro-130">Priority 1: Core Usability &amp; Diagnostics <code>🚀 Release Candidate: SocialLogin 1.2.0 / SocialLoginPro 1.3.0</code></h3>
 <ul>
 <li>[ ] Auto-Login and Token Refresh Manager</li>
 <li>[ ] Editor Diagnostics Utility</li>
@@ -451,8 +494,9 @@ SocialLoginPro is a combined distribution package that includes SocialLogin and 
 <li>Missing setup must produce diagnostics before users hit compile errors or runtime failures.</li>
 <li>Required Provider settings must be visible in the Editor.</li>
 <li>SocialLoginPro must work as a SocialLogin + TokenVerification combination without a separate implementation roadmap.</li>
+<li>Consider SocialLogin <code>1.2.0</code> and SocialLoginPro <code>1.3.0</code> release candidates after changelog, package version, and export validation are complete.</li>
 </ul>
-<h3 id="priority-2-testing-convenience">Priority 2: Testing Convenience</h3>
+<h3 id="priority-2-testing-convenience--release-candidate-sociallogin-130--socialloginpro-140">Priority 2: Testing Convenience <code>🚀 Release Candidate: SocialLogin 1.3.0 / SocialLoginPro 1.4.0</code></h3>
 <ul>
 <li>[ ] Mock Social Login Provider for Editor</li>
 <li>[ ] Add sample flow for testing UI/UX without real providers</li>
