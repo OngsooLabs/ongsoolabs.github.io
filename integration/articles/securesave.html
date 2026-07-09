@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=9227c78cad2dde7e465aae88bf93c19615eaeafa">
-      <link rel="stylesheet" href="../public/main.css?v=9227c78cad2dde7e465aae88bf93c19615eaeafa">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=851e2b2b998fa7feae63b09c0b3d3e85e44563eb">
+      <link rel="stylesheet" href="../public/main.css?v=851e2b2b998fa7feae63b09c0b3d3e85e44563eb">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=9227c78cad2dde7e465aae88bf93c19615eaeafa"></script>
+      <script type="module" src="./../public/docfx.min.js?v=851e2b2b998fa7feae63b09c0b3d3e85e44563eb"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -86,62 +86,35 @@
         <article data-uid="">
 <h1 id="osl-secure-save">OSL Secure Save</h1>
 
-<p>Server-authoritative save system for Unity using <strong>Unity Gaming Services (UGS)</strong>.<br>
-All write operations are validated by a Cloud Code script before being committed to Cloud Save.<br>
-Reads are performed directly via the Cloud Save SDK on the client.</p>
+<p>A Unity Gaming Services based save helper for projects that want validated Cloud Save write flows.</p>
 <blockquote>
-<p><strong>Clarification:</strong> OSL Secure Save is not a local encrypted save-file package. It is designed for server-validated Cloud Save writes through Unity Cloud Code.</p>
+<p><strong>Clarification:</strong> OSL Secure Save is not a local encrypted save-file package. It is designed around Unity Cloud Save and Cloud Code based validation.</p>
 </blockquote>
 <hr>
 <h2 id="table-of-contents">Table of Contents</h2>
 <ol>
 <li><a href="#overview">Overview</a></li>
 <li><a href="#who-should-use-this">Who Should Use This</a></li>
-<li><a href="#when-not-to-use-this">When Not to Use This</a></li>
-<li><a href="#architecture">Architecture</a></li>
 <li><a href="#requirements">Requirements</a></li>
 <li><a href="#ugs-project-setup">UGS Project Setup</a></li>
 <li><a href="#unity-package-setup">Unity Package Setup</a></li>
-<li><a href="#cloud-code-endpoint-deployment">Cloud Code Endpoint Deployment</a></li>
-<li><a href="#remote-config-setup-optional">Remote Config Setup (Optional)</a></li>
-<li><a href="#assembly-definition-setup">Assembly Definition Setup</a></li>
+<li><a href="#basic-setup">Basic Setup</a></li>
 <li><a href="#using-oslsavemanager">Using OSLSaveManager</a></li>
 <li><a href="#demo-scene">Demo Scene</a></li>
 <li><a href="#troubleshooting">Troubleshooting</a></li>
 </ol>
 <hr>
 <h2 id="overview">Overview</h2>
-<p>OSL Secure Save prevents client-side cheating by routing all save operations through a Cloud Code endpoint (<code>osl_master_save</code>). The endpoint enforces:</p>
-<ul>
-<li><strong>Type validation</strong> — value must match the declared type for that key</li>
-<li><strong>Range validation</strong> — value must fall within <code>MinValue</code>/<code>MaxValue</code></li>
-<li><strong>Delta validation</strong> — for <code>AddOnly</code> keys, the increment cannot exceed <code>MaxDelta</code></li>
-<li><strong>Operation validation</strong> — each key is locked to <code>AddOnly</code>, <code>Replace</code>, or <code>Both</code></li>
-</ul>
+<p>OSL Secure Save provides a Unity-side API for save reads and writes that can be validated through Unity Gaming Services.</p>
+<p>This public guide covers package installation and basic Unity-side integration only. Project-specific validation rules, service operation policies, live configuration, and economy decisions should be kept in private project documentation.</p>
 <h2 id="who-should-use-this">Who Should Use This</h2>
 <p>Use OSL Secure Save when your project needs:</p>
 <ul>
-<li>Server-side validation before committing player save changes</li>
-<li>Guardrails against simple client-side currency, level, or inventory tampering</li>
-<li>Unity Gaming Services based Cloud Code and Cloud Save integration</li>
-<li>Rule-driven validation that can be updated without rebuilding the client</li>
+<li>Unity Cloud Save based player data storage</li>
+<li>Unity Cloud Code based write validation</li>
+<li>Simple typed save helpers for common player data values</li>
+<li>A sample scene for checking the basic save flow</li>
 </ul>
-<h2 id="when-not-to-use-this">When Not to Use This</h2>
-<p>Do not use this package when you need purely offline local saves with no network dependency. Reads can be client-side through Cloud Save, but writes depend on Unity Cloud Code.</p>
-<p>This package also does not replace a full custom authoritative backend for complex economies, trading, multiplayer inventories, fraud review, or cross-platform account systems.</p>
-<hr>
-<h2 id="architecture">Architecture</h2>
-<pre><code>Client (Unity)
-  │
-  ├─ Write
-  │     └─► OSLSaveManager.AddInt / SetInt / SetString / SetBool
-  │               └─► CloudCodeService.CallEndpointAsync(&quot;osl_master_save&quot;)
-  │                         └─► [Server] Load rules → Validate → CloudSave.setItem()
-  │
-  └─ Read
-        └─► OSLSaveManager.GetAsync&lt;T&gt; / LoadAllAsync
-                  └─► CloudSaveService.Instance.Data.Player.LoadAllAsync()
-</code></pre>
 <hr>
 <h2 id="requirements">Requirements</h2>
 <table>
@@ -200,43 +173,15 @@ Reads are performed directly via the Cloud Save SDK on the client.</p>
 <li><code>Remote Config</code> (<code>com.unity.services.remoteconfig</code>) — optional</li>
 </ul>
 <hr>
-<h2 id="cloud-code-endpoint-deployment">Cloud Code Endpoint Deployment</h2>
+<h2 id="basic-setup">Basic Setup</h2>
 <ol>
-<li>Go to <strong>Dashboard → Cloud Code → Scripts</strong> and click <strong>Create Script</strong>, name it <code>osl_master_save</code>.</li>
-<li>Add parameters <code>key</code> (String, required) and <code>operation</code> (String, required). Do <strong>not</strong> add <code>value</code> as a typed parameter.</li>
-<li>Paste the contents of <code>Assets/OSL/SecureSave/CloudCode/osl_master_save.js</code> into the script editor.</li>
-<li>Click <strong>Save &amp; Deploy</strong>.</li>
+<li>Configure your Unity Gaming Services project.</li>
+<li>Deploy the required Cloud Code script included with the package.</li>
+<li>Configure any validation data required by your project.</li>
+<li>Initialize Unity Services before using the save manager.</li>
+<li>Sign in through Unity Authentication before making save requests.</li>
 </ol>
-<hr>
-<h2 id="remote-config-setup-optional">Remote Config Setup (Optional)</h2>
-<p>Add a key <code>osl_secure_save_rules</code> of type JSON to Remote Config with your rule set:</p>
-<pre><code class="lang-json">{
-  &quot;Rules&quot;: [
-    { &quot;Key&quot;: &quot;gold&quot;,       &quot;Type&quot;: 0, &quot;MinValue&quot;: 0, &quot;MaxValue&quot;: 9999999, &quot;MaxDelta&quot;: 10000, &quot;AllowedOp&quot;: 0 },
-    { &quot;Key&quot;: &quot;level&quot;,      &quot;Type&quot;: 0, &quot;MinValue&quot;: 1, &quot;MaxValue&quot;: 999,     &quot;MaxDelta&quot;: 1,     &quot;AllowedOp&quot;: 1 },
-    { &quot;Key&quot;: &quot;playerName&quot;, &quot;Type&quot;: 2, &quot;MinValue&quot;: 0, &quot;MaxValue&quot;: 0,       &quot;MaxDelta&quot;: 0,     &quot;AllowedOp&quot;: 1 }
-  ]
-}
-</code></pre>
-<p><strong>Type:</strong> <code>0</code> = Int, <code>1</code> = Float, <code>2</code> = String, <code>3</code> = Bool<br>
-<strong>AllowedOp:</strong> <code>0</code> = AddOnly, <code>1</code> = Replace, <code>2</code> = Both</p>
-<p>Rule design tips:</p>
-<ul>
-<li>Use <code>AddOnly</code> for soft currency increments that should be bounded.</li>
-<li>Use <code>Replace</code> for state values such as level, display name, or flags.</li>
-<li>Keep <code>MaxDelta</code> small enough to catch obvious tampering but large enough for legitimate rewards.</li>
-<li>Treat Remote Config rules as operational policy, not as a substitute for business logic review.</li>
-</ul>
-<hr>
-<h2 id="assembly-definition-setup">Assembly Definition Setup</h2>
-<p>Open <code>Assets/OSL/SecureSave/Runtime/OSL.SecureSave.Runtime.asmdef</code> and ensure it references:</p>
-<pre><code class="lang-json">{
-  &quot;references&quot;: [
-    &quot;GUID:f220a277eefae4d3aa9e31c2b43bb307&quot;,
-    &quot;GUID:be0d2672886cc45b2bcea5a5053a5347&quot;
-  ]
-}
-</code></pre>
+<p>Keep live validation details and service operation rules in private project documentation.</p>
 <hr>
 <h2 id="using-oslsavemanager">Using OSLSaveManager</h2>
 <h3 id="initialization">Initialization</h3>
@@ -250,7 +195,7 @@ await OSLSaveManager.Instance.SetString(&quot;playerName&quot;, &quot;Hero&quot;
 await OSLSaveManager.Instance.SetBool(&quot;tutorialDone&quot;, true);
 </code></pre>
 <h3 id="read-operations">Read operations</h3>
-<pre><code class="lang-csharp">int gold   = await OSLSaveManager.Instance.GetAsync&lt;int&gt;(&quot;gold&quot;, 0);
+<pre><code class="lang-csharp">int gold = await OSLSaveManager.Instance.GetAsync&lt;int&gt;(&quot;gold&quot;, 0);
 string name = await OSLSaveManager.Instance.GetAsync&lt;string&gt;(&quot;playerName&quot;, &quot;Unknown&quot;);
 Dictionary&lt;string, object&gt; all = await OSLSaveManager.Instance.LoadAllAsync();
 </code></pre>
@@ -259,7 +204,7 @@ Dictionary&lt;string, object&gt; all = await OSLSaveManager.Instance.LoadAllAsyn
 <p><code>Assets/OSL/SecureSave/Demo/OSLBasicUsageSample.cs</code> provides an interactive OnGUI demo.</p>
 <ol>
 <li>Create an empty scene and attach <code>OSLBasicUsageSample</code> to a GameObject.</li>
-<li>Enter Play mode and use the on-screen buttons to test Sign In, Add Gold, and Level Up operations.</li>
+<li>Enter Play mode and use the on-screen buttons to test sign-in and sample save operations.</li>
 </ol>
 <hr>
 <h2 id="troubleshooting">Troubleshooting</h2>
@@ -273,34 +218,24 @@ Dictionary&lt;string, object&gt; all = await OSLSaveManager.Instance.LoadAllAsyn
 </thead>
 <tbody>
 <tr>
-<td>Write operation fails immediately</td>
-<td>Unity Services or Authentication was not initialized</td>
-<td>Call <code>UnityServices.InitializeAsync()</code> and sign in before using <code>OSLSaveManager</code>.</td>
+<td>Save operation fails immediately</td>
+<td>Unity Services or Authentication is not initialized</td>
+<td>Initialize Unity Services and sign in before using <code>OSLSaveManager</code>.</td>
 </tr>
 <tr>
-<td>Cloud Code endpoint not found</td>
-<td><code>osl_master_save</code> was not deployed or name does not match</td>
-<td>Confirm the Cloud Code script name and deployment status.</td>
+<td>Cloud Save calls fail</td>
+<td>UGS project setup is incomplete</td>
+<td>Confirm the Unity project is linked to the correct UGS project.</td>
 </tr>
 <tr>
-<td>Value is rejected by the server</td>
-<td>Remote Config rule blocks type, range, delta, or operation</td>
-<td>Review <code>osl_secure_save_rules</code> and the operation being sent.</td>
+<td>Demo scene does not work</td>
+<td>Required UGS packages are missing</td>
+<td>Install the required Unity Services packages.</td>
 </tr>
 <tr>
-<td>Reads work but writes fail</td>
-<td>Client can read Cloud Save, but Cloud Code write path is misconfigured</td>
-<td>Check Cloud Code parameters, service permissions, and deployment logs.</td>
-</tr>
-<tr>
-<td>Works in Editor but fails in build</td>
-<td>UGS project/environment mismatch</td>
-<td>Confirm the Unity project is linked to the correct UGS project and environment.</td>
-</tr>
-<tr>
-<td>Players can still modify local display state</td>
-<td>UI state is not the authoritative save state</td>
-<td>Reload from Cloud Save after accepted writes and treat Cloud Code results as the source of truth.</td>
+<td>Compile errors after import</td>
+<td>Dependency package is missing</td>
+<td>Resolve Unity package dependencies and recompile.</td>
 </tr>
 </tbody>
 </table>

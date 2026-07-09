@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=9227c78cad2dde7e465aae88bf93c19615eaeafa">
-      <link rel="stylesheet" href="../public/main.css?v=9227c78cad2dde7e465aae88bf93c19615eaeafa">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=851e2b2b998fa7feae63b09c0b3d3e85e44563eb">
+      <link rel="stylesheet" href="../public/main.css?v=851e2b2b998fa7feae63b09c0b3d3e85e44563eb">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=9227c78cad2dde7e465aae88bf93c19615eaeafa"></script>
+      <script type="module" src="./../public/docfx.min.js?v=851e2b2b998fa7feae63b09c0b3d3e85e44563eb"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -88,24 +88,22 @@
 
 <p>A unified multi-platform social login solution for Unity.</p>
 <h2 id="overview">Overview</h2>
-<p>OSL Social Login provides a single, unified interface for integrating various social login platforms (Apple, Facebook, Google, Steam, Discord) into your Unity project. It abstracts specific SDK implementations behind a common interface, making it easy to selectively enable, disable, and manage platform-specific code without breaking your build.</p>
+<p>OSL Social Login provides a single interface for integrating supported social login platforms into a Unity project. It abstracts provider-specific implementations behind a common usage pattern so selected providers can be enabled as needed.</p>
+<p>This public guide focuses on Unity-side package setup. Project-specific authentication policies, backend verification flows, and live account operation rules should be kept in private project documentation.</p>
 <h2 id="who-should-use-this">Who Should Use This</h2>
 <p>Use OSL Social Login when your Unity project needs:</p>
 <ul>
 <li>One login-facing API across multiple providers</li>
 <li>Optional provider SDKs that can be enabled only when needed</li>
-<li>Build-time setup automation for Android and iOS metadata</li>
-<li>A clean separation between Unity-side login and backend-side token verification</li>
+<li>Build-time setup support for platform metadata</li>
+<li>A clean Unity-side integration layer for social login features</li>
 </ul>
-<h2 id="when-not-to-use-this">When Not to Use This</h2>
-<p>This package is not a replacement for backend account security. Do not use client-side login results alone to grant account access, paid entitlements, inventory, currency, or administrator privileges.</p>
-<p>If your project supports only one provider and already has a stable first-party integration, a direct SDK integration may be simpler.</p>
 <h2 id="features">Features</h2>
 <ul>
-<li><strong>Unified Interface</strong>: Use the ISocialLoginProvider adapter to perform login operations across any supported platform with identical method signatures and callbacks.</li>
-<li><strong>Centralized Editor Setup</strong>: Manage all API keys and application IDs in one convenient Editor Window via Tools &gt; OSL &gt; Social Login &gt; Setup.</li>
-<li><strong>Soft Dependencies</strong>: Leveraging Assembly Definitions (asmdef) and Scripting Define Symbols (e.g., OSL_GOOGLE, OSL_FACEBOOK, OSL_DISCORD), the package safely excludes unselected SDKs from compiling.</li>
-<li><strong>Automated Build Process</strong>: Pre-built processors automatically inject required elements (e.g., AndroidManifest values, .androidlib configurations, iOS Info.plist URL schemes) dynamically during build time.</li>
+<li><strong>Unified Interface</strong>: Use provider adapters to perform login operations with a consistent style.</li>
+<li><strong>Centralized Editor Setup</strong>: Manage provider setup through an editor window.</li>
+<li><strong>Soft Dependencies</strong>: Provider-specific code can be excluded when the related SDK is not imported.</li>
+<li><strong>Build Support</strong>: Platform-specific build settings can be prepared through package tooling.</li>
 </ul>
 <h2 id="getting-started">Getting Started</h2>
 <ol>
@@ -116,68 +114,54 @@
 <li>In Unity, go to <strong>Window &gt; Package Manager</strong>, select <strong>Packages: My Assets</strong>, locate the package, download and click <strong>Import</strong>.</li>
 </ul>
 </li>
-<li><strong>Import SDKs</strong>: Import the requisite SDKs (Google Sign-In, Facebook SDK for Unity, Steamworks.NET / Facepunch) depending on your target platforms.</li>
+<li><strong>Import SDKs</strong>: Import the provider SDKs required for your target platforms.</li>
 <li><strong>Configure Settings</strong>:
 <ul>
-<li>Open Tools &gt; OSL &gt; Social Login &gt; Setup.</li>
+<li>Open <strong>Tools &gt; OSL &gt; Social Login &gt; Setup</strong>.</li>
 <li>Enable the providers you plan to use.</li>
-<li>Enter your App IDs, Client Tokens, and Client IDs.</li>
+<li>Enter the provider settings required by your project.</li>
 <li>Click <strong>Apply Settings</strong>.</li>
 </ul>
 </li>
 <li><strong>Usage Example</strong>:
-<pre><code class="lang-csharp">// Call unified facade via specific provider adapter
-var googleProvider = new GProvider(); 
-googleProvider.Signin((result) =&gt; 
+<pre><code class="lang-csharp">var googleProvider = new GProvider();
+googleProvider.Signin((result) =&gt;
 {
-    if(result.IsSuccess) 
+    if (result.IsSuccess)
     {
-        Debug.Log(&quot;Logged in successfully! Token: &quot; + result.Token);
-        // Send this Token to your Backend Server for verification!
+        Debug.Log(&quot;Login succeeded.&quot;);
     }
 });
 </code></pre>
 </li>
 </ol>
 <hr>
-<h2 id="-important-precautions--platform-specifics">⚠️ Important Precautions &amp; Platform Specifics</h2>
-<p>While the OSL package simplifies the Unity side of things, each platform maintains strict rules regarding security and implementation.</p>
-<h3 id="global-security-standard">Global Security Standard</h3>
+<h2 id="platform-notes">Platform Notes</h2>
+<p>Each provider has its own platform requirements and developer console settings. Check the relevant provider documentation when enabling a provider.</p>
+<h3 id="apple-sign-in">Apple Sign-In</h3>
 <ul>
-<li><strong>Backend Verification is Mandatory</strong>: Never trust the Identity Token (JWT), Access Token, or Session Ticket returned directly to the Unity client. You <strong>MUST</strong> send these tokens to your secure backend server and verify them using the respective platform's Official Auth API. Relying solely on client-side authentication is a critical vulnerability.</li>
-<li><strong>Store Only Stable Account Identifiers</strong>: Provider display names, profile images, and email addresses can change. Store the verified provider user ID as the stable identity link.</li>
-<li><strong>Do Not Log Raw Tokens</strong>: Access tokens and identity tokens must not be printed to production logs.</li>
+<li>Supported on iOS through native Apple authentication APIs.</li>
+<li>User profile values may not be returned on every sign-in.</li>
 </ul>
-<h3 id="-apple-sign-in">🍎 Apple Sign-In</h3>
+<h3 id="facebook-login">Facebook Login</h3>
 <ul>
-<li><strong>Supported Platforms</strong>: iOS (Native via AuthenticationServices).</li>
-<li><strong>Profile Scope Constraint</strong>: Apple only provides the user's name and email on the <strong>very first</strong> successful sign-in. Subsequent sign-ins will only return the Identity Token. Do not design your database to expect the email string on every login attempt.</li>
-<li><strong>No Silent Sign-In</strong>: Apple strictly enforces explicit user intent via FaceID/TouchID. Calling SilentSignIn() will automatically fallback to the standard SignIn() UI prompt.</li>
+<li>Supported on iOS, Android, and WebGL.</li>
+<li>WebGL integrations require a secure HTTPS page.</li>
 </ul>
-<h3 id="-facebook-login">📘 Facebook Login</h3>
+<h3 id="google-sign-in">Google Sign-In</h3>
 <ul>
-<li><strong>Supported Platforms</strong>: iOS, Android, WebGL. (PC/Standalone is explicitly excluded to comply with Meta's deprecation of desktop native OAuth flows).</li>
-<li><strong>WebGL HTTPS Requirement</strong>: Facebook's JavaScript SDK strictly requires an https:// secure connection. Running local tests on an http:// endpoint will result in Facebook blocking the login attempt entirely.</li>
+<li>Supported on iOS, Android, WebGL, and Standalone PC depending on the selected integration path.</li>
+<li>Mobile integrations may require dependency resolution through standard Unity mobile dependency tools.</li>
 </ul>
-<h3 id="-google-sign-in">🇬 Google Sign-In</h3>
+<h3 id="steamworks">Steamworks</h3>
 <ul>
-<li><strong>Supported Platforms</strong>: iOS, Android, WebGL, Standalone (PC).</li>
-<li><strong>Android SHA-1 Config</strong>: You must copy the SHA-1 fingerprints for BOTH your local Unity Debug Keystore and your Release App Signing certificate to the Google Cloud Console. Failure to do so will result in an ApiException (Status Code 10).</li>
-<li><strong>EDM4U Required</strong>: For mobile, use External Dependency Manager (EDM4U) to resolve Android (play-services-auth) and iOS (CocoaPods) library dependencies automatically.</li>
-<li><strong>PC Local Loopback</strong>: The Standalone PC module uses a local HttpListener. You must add exactly <a href="http://127.0.0.1:50000/">http://127.0.0.1:50000/</a> to the <em>Authorized redirect URIs</em> in the Google Console 'Desktop app' credentials.</li>
+<li>Supported on Standalone platforms where Steam authentication is available.</li>
+<li>Requires the Steam client and the provider-specific development setup.</li>
 </ul>
-<h3 id="-steamworks">💨 Steamworks</h3>
+<h3 id="discord">Discord</h3>
 <ul>
-<li><strong>Supported Platforms</strong>: Standalone (Windows, macOS, Linux, Steam Deck).</li>
-<li><strong>Steam Client Dependency</strong>: Steam authentication cannot happen independently. The Steam Client application MUST be installed, running, and logged into a valid account on the development PC.</li>
-<li><strong>steam_appid.txt Required</strong>: You must create a text file named exactly steam_appid.txt in the physical root folder of your project (outside Assets, near your .sln file) and enter only your API ID (e.g., 480) to test in the Unity Editor.</li>
-</ul>
-<h3 id="-discord-zero-sdk">👾 Discord (Zero-SDK)</h3>
-<ul>
-<li><strong>Supported Platforms</strong>: Standalone (Windows, macOS).</li>
-<li><strong>Zero-SDK Architecture</strong>: Handles authentication strictly via local HttpListener and browser redirection, eliminating external plugin dependencies.</li>
-<li><strong>Port Fallback &amp; Dynamic Redirect URI</strong>: Automatically probes ports from 50000 to 50009 to prevent port collision. Ensure all matching loopback addresses (e.g., <code>http://localhost:50000/</code> to <code>http://localhost:50009/</code>) are registered in the Discord Developer Portal.</li>
-<li><strong>CSRF Protection &amp; Timeouts</strong>: Generates cryptographic state tokens to verify response integrity and terminates listener execution after 180 seconds to prevent resource leakage.</li>
+<li>Supported on Standalone platforms through browser-based sign-in flow.</li>
+<li>Requires provider-side redirect URI configuration.</li>
 </ul>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <table>
@@ -192,32 +176,22 @@ googleProvider.Signin((result) =&gt;
 <tr>
 <td>Provider class does not compile</td>
 <td>Matching SDK or scripting define is missing</td>
-<td>Import the provider SDK, then enable the provider in the setup window.</td>
+<td>Import the provider SDK and enable the provider in the setup window.</td>
 </tr>
 <tr>
-<td>Google Android login returns Status Code 10</td>
-<td>SHA-1 fingerprint is not registered</td>
-<td>Add both debug and release SHA-1 fingerprints to the Google Cloud Console.</td>
+<td>WebGL login is blocked</td>
+<td>Test page is not served over HTTPS</td>
+<td>Serve the page through HTTPS.</td>
 </tr>
 <tr>
-<td>Facebook WebGL login is blocked</td>
-<td>Test page is served over HTTP</td>
-<td>Serve the page over HTTPS.</td>
+<td>Provider callback does not return</td>
+<td>Provider console setup is incomplete</td>
+<td>Recheck the provider's developer console settings.</td>
 </tr>
 <tr>
-<td>Apple login returns no email after first login</td>
-<td>Apple only returns profile data once</td>
-<td>Store the email/name from the first successful sign-in if your backend needs it.</td>
-</tr>
-<tr>
-<td>Steam login fails in Editor</td>
-<td>Steam client or <code>steam_appid.txt</code> is missing</td>
-<td>Run Steam, log in, and place <code>steam_appid.txt</code> at the project root.</td>
-</tr>
-<tr>
-<td>Discord redirect fails</td>
-<td>Redirect URI or port range is not registered</td>
-<td>Register the local callback URLs for ports 50000-50009.</td>
+<td>Build fails after enabling a provider</td>
+<td>Platform dependency is missing</td>
+<td>Install the required SDK or disable that provider.</td>
 </tr>
 </tbody>
 </table>
