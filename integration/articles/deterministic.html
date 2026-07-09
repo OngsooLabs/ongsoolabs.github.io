@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=486b027ea3117bc2d64ef654608150ea1105f527">
-      <link rel="stylesheet" href="../public/main.css?v=486b027ea3117bc2d64ef654608150ea1105f527">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=3423fd6539f73b4f5e2d8b80cfc1e76cf062823d">
+      <link rel="stylesheet" href="../public/main.css?v=3423fd6539f73b4f5e2d8b80cfc1e76cf062823d">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=486b027ea3117bc2d64ef654608150ea1105f527"></script>
+      <script type="module" src="./../public/docfx.min.js?v=3423fd6539f73b4f5e2d8b80cfc1e76cf062823d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -87,15 +87,12 @@
 <h1 id="osl-deterministic-core">OSL Deterministic Core</h1>
 
 <p>A zero-dependency, zero-allocation deterministic RNG suite for Unity.</p>
-<p>OSL Deterministic Core gives gameplay programmers a reliable foundation for any system
-that requires reproducible randomness: lockstep multiplayer, replay recording, server-authoritative
-simulations, automated QA, save-state rollback, and procedural content generation.</p>
+<p>OSL Deterministic Core gives gameplay programmers a reliable foundation for systems that require reproducible randomness, such as replay recording, deterministic simulations, automated QA, rollback-style state restoration, and procedural content generation.</p>
 <hr>
 <h2 id="table-of-contents">Table of Contents</h2>
 <ol>
 <li><a href="#overview">Overview</a></li>
 <li><a href="#who-should-use-this">Who Should Use This</a></li>
-<li><a href="#when-not-to-use-this">When Not to Use This</a></li>
 <li><a href="#requirements">Requirements</a></li>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#quick-start">Quick Start</a></li>
@@ -105,31 +102,26 @@ simulations, automated QA, save-state rollback, and procedural content generatio
 <li><a href="#pity-system">Pity System</a></li>
 <li><a href="#save--restore-state">Save &amp; Restore State</a></li>
 <li><a href="#troubleshooting">Troubleshooting</a></li>
-<li><a href="#full-documentation">Full Documentation</a></li>
 </ol>
 <hr>
 <h2 id="overview">Overview</h2>
 <p><strong>Key highlights:</strong></p>
 <ul>
-<li><strong>Deterministic by construction</strong> — same seed → same byte-for-byte sequence on every platform, every Unity version, every CPU.</li>
-<li><strong>Zero allocations on hot paths</strong> — RNG advance, dice, gacha draw, and shuffle never allocate. State save/load uses <code>Span&lt;byte&gt;</code>.</li>
-<li><strong>Zero third-party dependencies</strong> — Pure .NET Standard 2.1. No native plugins.</li>
-<li><strong>Integer-first probability</strong> — <code>RollPermille</code>, <code>RollProbability</code>, and weighted gacha use integer comparisons to avoid floating-point drift across platforms.</li>
-<li><strong>Pluggable</strong> — <code>IRandomEngine</code> and <code>IPitySystem</code> are full extension points.</li>
-<li><strong>Production tested</strong> — Ships with EditMode tests covering determinism, distribution, state round-trips, and pity semantics.</li>
+<li><strong>Deterministic by construction</strong> — the same seed produces the same sequence in supported environments.</li>
+<li><strong>Zero allocations on hot paths</strong> — RNG advance, dice, weighted draw, and shuffle operations are designed to avoid runtime allocations.</li>
+<li><strong>Zero third-party dependencies</strong> — pure .NET Standard 2.1. No native plugins.</li>
+<li><strong>Integer-first probability</strong> — weighted draws can use integer comparisons to reduce floating-point drift risk.</li>
+<li><strong>Pluggable</strong> — <code>IRandomEngine</code> and <code>IPitySystem</code> are extension points.</li>
+<li><strong>Test-friendly</strong> — includes EditMode tests for deterministic behavior, distribution checks, state round-trips, and pity semantics.</li>
 </ul>
 <h2 id="who-should-use-this">Who Should Use This</h2>
 <p>Use OSL Deterministic Core when your game or tool needs:</p>
 <ul>
-<li>Reproducible random sequences across devices and builds</li>
-<li>Lockstep simulation or rollback-style state restoration</li>
-<li>Replay recording and deterministic bug reproduction</li>
-<li>Server-authoritative random decisions that must be audited</li>
+<li>Reproducible random sequences</li>
+<li>Replay-friendly random state management</li>
+<li>Deterministic simulations</li>
 <li>Gacha, weighted draw, shuffle, or pity behavior that should be testable</li>
 </ul>
-<h2 id="when-not-to-use-this">When Not to Use This</h2>
-<p>Do not use deterministic RNG for cryptographic security, account security, token generation, password reset flows, or anything that requires unpredictable randomness.</p>
-<p>If your only requirement is casual visual randomness for particles, camera shake, or non-gameplay decoration, <code>UnityEngine.Random</code> may be sufficient.</p>
 <hr>
 <h2 id="requirements">Requirements</h2>
 <ul>
@@ -145,7 +137,7 @@ simulations, automated QA, save-state rollback, and procedural content generatio
 <li>Select <strong>Packages: My Assets</strong> from the dropdown.</li>
 <li>Locate <strong>OSL Deterministic Core</strong>, download it, and click <strong>Import</strong>.</li>
 <li>Verify that the <code>Assets/OSL/Deterministic/</code> folder is present.</li>
-<li><em>(Optional)</em> Import the <strong>Lockstep Demo</strong> sample from the Package Manager <strong>Samples</strong> section.</li>
+<li><em>(Optional)</em> Import the sample package from the Package Manager <strong>Samples</strong> section.</li>
 </ol>
 <hr>
 <h2 id="quick-start">Quick Start</h2>
@@ -159,8 +151,7 @@ var combatRng = new OSLRandom(new PCG32(seed: 0xC0FFEE, stream: 1));
 var lootRng   = new OSLRandom(new PCG32(seed: 0xC0FFEE, stream: 2));
 </code></pre>
 <blockquote>
-<p><strong>Never</strong> call <code>UnityEngine.Random</code> or <code>System.Random</code> inside deterministic code.
-Their results vary between platforms and Unity versions.</p>
+<p>Avoid mixing <code>UnityEngine.Random</code> or <code>System.Random</code> into deterministic gameplay code that relies on this package.</p>
 </blockquote>
 <hr>
 <h2 id="core-api">Core API</h2>
@@ -195,15 +186,9 @@ var table = new OSLGachaTable&lt;GachaEntry&lt;string&gt;&gt;(new []
 
 var result = table.Draw(rng);   // returns one entry, weighted by first parameter
 </code></pre>
-<p>Operational guidance:</p>
-<ul>
-<li>Keep gacha table data versioned if results must be auditable.</li>
-<li>Store the seed, stream, and draw count when reproducing player sessions.</li>
-<li>Separate independent systems into different streams to avoid accidental sequence coupling.</li>
-</ul>
 <hr>
 <h2 id="pity-system">Pity System</h2>
-<p>The pity system guarantees a rare drop within a configurable number of consecutive non-rare draws.</p>
+<p>The pity system can guarantee a rare drop within a configurable number of consecutive non-rare draws.</p>
 <pre><code class="lang-csharp">using OSL.Deterministic.Runtime.Pity;
 
 var pity = new SimpleHardPity(threshold: 90);
@@ -214,14 +199,14 @@ var pity = new SimpleHardPity(threshold: 90);
 <pre><code class="lang-csharp">Span&lt;byte&gt; buf = stackalloc byte[rng.StateSize];  // 16 bytes for PCG32
 rng.SaveState(buf);
 
-// Later — same process, same machine, or a different machine entirely.
+// Later — restore the RNG state.
 rng.LoadState(buf);
 </code></pre>
 <p>Use this to:</p>
 <ul>
-<li>Implement rollback netcode (snapshot RNG alongside simulation state).</li>
-<li>Persist mid-run state across save files.</li>
-<li>Reproduce a bug from a player's session by serializing the engine state.</li>
+<li>Restore a deterministic sequence after loading saved state.</li>
+<li>Keep replay or simulation flows consistent.</li>
+<li>Reproduce a deterministic sequence during testing.</li>
 </ul>
 <hr>
 <h2 id="troubleshooting">Troubleshooting</h2>
@@ -237,34 +222,30 @@ rng.LoadState(buf);
 <tr>
 <td>Results differ between runs</td>
 <td>Seed, stream, or call order changed</td>
-<td>Log seed, stream, and draw count for the system being tested.</td>
-</tr>
-<tr>
-<td>Results differ between client and server</td>
-<td>One side uses a different table, version, or RNG call path</td>
-<td>Version gameplay data and compare the exact draw sequence.</td>
+<td>Check the seed and the sequence of RNG calls.</td>
 </tr>
 <tr>
 <td>Replay diverges</td>
-<td>Non-deterministic API was called inside deterministic logic</td>
-<td>Remove <code>UnityEngine.Random</code>, <code>System.Random</code>, time-dependent values, and unordered iteration.</td>
+<td>Non-deterministic API was mixed into deterministic logic</td>
+<td>Avoid mixing unrelated random APIs or time-dependent values.</td>
 </tr>
 <tr>
-<td>Gacha distribution looks biased in small samples</td>
-<td>Small sample size or incorrect weight table</td>
-<td>Run automated distribution tests with a large number of draws.</td>
+<td>Weighted draws look unusual in small tests</td>
+<td>Sample size is too small</td>
+<td>Test with a larger number of draws.</td>
 </tr>
 <tr>
-<td>Rollback restores state but future results differ</td>
-<td>RNG state was not restored together with simulation state</td>
-<td>Save and load RNG state as part of the rollback snapshot.</td>
+<td>Restored state does not continue as expected</td>
+<td>RNG state was not restored with the gameplay state</td>
+<td>Save and load the RNG state together with the relevant gameplay state.</td>
 </tr>
 </tbody>
 </table>
-<hr>
-<h2 id="full-documentation">Full Documentation</h2>
-<p>For the complete API reference and the Lockstep Demo walkthrough, see the generated pages under
-<a href="/OSL%20Integration/Assets/OSL/Deterministic/README.html">OSL Integration / Assets / OSL / Deterministic</a>.</p>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="quick_start.html">Quick Start</a></li>
+<li><a href="core_concepts.html">Core Concepts</a></li>
+</ul>
 
 </article>
 

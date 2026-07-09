@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=486b027ea3117bc2d64ef654608150ea1105f527">
-      <link rel="stylesheet" href="../public/main.css?v=486b027ea3117bc2d64ef654608150ea1105f527">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=3423fd6539f73b4f5e2d8b80cfc1e76cf062823d">
+      <link rel="stylesheet" href="../public/main.css?v=3423fd6539f73b4f5e2d8b80cfc1e76cf062823d">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=486b027ea3117bc2d64ef654608150ea1105f527"></script>
+      <script type="module" src="./../public/docfx.min.js?v=3423fd6539f73b4f5e2d8b80cfc1e76cf062823d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -87,7 +87,7 @@
 <h1 id="core-concepts">Core Concepts</h1>
 
 <p>Ongsoo Labs modules share a common foundation through <strong>OSL.Core</strong> and a consistent Unity integration style.</p>
-<p>This page explains the architectural assumptions used across the documentation so each product guide can focus on its own feature area.</p>
+<p>This public page explains the general architecture style used across the asset guides. Project-specific operation rules, private workflows, credentials, deployment policies, and roadmap decisions should be documented under the private project documents, not in public <code>articles/</code> pages.</p>
 <h2 id="shared-runtime-foundation">Shared Runtime Foundation</h2>
 <p><code>OSL.Core</code> provides reusable runtime services that reduce duplicate implementation across modules.</p>
 <p>Typical shared concerns include:</p>
@@ -95,8 +95,8 @@
 <li>Common result and error handling patterns</li>
 <li>Logging and diagnostics</li>
 <li>Network request/response conventions</li>
-<li>Security helpers for validation, signing, encryption, or integrity checks</li>
 <li>Configuration and initialization utilities</li>
+<li>Shared helper APIs used by multiple packages</li>
 </ul>
 <p>The goal is not to force every module into one large framework. Each module should remain usable on its own, while shared behavior stays predictable across the ecosystem.</p>
 <h2 id="module-independence">Module Independence</h2>
@@ -111,7 +111,7 @@
 <tbody>
 <tr>
 <td>Import only what you need</td>
-<td>Do not add unused provider SDKs or sample assemblies to production builds.</td>
+<td>Do not add unused provider SDKs or sample assemblies to a project.</td>
 </tr>
 <tr>
 <td>Keep setup explicit</td>
@@ -122,8 +122,8 @@
 <td>Runtime assemblies should not depend on editor-only APIs.</td>
 </tr>
 <tr>
-<td>Backend-sensitive flows stay backend-sensitive</td>
-<td>Login tokens, purchase receipts, and authoritative save writes require server-side verification where applicable.</td>
+<td>Keep public docs product-focused</td>
+<td>Public pages should explain installation, usage, and basic troubleshooting only.</td>
 </tr>
 </tbody>
 </table>
@@ -133,14 +133,14 @@
 <ul>
 <li><code>OSL.Core</code>: shared runtime contracts and utilities</li>
 <li><code>OSL.&lt;Module&gt;.Runtime</code>: runtime APIs used by game code</li>
-<li><code>OSL.&lt;Module&gt;.Editor</code>: editor windows, build processors, import tools, and setup helpers</li>
+<li><code>OSL.&lt;Module&gt;.Editor</code>: editor windows, import tools, and setup helpers</li>
 <li><code>OSL.&lt;Module&gt;.Samples</code>: demo-only code and scenes</li>
 <li>Provider-specific assemblies when a module supports optional SDKs</li>
 </ul>
 <p>This keeps optional dependencies from leaking into projects that do not use them.</p>
 <h2 id="soft-dependencies-and-scripting-defines">Soft Dependencies and Scripting Defines</h2>
 <p>Some modules support platform or provider-specific features through soft dependencies.</p>
-<p>For example, a social login module can compile Google, Facebook, Apple, Steam, or Discord support only when the matching SDK and scripting define are present. This avoids forcing every supported provider into every project.</p>
+<p>For example, a social login module can compile provider support only when the matching SDK and scripting define are present. This avoids forcing every supported provider into every project.</p>
 <p>When using soft dependencies:</p>
 <ol>
 <li>Import the third-party SDK first.</li>
@@ -152,16 +152,15 @@
 <p>Most modules use configuration assets and inspector-driven setup to keep runtime behavior explicit and manageable.</p>
 <p>Common configuration values include:</p>
 <ul>
-<li>Backend server base URL</li>
-<li>Environment name or project ID</li>
-<li>Store product IDs</li>
+<li>Project or environment selection values</li>
+<li>Product IDs</li>
 <li>Provider client IDs and app IDs</li>
-<li>Timeout and retry settings</li>
-<li>Security keys loaded from environment variables or backend configuration</li>
+<li>Timeout settings</li>
+<li>Module-specific setup options</li>
 </ul>
-<p>Do not store production secrets directly inside Unity scenes, prefabs, or public source files. Client configuration is visible to users once the app is shipped.</p>
+<p>Do not place private credentials or live operation details in public documentation.</p>
 <h2 id="logging">Logging</h2>
-<p>The logging layer provides a consistent way to record diagnostics and runtime events in both development and production flows.</p>
+<p>The logging layer provides a consistent way to record diagnostics and runtime events during development.</p>
 <p>Good logs should answer:</p>
 <ul>
 <li>Which module emitted the event?</li>
@@ -170,40 +169,31 @@
 <li>What should the developer check next?</li>
 </ul>
 <p>Avoid logging access tokens, identity tokens, receipts, private keys, or raw secrets.</p>
-<h2 id="security-and-encryption">Security and Encryption</h2>
-<p>Security-sensitive OSL modules are designed around defense-in-depth rather than client trust.</p>
-<p>Important rules:</p>
+<h2 id="public-documentation-boundary">Public Documentation Boundary</h2>
+<p>The public integration documentation should focus on:</p>
 <ul>
-<li>Social login tokens must be verified by a backend server before granting account access.</li>
-<li>IAP receipts must be verified by the relevant store or a trusted backend before granting rewards.</li>
-<li>Server-authoritative save systems should validate write operations before committing player data.</li>
-<li>File patching systems should verify integrity before applying downloaded content.</li>
+<li>What the module does</li>
+<li>Minimum requirements</li>
+<li>Installation</li>
+<li>Basic setup</li>
+<li>Safe example usage</li>
+<li>Basic troubleshooting</li>
 </ul>
-<p>Client-side checks improve user experience, but they are not a security boundary.</p>
-<h2 id="network-base">Network Base</h2>
-<p>The network base layer standardizes request/response handling patterns so module-level APIs can be implemented consistently.</p>
-<p>Recommended behavior:</p>
+<p>The following topics belong in private project documents such as <code>docs/Project_Overview_*</code>, <code>docs/Project_Rules_*</code>, <code>docs/Roadmap_*</code>, or package-specific internal notes:</p>
 <ul>
-<li>Use explicit request and response models.</li>
-<li>Set reasonable timeouts.</li>
-<li>Treat retries as bounded and observable.</li>
-<li>Return structured result codes instead of relying only on exception text.</li>
-<li>Keep backend endpoints environment-specific.</li>
+<li>Live operation procedures</li>
+<li>Store review or release operation details</li>
+<li>Backend endpoint details</li>
+<li>Credential handling procedures</li>
+<li>Refund, abuse, fraud, or economy operation policies</li>
+<li>Internal implementation risks and mitigation plans</li>
+<li>Roadmap decisions and unpublished plans</li>
 </ul>
 <h2 id="integration-philosophy">Integration Philosophy</h2>
 <p>The Ongsoo Labs integration framework follows a practical rule:</p>
 <blockquote>
-<p>A module should be simple enough to test in a sample scene, but structured enough to survive a production game project.</p>
+<p>Public docs should help users get started safely, while private docs should carry project operation details.</p>
 </blockquote>
-<p>That means each guide should document:</p>
-<ul>
-<li>What the module solves</li>
-<li>Who should use it</li>
-<li>When not to use it</li>
-<li>Required setup steps</li>
-<li>Security or platform-specific precautions</li>
-<li>Common troubleshooting paths</li>
-</ul>
 
 </article>
 

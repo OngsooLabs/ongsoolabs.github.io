@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=486b027ea3117bc2d64ef654608150ea1105f527">
-      <link rel="stylesheet" href="../public/main.css?v=486b027ea3117bc2d64ef654608150ea1105f527">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=3423fd6539f73b4f5e2d8b80cfc1e76cf062823d">
+      <link rel="stylesheet" href="../public/main.css?v=3423fd6539f73b4f5e2d8b80cfc1e76cf062823d">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=486b027ea3117bc2d64ef654608150ea1105f527"></script>
+      <script type="module" src="./../public/docfx.min.js?v=3423fd6539f73b4f5e2d8b80cfc1e76cf062823d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -87,7 +87,7 @@
 <h1 id="quick-start">Quick Start</h1>
 
 <p>This guide helps you set up Ongsoo Labs packages quickly in a Unity project and confirms that the project is ready for the module-specific guides.</p>
-<p>Use this page as the shared setup checklist. After the baseline setup passes, continue with the guide for the package you are integrating.</p>
+<p>Use this page as the shared public setup checklist. Keep project-specific operation procedures, credentials, release rules, and roadmap decisions in private project documentation.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <table>
 <thead>
@@ -130,7 +130,7 @@
 </thead>
 <tbody>
 <tr>
-<td>Deterministic random numbers, gacha, shuffling, replay, rollback, QA reproduction</td>
+<td>Deterministic random numbers, weighted draws, shuffling, replay, rollback, or QA reproduction</td>
 <td><a href="deterministic.html">Deterministic</a></td>
 </tr>
 <tr>
@@ -138,15 +138,15 @@
 <td><a href="easypatcher.html">EasyPatcher</a></td>
 </tr>
 <tr>
-<td>Google, Apple, Facebook, Steam, Discord login integration</td>
+<td>Google, Apple, Facebook, Steam, or Discord login integration</td>
 <td><a href="sociallogin.html">SocialLogin</a></td>
 </tr>
 <tr>
-<td>In-app purchase flow with backend receipt verification</td>
+<td>In-app purchase flow integration</td>
 <td><a href="iapclient.html">IapClient</a></td>
 </tr>
 <tr>
-<td>Server-validated player save writes using Unity Gaming Services</td>
+<td>Unity Gaming Services based save flow</td>
 <td><a href="securesave.html">SecureSave</a></td>
 </tr>
 </tbody>
@@ -157,7 +157,7 @@
 <li>Open Unity and wait until script compilation completes.</li>
 <li>Install any Unity Registry or third-party SDK dependencies required by that module.</li>
 <li>Resolve Unity package dependency prompts before opening sample scenes or editor tools.</li>
-<li>Commit or back up your project before changing scripting define symbols or assembly references.</li>
+<li>Back up your project before changing scripting define symbols or assembly references.</li>
 </ol>
 <h2 id="assembly-definition-asmdef-setup">Assembly Definition (<code>asmdef</code>) Setup</h2>
 <p>Most OSL modules are split into runtime, editor, sample, and provider-specific assemblies. If your own game code uses an <code>.asmdef</code>, add references only to the assemblies you need.</p>
@@ -198,11 +198,10 @@
 <p>Most OSL packages use explicit configuration assets or editor setup windows. The common pattern is:</p>
 <ol>
 <li>Create or open the module-specific setup asset/window.</li>
-<li>Enter project IDs, server URLs, product IDs, provider credentials, or backend endpoints.</li>
-<li>Keep development, staging, and production values separate.</li>
-<li>Avoid hardcoding secrets in scenes, prefabs, or source files.</li>
+<li>Enter the project IDs, product IDs, provider IDs, URLs, or options required by the module.</li>
+<li>Keep test values separate from live project values.</li>
+<li>Avoid hardcoding secrets in scenes, prefabs, or public source files.</li>
 </ol>
-<p>For security-sensitive modules, prefer backend validation and environment-specific configuration over client-only checks.</p>
 <h2 id="verify-the-setup">Verify the Setup</h2>
 <p>Before testing the actual feature, confirm the project baseline:</p>
 <ol>
@@ -210,7 +209,7 @@
 <li>The relevant OSL menu item appears under <strong>Tools &gt; OSL</strong> when the package provides editor tooling.</li>
 <li>Any sample scene opens without missing scripts.</li>
 <li>Play Mode starts without initialization exceptions.</li>
-<li>The Console shows expected setup warnings only, not fatal configuration errors.</li>
+<li>The Console shows setup messages you can understand and act on.</li>
 </ol>
 <h2 id="common-troubleshooting">Common Troubleshooting</h2>
 <table>
@@ -245,7 +244,7 @@
 <tr>
 <td>Works in Editor but fails on device</td>
 <td>Platform-specific setup is incomplete</td>
-<td>Recheck Android manifest, iOS plist, store console, or provider console settings.</td>
+<td>Recheck the relevant platform settings.</td>
 </tr>
 </tbody>
 </table>

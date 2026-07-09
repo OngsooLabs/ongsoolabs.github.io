@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=486b027ea3117bc2d64ef654608150ea1105f527">
-      <link rel="stylesheet" href="../public/main.css?v=486b027ea3117bc2d64ef654608150ea1105f527">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=3423fd6539f73b4f5e2d8b80cfc1e76cf062823d">
+      <link rel="stylesheet" href="../public/main.css?v=3423fd6539f73b4f5e2d8b80cfc1e76cf062823d">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=486b027ea3117bc2d64ef654608150ea1105f527"></script>
+      <script type="module" src="./../public/docfx.min.js?v=3423fd6539f73b4f5e2d8b80cfc1e76cf062823d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -89,7 +89,6 @@
 <p>IapClient is a Unity package that helps integrate in-app purchase (IAP) functionality into a Unity project.</p>
 <h2 id="overview">Overview</h2>
 <p>The package provides a Unity-side purchase flow for Google Play and Apple App Store purchases, along with editor tooling and configuration assets for common setup tasks.</p>
-<p>This public guide intentionally focuses on package installation and basic Unity integration. Project-specific server, store, and live operation procedures should be managed in your own private project documentation.</p>
 <h2 id="features">Features</h2>
 <ul>
 <li>Google Play and Apple App Store purchase flow integration</li>
@@ -139,7 +138,7 @@
 <ol>
 <li>Add an empty <code>GameObject</code> to your scene and attach the <code>IapManager</code> component.</li>
 <li>Assign your <code>IapSetupConfig</code> asset to the <strong>Setup Config</strong> slot.</li>
-<li>Assign the required API/client component references shown in the Inspector.</li>
+<li>Assign the required component references shown in the Inspector.</li>
 <li>Set the current user identifier before starting a purchase flow.</li>
 </ol>
 <h2 id="basic-purchase-example">Basic Purchase Example</h2>
@@ -154,7 +153,6 @@ void OnItemGranted(string productId)
 </code></pre>
 <h2 id="editor-test-tool">Editor Test Tool</h2>
 <p>Open the editor tool via <strong>Tools &gt; OSL &gt; IAP API Tester</strong> to check basic request configuration during development.</p>
-<p>The tool is intended for development-time validation only. Keep project-specific endpoint values and live operation procedures in private project documentation.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <table>
 <thead>
