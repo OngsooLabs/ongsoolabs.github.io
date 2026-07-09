@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=42326aa22be48127c35b59c8ef64eb40905dde17">
-      <link rel="stylesheet" href="../public/main.css?v=42326aa22be48127c35b59c8ef64eb40905dde17">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=2327f4390c9a8a90795caccd1cfd86bb5a375a40">
+      <link rel="stylesheet" href="../public/main.css?v=2327f4390c9a8a90795caccd1cfd86bb5a375a40">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=42326aa22be48127c35b59c8ef64eb40905dde17"></script>
+      <script type="module" src="./../public/docfx.min.js?v=2327f4390c9a8a90795caccd1cfd86bb5a375a40"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -72,11 +72,16 @@
         <article data-uid="">
 <h1 id="project-overview">Project Overview</h1>
 
-<h2 id="project-description">Project Description</h2>
-<p>OSL Integration is a collection of Unity Asset Store packages aimed at providing robust, production-ready modules for networking, security, and social login.</p>
-<h2 id="goals">Goals</h2>
+<h2 id="-project-description--identity">💡 Project Description &amp; Identity</h2>
+<p>OSL Integration is a <strong>Modular Backend Infrastructure &amp; Architecture Suite</strong> fully optimized for the Unity Asset Store, providing robust, production-ready modules for networking, security, and social login. It is designed to guarantee zero data loss and strict server-authoritative security for commercial games.</p>
+<h2 id="-goals--core-values">🎯 Goals &amp; Core Values</h2>
 <p>To provide developers with lightweight, server-authoritative, and modular solutions without relying on bloated third-party SDKs where possible.</p>
-<h2 id="direction-architecture">Direction (Architecture)</h2>
+<ul>
+<li><strong>Zero-Loss Reliability:</strong> Offline queueing, resumable downloads, and automatic sync to prevent any data or payment loss.</li>
+<li><strong>Server-Authoritative Security:</strong> Server-side IAP validation and Cloud Code validation to strictly prevent client-side tampering.</li>
+<li><strong>Unity Developer Friendly (DX):</strong> Editor diagnostic tooling and one-click server deployments tailored for pure Unity developers without backend knowledge.</li>
+</ul>
+<h2 id="-direction-architecture">🏗️ Direction (Architecture)</h2>
 <p>The project follows a <strong>Hierarchical Core Architecture</strong> to prevent bloatware in the customer's project. Upper modules can only reference lower modules (uni-directional dependency).</p>
 <ul>
 <li><strong>Layer 0: <code>OSL.Core</code> (Shared Utility):</strong> An ultra-lightweight common module used by all assets (e.g., OSLCrypto, OSLLogger).</li>

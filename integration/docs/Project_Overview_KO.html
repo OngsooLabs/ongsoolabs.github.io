@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=42326aa22be48127c35b59c8ef64eb40905dde17">
-      <link rel="stylesheet" href="../public/main.css?v=42326aa22be48127c35b59c8ef64eb40905dde17">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=2327f4390c9a8a90795caccd1cfd86bb5a375a40">
+      <link rel="stylesheet" href="../public/main.css?v=2327f4390c9a8a90795caccd1cfd86bb5a375a40">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=42326aa22be48127c35b59c8ef64eb40905dde17"></script>
+      <script type="module" src="./../public/docfx.min.js?v=2327f4390c9a8a90795caccd1cfd86bb5a375a40"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -72,11 +72,17 @@
         <article data-uid="">
 <h1 id="프로젝트-개요">프로젝트 개요</h1>
 
-<h2 id="프로젝트-설명">프로젝트 설명</h2>
-<p>OSL Integration은 네트워킹, 보안, 소셜 로그인 등을 위한 견고하고 프로덕션 수준의 모듈을 제공하는 유니티 에셋 스토어 패키지 모음입니다.</p>
-<h2 id="목표">목표</h2>
-<p>가능한 한 무거운 서드파티 SDK에 의존하지 않고, 가볍고 서버 권한(Server-authoritative)을 가진 모듈식 솔루션을 개발자에게 제공하는 것입니다.</p>
-<h2 id="방향-아키텍처">방향 (아키텍처)</h2>
+<h2 id="-프로젝트-설명-및-정체성">💡 프로젝트 설명 및 정체성</h2>
+<p>OSL Integration은 네트워킹, 보안, 소셜 로그인 등을 위한 견고하고 프로덕션 수준의 모듈을 제공하는 <strong>유니티 에셋 스토어 전용 모듈형 백엔드 인프라 및 아키텍처 스위트</strong>입니다.
+단순한 유틸리티 모음이 아닌, 상용 게임 수준의 데이터 유실 방지와 강력한 클라이언트 변조 방어 로직을 제공합니다.</p>
+<h2 id="-목표-및-핵심-가치">🎯 목표 및 핵심 가치</h2>
+<p>가능한 한 무거운 서드파티 SDK에 의존하지 않고, 가볍고 서버 권한(Server-authoritative)을 가진 솔루션을 제공하는 것입니다.</p>
+<ul>
+<li><strong>안정성 최우선 (Zero-Loss Reliability):</strong> 오프라인 큐잉, 이어받기 등 예외 상황에서의 데이터/결제 유실 원천 차단</li>
+<li><strong>강력한 보안 (Server-Authoritative):</strong> 결제 영수증 검증, 세이브 조작 방지 등 클라이언트 변조 완벽 방어</li>
+<li><strong>유니티 개발자 친화적 (DX):</strong> 서버 지식이 없어도 쉽게 쓸 수 있는 에디터 진단 툴링, 원클릭 서버 배포 지원</li>
+</ul>
+<h2 id="-방향-아키텍처">🏗️ 방향 (아키텍처)</h2>
 <p>이 프로젝트는 고객의 프로젝트에 불필요한 코드가 들어가지 않도록 <strong>계층형 Core 아키텍처</strong>를 따릅니다. 상위 모듈은 하위 모듈만 참조할 수 있습니다(단방향 의존성).</p>
 <ul>
 <li><strong>Layer 0: <code>OSL.Core</code> (Shared Utility):</strong> 모든 에셋이 사용하는 초경량 공용 모음집 (예: OSLCrypto, OSLLogger).</li>
