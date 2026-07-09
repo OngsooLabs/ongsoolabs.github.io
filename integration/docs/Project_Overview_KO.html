@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=2327f4390c9a8a90795caccd1cfd86bb5a375a40">
-      <link rel="stylesheet" href="../public/main.css?v=2327f4390c9a8a90795caccd1cfd86bb5a375a40">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=575e3e2ed478d02921e01c0290a615d3547ef78f">
+      <link rel="stylesheet" href="../public/main.css?v=575e3e2ed478d02921e01c0290a615d3547ef78f">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=2327f4390c9a8a90795caccd1cfd86bb5a375a40"></script>
+      <script type="module" src="./../public/docfx.min.js?v=575e3e2ed478d02921e01c0290a615d3547ef78f"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -89,8 +89,11 @@
 <li><strong>Layer 1: <code>OSL.Auth.Base</code> (Domain Core):</strong> 소셜 로그인 모듈들을 묶어주는 인증 베이스 (<code>ISignin</code>, 토큰 검증).</li>
 <li><strong>Layer 2: <code>OSL.Product</code> (End Product):</strong> 단일 목적을 수행하는 배포 단위 (예: <code>OSL.EasyPatcher</code>, <code>OSL.SecureSave</code>). Layer 0이나 Layer 1만 선별적으로 참조.</li>
 </ul>
-<h2 id="진행도">진행도</h2>
-<p>현재 모든 레거시 패키지를 새로운 OSL 표준으로 마이그레이션하고 에셋 스토어 등록용 문서를 생성 중입니다.</p>
+<h2 id="-진행도">📈 진행도</h2>
+<ul>
+<li><strong>완료:</strong> 기존 레거시 패키지들의 OSL 표준 폴더 구조 마이그레이션 및 문서화 완료. 전체 6개 패키지에 대한 통합 로드맵 기획 완료.</li>
+<li><strong>현재 진행 중:</strong> 통합 로드맵의 <strong>Phase 1 (인프라 안정성 및 필수 사용성 확보)</strong> 단계에 진입하여, 각 모듈의 핵심 아키텍처(오프라인 큐잉, 이어받기, 에디터 진단 툴링 등)를 개발 중입니다.</li>
+</ul>
 <h2 id="구현할-것들">구현할 것들</h2>
 <ul>
 <li>에디터 스크립트를 통한 <code>.unitypackage</code> 추출(Export) 프로세스 자동화.</li>
