@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=bc969599a40a2b151e0be7ab246740cac8b6e7ba">
-      <link rel="stylesheet" href="../public/main.css?v=bc969599a40a2b151e0be7ab246740cac8b6e7ba">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=cdac288ed150f4510cbfeed27ed978edb2b06e6b">
+      <link rel="stylesheet" href="../public/main.css?v=cdac288ed150f4510cbfeed27ed978edb2b06e6b">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=bc969599a40a2b151e0be7ab246740cac8b6e7ba"></script>
+      <script type="module" src="./../public/docfx.min.js?v=cdac288ed150f4510cbfeed27ed978edb2b06e6b"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -92,6 +92,7 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li>Phase 3 covers higher-maintenance expansions such as UI templates, console platforms, admin dashboards, and custom backend integrations.</li>
 <li>Before implementation, always inspect existing code and changelogs to avoid re-implementing already completed features.</li>
 <li>Agents must review <code>Current Focus</code> and the target package's <code>Done Criteria</code> before starting work.</li>
+<li><code>Current Focus</code> and <code>Phase 1</code> follow the same execution priority. <code>Current Focus</code> simply lists the immediate implementation details in a more concrete form.</li>
 </ol>
 <hr>
 <h2 id="-current-focus">🎯 Current Focus</h2>
@@ -143,38 +144,51 @@ Each package functions independently (decoupled) so developers can pick only wha
 <h3 id="phase-1-core-reliability--dx-foundation">Phase 1: Core Reliability &amp; DX (Foundation)</h3>
 <p>Goal: Make each package resilient to real-world failure cases and easy to diagnose inside Unity projects.</p>
 <ol>
-<li><p><strong>IapClient &amp; Secure Save</strong></p>
+<li><p><strong>IapClient</strong></p>
 <ul>
-<li>Pending Receipt / Pending Write Queue implementation</li>
-<li>Automatic retry and recovery flow</li>
-<li>Reduced payment/save loss risk</li>
+<li>Pending Receipt Queue implementation</li>
+<li>Exponential backoff automatic retry</li>
+<li>Transaction id / receipt idempotency rules</li>
+<li>Recover pending purchases after app restart</li>
 </ul>
 </li>
 <li><p><strong>EasyPatcher</strong></p>
 <ul>
 <li>HTTP resumable download support</li>
 <li>Resume after interrupted downloads</li>
+<li>SHA256/HMAC verification after download completion</li>
 <li>Add concurrent downloads only after reliability validation</li>
 </ul>
 </li>
-<li><p><strong>Token Verification</strong></p>
+<li><p><strong>TokenVerification</strong></p>
 <ul>
-<li>JWKS cache hardening</li>
+<li>JWKS cache hardening and validation tests</li>
 <li>Self-contained publish profile cleanup</li>
 <li>Baseline Rate Limiting and security middleware rules</li>
+<li>Track <code>.NET 8</code> maintenance and <code>.NET 10</code> LTS compatibility path</li>
 </ul>
 </li>
-<li><p><strong>SocialLogin</strong></p>
+<li><p><strong>SecureSave</strong></p>
+<ul>
+<li>Pending Write Queue implementation</li>
+<li>Automatic synchronization after reconnection</li>
+<li>Retry/failure/conflict handling policy</li>
+<li>Multi-key selective load functionality</li>
+</ul>
+</li>
+<li><p><strong>SocialLogin / SocialLoginPro</strong></p>
 <ul>
 <li>Auto-login and token refresh manager</li>
 <li>Editor diagnostics tooling</li>
 <li>Missing Provider configuration detection</li>
+<li>Display Soft Dependency activation state</li>
+<li>Verify <code>SocialLoginPro</code> as a <code>SocialLogin + TokenVerification</code> combined distribution</li>
 </ul>
 </li>
 <li><p><strong>Deterministic Core</strong></p>
 <ul>
 <li>RNG state serialization/restore convenience</li>
-<li>Same-seed reproducibility test coverage</li>
+<li>Same-seed / same-stream reproducibility test coverage</li>
 <li>Stronger sample scene synchronization validation</li>
 </ul>
 </li>
@@ -188,13 +202,6 @@ Each package functions independently (decoupled) so developers can pick only wha
 <h3 id="phase-2-advanced-logic--optimization">Phase 2: Advanced Logic &amp; Optimization</h3>
 <p>Goal: Add performance improvements, convenience features, and advanced validation logic on top of stable Phase 1 workflows.</p>
 <ol>
-<li><p><strong>EasyPatcher</strong></p>
-<ul>
-<li>Manifest GZip/Brotli compression</li>
-<li>S3-compatible Custom Endpoint option</li>
-<li>Binary Diffing should begin as feasibility validation or a feature-flagged experiment, not as an immediate core feature</li>
-</ul>
-</li>
 <li><p><strong>IapClient</strong></p>
 <ul>
 <li>Subscription Status local caching with TTL</li>
@@ -202,23 +209,31 @@ Each package functions independently (decoupled) so developers can pick only wha
 <li>Keep local validation as a pre-check or UX helper, never as a replacement for server verification</li>
 </ul>
 </li>
-<li><p><strong>Secure Save</strong></p>
+<li><p><strong>EasyPatcher</strong></p>
+<ul>
+<li>Manifest GZip/Brotli compression</li>
+<li>S3-compatible Custom Endpoint option</li>
+<li>Binary Diffing should begin as feasibility validation or a feature-flagged experiment, not as an immediate core feature</li>
+</ul>
+</li>
+<li><p><strong>TokenVerification</strong></p>
+<ul>
+<li>Provider validation hardening</li>
+<li>Structured error response and audit-log format</li>
+<li>Advanced Rate Limiting policies</li>
+</ul>
+</li>
+<li><p><strong>SecureSave</strong></p>
 <ul>
 <li>Regex and Whitelist validation rules</li>
 <li>Local unit testing utility for Cloud Code scripts</li>
 </ul>
 </li>
-<li><p><strong>SocialLogin</strong></p>
+<li><p><strong>SocialLogin / SocialLoginPro</strong></p>
 <ul>
 <li>Mock Social Login Provider for Editor</li>
 <li>Better Provider-specific testing convenience</li>
-</ul>
-</li>
-<li><p><strong>Token Verification</strong></p>
-<ul>
-<li>Provider validation hardening</li>
-<li>Structured error response and audit-log format</li>
-<li>Advanced Rate Limiting policies</li>
+<li>Verify combined <code>SocialLoginPro</code> sample flow</li>
 </ul>
 </li>
 <li><p><strong>Deterministic Core</strong></p>
