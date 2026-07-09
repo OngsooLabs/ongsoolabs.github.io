@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=eaa9530b84bd672df789e9bdc6aa6175549b2060">
-      <link rel="stylesheet" href="../public/main.css?v=eaa9530b84bd672df789e9bdc6aa6175549b2060">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=0f18bd300624fd84b3a78d3bbe0103061ebf34de">
+      <link rel="stylesheet" href="../public/main.css?v=0f18bd300624fd84b3a78d3bbe0103061ebf34de">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=eaa9530b84bd672df789e9bdc6aa6175549b2060"></script>
+      <script type="module" src="./../public/docfx.min.js?v=0f18bd300624fd84b3a78d3bbe0103061ebf34de"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -87,7 +87,7 @@
 <h1 id="core-concepts">Core Concepts</h1>
 
 <p>Ongsoo Labs modules share a common foundation through <strong>OSL.Core</strong> and a consistent Unity integration style.</p>
-<p>This public page explains the general architecture style used across the asset guides. Project-specific operation rules, private workflows, credentials, deployment policies, and roadmap decisions should be documented under the private project documents, not in public <code>articles/</code> pages.</p>
+<p>This page explains the general architecture style used across the asset guides.</p>
 <h2 id="shared-runtime-foundation">Shared Runtime Foundation</h2>
 <p><code>OSL.Core</code> provides reusable runtime services that reduce duplicate implementation across modules.</p>
 <p>Typical shared concerns include:</p>
@@ -158,7 +158,7 @@
 <li>Timeout settings</li>
 <li>Module-specific setup options</li>
 </ul>
-<p>Do not place private credentials or live operation details in public documentation.</p>
+<p>Do not place private credentials in scenes, prefabs, or public source files.</p>
 <h2 id="logging">Logging</h2>
 <p>The logging layer provides a consistent way to record diagnostics and runtime events during development.</p>
 <p>Good logs should answer:</p>
@@ -169,30 +169,10 @@
 <li>What should the developer check next?</li>
 </ul>
 <p>Avoid logging access tokens, identity tokens, receipts, private keys, or raw secrets.</p>
-<h2 id="public-documentation-boundary">Public Documentation Boundary</h2>
-<p>The public integration documentation should focus on:</p>
-<ul>
-<li>What the module does</li>
-<li>Minimum requirements</li>
-<li>Installation</li>
-<li>Basic setup</li>
-<li>Safe example usage</li>
-<li>Basic troubleshooting</li>
-</ul>
-<p>The following topics belong in private project documents such as <code>docs/Project_Overview_*</code>, <code>docs/Project_Rules_*</code>, <code>docs/Roadmap_*</code>, or package-specific internal notes:</p>
-<ul>
-<li>Live operation procedures</li>
-<li>Store review or release operation details</li>
-<li>Backend endpoint details</li>
-<li>Credential handling procedures</li>
-<li>Refund, abuse, fraud, or economy operation policies</li>
-<li>Internal implementation risks and mitigation plans</li>
-<li>Roadmap decisions and unpublished plans</li>
-</ul>
 <h2 id="integration-philosophy">Integration Philosophy</h2>
 <p>The Ongsoo Labs integration framework follows a practical rule:</p>
 <blockquote>
-<p>Public docs should help users get started safely, while private docs should carry project operation details.</p>
+<p>A module should be simple enough to test in a sample scene, but structured enough to fit into a production Unity project.</p>
 </blockquote>
 
 </article>
