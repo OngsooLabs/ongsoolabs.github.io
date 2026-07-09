@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
-      <link rel="stylesheet" href="../public/main.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
+      <link rel="stylesheet" href="../public/main.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d"></script>
+      <script type="module" src="./../public/docfx.min.js?v=7978fc379801e7992a89565912e1d37d981fab4d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -88,10 +88,16 @@
        ├── Runtime/               # Main game logic (.asmdef)
        ├── Editor/                # Editor logic (.Editor.asmdef)
        ├── Plugins/               # External SDKs (AAR, DLL)
-       ├── Samples/               # Demo scenes
+       ├── Samples/               # Demo scenes for Asset Store exports
+       ├── Samples~/              # Optional UPM-style samples when Unity Package Manager behavior is required
        ├── Server~/               # Backend server source (ignored by Unity import)
        └── Documentation/         # README, PDFs
 </code></pre>
+<ul>
+<li>Use <code>Samples/</code> for standard Unity Asset Store <code>.unitypackage</code> exports.</li>
+<li>Use <code>Samples~/</code> only when UPM-style sample import behavior is intentionally required.</li>
+<li>Place backend source projects or zipped backend source packages under <code>Server~/</code> unless a package has a documented reason to expose a different path.</li>
+</ul>
 <h3 id="3-assembly-definition-asmdef-rules">3. Assembly Definition (ASMDEF) Rules</h3>
 <ul>
 <li><strong>Naming:</strong> <code>OSL.[ProjectName].asmdef</code> and <code>OSL.[ProjectName].Editor.asmdef</code>.</li>
@@ -112,13 +118,26 @@
 <ul>
 <li>All documents (Markdown, PDF, etc.) within the project and source code comments must be <strong>written in English</strong> to comply with Unity Asset Store global distribution guidelines. (Internal <code>_KO.md</code> developer notes are the only exception).</li>
 </ul>
+<h3 id="5-compatibility--claims-rules">5. Compatibility &amp; Claims Rules</h3>
+<ul>
+<li>State compatibility as <code>Minimum Unity Version</code> and <code>Tested Unity Versions</code> when possible.</li>
+<li>Avoid absolute claims such as &quot;every platform&quot;, &quot;every Unity version&quot;, &quot;perfect security&quot;, or &quot;guaranteed zero loss&quot; unless automated tests and documented evidence support the exact claim.</li>
+<li>Prefer precise phrases such as &quot;supported and tested platforms&quot;, &quot;reduces risk&quot;, &quot;detects tampering&quot;, or &quot;server-authoritative validation path&quot;.</li>
+<li>Backend packages should target supported .NET LTS versions. If the backend currently targets <code>.NET 8</code>, track the migration path to the next supported LTS version before end of support.</li>
+</ul>
 <h2 id="collaboration--deployment-rules">Collaboration &amp; Deployment Rules</h2>
 <h3 id="1-version-management-packagejson">1. Version Management (package.json)</h3>
 <p>All asset folders must contain a UPM-compatible <code>package.json</code> declaring the package name, version, and internal dependencies.</p>
-<h3 id="2-export-checklist-for-asset-store">2. Export Checklist for Asset Store</h3>
+<h3 id="2-changelog-format">2. Changelog Format</h3>
+<p>Use a consistent changelog format for package release notes:</p>
+<pre><code class="lang-markdown">## [1.0.0] - 2026-07-09
+### Added
+- Initial release details.
+</code></pre>
+<h3 id="3-export-checklist-for-asset-store">3. Export Checklist for Asset Store</h3>
 <ol>
 <li><strong>Dependency Inclusion:</strong> Ensure dependent folders (like <code>OSL.Core</code>) are checked when exporting a package.</li>
-<li><strong>Sample Isolation:</strong> Ensure temp textures or test code in <code>Samples/</code> do not pollute the <code>Runtime/</code> folder.</li>
+<li><strong>Sample Isolation:</strong> Ensure temp textures or test code in <code>Samples/</code> or <code>Samples~/</code> do not pollute the <code>Runtime/</code> folder.</li>
 <li><strong>Exclude Third-Party SDKs:</strong> Third-party plugins (e.g., Facebook SDK) MUST be unchecked during export due to Asset Store redistribution rules.</li>
 <li><strong>Censor Sensitive Data:</strong> Ensure no <code>aws_credentials</code> or API keys are left behind.</li>
 <li><strong>Docs Verification:</strong> Ensure <code>Documentation/README.pdf</code> exists and supports English.</li>

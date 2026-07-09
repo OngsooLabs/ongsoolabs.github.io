@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
-      <link rel="stylesheet" href="../../public/main.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
+      <link rel="stylesheet" href="../../public/main.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=7978fc379801e7992a89565912e1d37d981fab4d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -72,26 +72,27 @@
         <article data-uid="">
 <h1 id="description">Description</h1>
 
-<p>OSL Deterministic Core is a pure C# randomness suite built for Unity developers who need strict consistency across all platforms and CPU architectures. If you are building lockstep multiplayer, replay systems, or strict procedural generation, standard Unity and .NET random engines will cause desynchronization due to floating-point drift and platform inconsistencies. This asset solves that completely.</p>
+<p>OSL Deterministic Core is a pure C# randomness suite built for Unity developers who need strict consistency across supported and tested platforms. If you are building lockstep multiplayer, replay systems, or strict procedural generation, non-deterministic random flows and floating-point-heavy probability logic can cause synchronization issues. This asset provides an integer-first, reproducible randomness foundation designed to reduce those risks.</p>
 <h2 id="highlights">Highlights</h2>
 <ul>
-<li><strong>Deterministic by construction:</strong> Same seed guarantees the exact same byte-for-byte sequence on every platform, every Unity version, and every CPU.</li>
-<li><strong>Zero allocations on hot paths:</strong> RNG advance, dice rolls, gacha draws, and array shuffling never allocate garbage. State save/load utilizes <code>Span&lt;byte&gt;</code>.</li>
-<li><strong>Zero third-party dependencies:</strong> Built on pure .NET Standard 2.1. No native plugins or risky external code.</li>
-<li><strong>Integer-first probability:</strong> <code>RollPermille</code>, <code>RollProbability</code>, and weighted gacha use strict integer comparisons to prevent floating-point drift.</li>
-<li><strong>Pluggable &amp; Extensible:</strong> <code>IRandomEngine</code> and <code>IPitySystem</code> serve as full extension points for your own logic.</li>
-<li><strong>Production tested:</strong> Ships with comprehensive EditMode tests covering determinism, state round-trips, distribution, and pity semantics.</li>
+<li><strong>Deterministic by construction:</strong> Same seed produces the same sequence across supported Unity versions and tested target platforms.</li>
+<li><strong>Allocation-conscious hot paths:</strong> RNG advance, dice rolls, gacha draws, and array shuffling are designed to avoid runtime garbage allocations in core paths. State save/load utilizes <code>Span&lt;byte&gt;</code>.</li>
+<li><strong>Zero third-party dependencies:</strong> Built on pure .NET Standard 2.1. No native plugins or external runtime dependencies.</li>
+<li><strong>Integer-first probability:</strong> <code>RollPermille</code>, <code>RollProbability</code>, and weighted gacha use strict integer comparisons to avoid floating-point drift in probability decisions.</li>
+<li><strong>Pluggable &amp; Extensible:</strong> <code>IRandomEngine</code> and <code>IPitySystem</code> serve as extension points for custom logic.</li>
+<li><strong>Test coverage included:</strong> Ships with EditMode tests covering determinism, state round-trips, distribution behavior, and pity semantics.</li>
 </ul>
 <h2 id="included-modules">Included Modules</h2>
 <ul>
 <li><strong>Core PRNG:</strong> PCG32 engine (PCG-XSH-RR) and <code>OSLRandom</code> developer facade.</li>
-<li><strong>Shuffling:</strong> Deterministic Fisher–Yates shuffle (<code>OSLDeckShuffler</code>).</li>
+<li><strong>Shuffling:</strong> Deterministic Fisher-Yates shuffle (<code>OSLDeckShuffler</code>).</li>
 <li><strong>Gacha &amp; Pity System:</strong> Immutable weighted draw tables (<code>OSLGachaTable</code>) with a pluggable Hard Pity system for reliable drops.</li>
 <li><strong>Combat Resolver:</strong> Integer-first combat probabilities (<code>OSLCombatResolver</code> for dice, criticals, and percentages).</li>
 </ul>
 <h2 id="requirements">Requirements</h2>
 <ul>
-<li>Unity 2021.3 LTS or newer</li>
+<li>Minimum Unity Version: Unity 2021.3 LTS or newer</li>
+<li>Tested Unity Versions: Keep this field updated per release validation</li>
 <li>Scripting runtime: .NET Standard 2.1</li>
 </ul>
 

@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
-      <link rel="stylesheet" href="../public/main.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
+      <link rel="stylesheet" href="../public/main.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d"></script>
+      <script type="module" src="./../public/docfx.min.js?v=7978fc379801e7992a89565912e1d37d981fab4d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -73,132 +73,378 @@
 <h1 id="osl-integration-roadmap">OSL Integration Roadmap</h1>
 
 <h2 id="-identity--direction-of-osl-integration">💡 Identity &amp; Direction of OSL Integration</h2>
-<p><strong>OSL Integration</strong> is a <strong>&quot;Modular Backend Infrastructure &amp; Architecture Suite&quot;</strong> fully optimized for the Unity Asset Store.
-Each package functions entirely independently (decoupled) so developers can pick and choose what they need, yet they provide powerful synergy when used together.</p>
+<p><strong>OSL Integration</strong> is a <strong>&quot;Modular Backend Infrastructure &amp; Architecture Suite&quot;</strong> optimized for the Unity Asset Store.
+Each package functions independently (decoupled) so developers can pick only what they need, while still gaining synergy when modules are used together.</p>
 <ul>
-<li><strong>Zero-Loss Reliability:</strong> Offline queueing, resumable downloads, and automatic sync to prevent any data or payment loss.</li>
-<li><strong>Server-Authoritative Security:</strong> Server-side IAP validation and Cloud Code validation to strictly prevent client-side tampering and cheating.</li>
-<li><strong>Unity Asset Friendly (DX):</strong> Editor diagnostic tooling, one-click server deployments, and simple mock providers tailored for pure Unity developers to use backend systems without server knowledge.</li>
+<li><strong>Zero-Loss-Oriented Reliability:</strong> Offline queueing, resumable downloads, and automatic sync patterns to reduce data or payment loss in unstable environments.</li>
+<li><strong>Server-Authoritative Security:</strong> Server-side IAP validation, token verification, and Cloud Code validation to reduce client-side tampering and cheating risks.</li>
+<li><strong>Unity Asset Friendly (DX):</strong> Editor diagnostic tooling, one-click server deployment paths, and simple mock providers tailored for Unity developers who need backend workflows without heavy server knowledge.</li>
 </ul>
+<blockquote>
+<p>Package structure note: OSL Integration currently contains <strong>7 deliverable packages</strong> organized into <strong>6 roadmap tracks</strong>. <code>SocialLoginPro</code> is a bundled distribution package combining <code>SocialLogin</code> and <code>TokenVerification</code>; it is not maintained as a separate feature roadmap track.</p>
+</blockquote>
 <hr>
-<h2 id="-integrated-roadmap">🗺️ Integrated Roadmap</h2>
-<h3 id="phase-1-core-reliability--dx-foundation">Phase 1: Core Reliability &amp; DX (Foundation)</h3>
+<h2 id="-roadmap-operating-rules">🧭 Roadmap Operating Rules</h2>
 <ol>
-<li><strong>IapClient &amp; Secure Save</strong> - Offline transaction queueing &amp; automatic synchronization (Loss prevention)</li>
-<li><strong>EasyPatcher</strong> - Core communication improvements (HTTP Resumable &amp; Concurrent downloads)</li>
-<li><strong>SocialLogin</strong> - Editor Diagnostics tooling &amp; Auto-Login Manager</li>
-<li><strong>Token Verification</strong> - Unity-friendly One-Click deployment (Self-Contained) &amp; JWKS caching</li>
-<li><strong>Deterministic Core</strong> - Native support for C# Job System &amp; Burst Compiler</li>
+<li>Each package's <strong>Priority 1</strong> items map to <strong>Phase 1</strong>, <strong>Priority 2</strong> items map to <strong>Phase 2</strong>, and <strong>Priority 3</strong> items map to <strong>Phase 3</strong> by default.</li>
+<li>Phase 1 is not about adding as many features as possible. It is about making each package reliable, recoverable, and diagnosable inside real Unity projects.</li>
+<li>Phase 2 adds optimization, testing convenience, and advanced validation logic on top of stable Phase 1 workflows.</li>
+<li>Phase 3 covers higher-maintenance expansions such as UI templates, console platforms, admin dashboards, and custom backend integrations.</li>
+<li>Before implementation, always inspect existing code and changelogs to avoid re-implementing already completed features.</li>
+<li>Agents must review <code>Current Focus</code> and the target package's <code>Done Criteria</code> before starting work.</li>
 </ol>
-<h3 id="phase-2-advanced-logic--optimization">Phase 2: Advanced Logic &amp; Optimization</h3>
-<ol start="6">
-<li><strong>EasyPatcher</strong> - Delta Patching (Binary Diffing) &amp; Manifest compression</li>
-<li><strong>IapClient</strong> - Subscription status local caching &amp; Client-side local validation</li>
-<li><strong>Secure Save</strong> - Regex and Whitelist validation rules in Cloud Code</li>
-<li><strong>SocialLogin</strong> - Mock Social Login Provider for Editor (Testing convenience)</li>
-<li><strong>Token Verification</strong> - Discord token verification API &amp; IP-based Rate Limiting</li>
-<li><strong>Deterministic Core</strong> - Mathematical extensions (Soft Pity &amp; Alternative RNGs)</li>
-</ol>
-<h3 id="phase-3-long-term--on-hold-ui--external-integrations">Phase 3: Long-term / On Hold (UI &amp; External Integrations)</h3>
+<hr>
+<h2 id="-current-focus">🎯 Current Focus</h2>
+<p>The current execution targets are:</p>
+<ol>
+<li><p><strong>IapClient</strong></p>
 <ul>
-<li><strong>Platform Expansion:</strong> OneStore (IAP), Xbox/PSN (SocialLogin), Custom Backends.</li>
-<li><strong>UI &amp; Frontend:</strong> Drop-in UI templates for Store/Social, Admin Dashboard Web Apps.</li>
+<li>Local queueing for pending receipts</li>
+<li>Exponential backoff retry policy</li>
+<li>Transaction id / receipt idempotency rules to prevent duplicate reward grants</li>
+</ul>
+</li>
+<li><p><strong>EasyPatcher</strong></p>
+<ul>
+<li>HTTP resumable download support</li>
+<li>Final hash/HMAC verification after completion</li>
+<li>Concurrent downloads only after the resumable flow is stable</li>
+</ul>
+</li>
+<li><p><strong>TokenVerification</strong></p>
+<ul>
+<li>JWKS cache validation tests</li>
+<li>Self-contained publish profile cleanup</li>
+<li>Baseline Rate Limiting / security middleware rules</li>
+<li>Track <code>.NET 8</code> maintenance and <code>.NET 10</code> LTS compatibility path</li>
+</ul>
+</li>
+<li><p><strong>SecureSave</strong></p>
+<ul>
+<li>Clarify the offline-save concept as a <code>Pending Write Queue</code></li>
+<li>Define reconnection sync, conflict handling, and retry behavior</li>
+</ul>
+</li>
+<li><p><strong>SocialLogin / SocialLoginPro</strong></p>
+<ul>
+<li>Auto-login and token refresh flow</li>
+<li>Editor diagnostics for Manifest, Info.plist, and Provider configuration issues</li>
+<li>Manage <code>SocialLoginPro</code> as a combined distribution of <code>SocialLogin + TokenVerification</code>, not as a separate implementation track</li>
+</ul>
+</li>
+<li><p><strong>Deterministic Core</strong></p>
+<ul>
+<li>Strengthen state serialization, reproducibility tests, and sample validation before prioritizing Burst/Job optimization</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="-integrated-phase-roadmap">🗺️ Integrated Phase Roadmap</h2>
+<h3 id="phase-1-core-reliability--dx-foundation">Phase 1: Core Reliability &amp; DX (Foundation)</h3>
+<p>Goal: Make each package resilient to real-world failure cases and easy to diagnose inside Unity projects.</p>
+<ol>
+<li><p><strong>IapClient &amp; Secure Save</strong></p>
+<ul>
+<li>Pending Receipt / Pending Write Queue implementation</li>
+<li>Automatic retry and recovery flow</li>
+<li>Reduced payment/save loss risk</li>
+</ul>
+</li>
+<li><p><strong>EasyPatcher</strong></p>
+<ul>
+<li>HTTP resumable download support</li>
+<li>Resume after interrupted downloads</li>
+<li>Add concurrent downloads only after reliability validation</li>
+</ul>
+</li>
+<li><p><strong>Token Verification</strong></p>
+<ul>
+<li>JWKS cache hardening</li>
+<li>Self-contained publish profile cleanup</li>
+<li>Baseline Rate Limiting and security middleware rules</li>
+</ul>
+</li>
+<li><p><strong>SocialLogin</strong></p>
+<ul>
+<li>Auto-login and token refresh manager</li>
+<li>Editor diagnostics tooling</li>
+<li>Missing Provider configuration detection</li>
+</ul>
+</li>
+<li><p><strong>Deterministic Core</strong></p>
+<ul>
+<li>RNG state serialization/restore convenience</li>
+<li>Same-seed reproducibility test coverage</li>
+<li>Stronger sample scene synchronization validation</li>
+</ul>
+</li>
+</ol>
+<p><strong>Phase 1 Done Criteria:</strong></p>
+<ul>
+<li>Payment, save, and patch workflows must be recoverable after network interruption, app restart, or reconnection.</li>
+<li>At least one sample or test must validate each critical failure scenario.</li>
+<li>Configuration mistakes must be diagnosable through Editor tooling or clear logs.</li>
+</ul>
+<h3 id="phase-2-advanced-logic--optimization">Phase 2: Advanced Logic &amp; Optimization</h3>
+<p>Goal: Add performance improvements, convenience features, and advanced validation logic on top of stable Phase 1 workflows.</p>
+<ol>
+<li><p><strong>EasyPatcher</strong></p>
+<ul>
+<li>Manifest GZip/Brotli compression</li>
+<li>S3-compatible Custom Endpoint option</li>
+<li>Binary Diffing should begin as feasibility validation or a feature-flagged experiment, not as an immediate core feature</li>
+</ul>
+</li>
+<li><p><strong>IapClient</strong></p>
+<ul>
+<li>Subscription Status local caching with TTL</li>
+<li>Client-side local receipt validation option</li>
+<li>Keep local validation as a pre-check or UX helper, never as a replacement for server verification</li>
+</ul>
+</li>
+<li><p><strong>Secure Save</strong></p>
+<ul>
+<li>Regex and Whitelist validation rules</li>
+<li>Local unit testing utility for Cloud Code scripts</li>
+</ul>
+</li>
+<li><p><strong>SocialLogin</strong></p>
+<ul>
+<li>Mock Social Login Provider for Editor</li>
+<li>Better Provider-specific testing convenience</li>
+</ul>
+</li>
+<li><p><strong>Token Verification</strong></p>
+<ul>
+<li>Provider validation hardening</li>
+<li>Structured error response and audit-log format</li>
+<li>Advanced Rate Limiting policies</li>
+</ul>
+</li>
+<li><p><strong>Deterministic Core</strong></p>
+<ul>
+<li>Burst Compiler and C# Job System support</li>
+<li>Soft Pity logic</li>
+<li>Alternative RNG algorithm review such as Xoshiro256 and SplitMix64</li>
+</ul>
+</li>
+</ol>
+<p><strong>Phase 2 Done Criteria:</strong></p>
+<ul>
+<li>New optimization features must not weaken Phase 1 reliability.</li>
+<li>Advanced features should be optional, feature-flagged, or able to fall back to the stable base flow.</li>
+<li>Documentation and tests must be added together with advanced features.</li>
+</ul>
+<h3 id="phase-3-long-term--on-hold-ui--external-integrations">Phase 3: Long-term / On Hold (UI &amp; External Integrations)</h3>
+<p>Goal: Consider sales-driven or expansion-focused features after the core modules are stable.</p>
+<ul>
+<li><strong>Platform Expansion:</strong> OneStore (IAP), Xbox/PSN (SocialLogin), custom backends.</li>
+<li><strong>UI &amp; Frontend:</strong> Drop-in social login/store UI prefabs, Admin Dashboard web apps.</li>
+<li><strong>Deterministic Expansion:</strong> Deterministic 2D/3D Noise, Fixed-Point Math Library.</li>
+<li><strong>EasyPatcher Expansion:</strong> In-game patch notes UI, native mobile OS background download integration.</li>
+</ul>
+<p><strong>Phase 3 Done Criteria:</strong></p>
+<ul>
+<li>Start only after core module reliability is sufficiently proven.</li>
+<li>Prioritize UI/platform expansions based on actual sales signal, user requests, or usage frequency.</li>
 </ul>
 <hr>
 <h2 id="1-deterministic-core">1. Deterministic Core</h2>
-<h3 id="priority-1-core-architecture--usability-improvements">Priority 1: Core Architecture &amp; Usability Improvements</h3>
+<h3 id="role">Role</h3>
+<p>Provides deterministic RNG, gacha, combat probability, and state reproducibility foundations.</p>
+<h3 id="current-weak-points--risks">Current Weak Points / Risks</h3>
 <ul>
-<li>[ ] Native support for Burst Compiler &amp; C# Job System</li>
-<li>[ ] Serialization convenience features for RNG State</li>
+<li>Reproducibility tests and state save/restore flows matter more than Burst/Job optimization at this stage.</li>
+<li>Fixed-Point Math and Noise can expand the product scope too aggressively and increase maintenance cost.</li>
+<li>Math/probability modules require strong tests before new feature expansion.</li>
 </ul>
-<h3 id="priority-2-mathematical-extensions-short-term">Priority 2: Mathematical Extensions (Short-term)</h3>
+<h3 id="priority-1-core-reproducibility--usability">Priority 1: Core Reproducibility &amp; Usability</h3>
 <ul>
+<li>[ ] Add RNG state serialization convenience features</li>
+<li>[ ] Strengthen same-seed / same-stream reproducibility tests</li>
+<li>[ ] Improve Lockstep sample state-hash validation flow</li>
+</ul>
+<p><strong>Done Criteria:</strong></p>
+<ul>
+<li>Seed, stream, and restored state must produce deterministic results covered by tests.</li>
+<li>The sample must make synchronization failure clearly visible to the user.</li>
+</ul>
+<h3 id="priority-2-performance--mathematical-extensions">Priority 2: Performance &amp; Mathematical Extensions</h3>
+<ul>
+<li>[ ] Burst Compiler and C# Job System support</li>
 <li>[ ] Soft Pity logic implementation</li>
-<li>[ ] Alternative RNG algorithms (e.g., Xoshiro256, SplitMix64)</li>
+<li>[ ] Review alternative RNG algorithms such as Xoshiro256 and SplitMix64</li>
 </ul>
-<h3 id="priority-3-long-term--on-hold-requires-demo-scene">Priority 3: Long-term / On Hold (Requires Demo Scene)</h3>
+<h3 id="priority-3-long-term-expansion">Priority 3: Long-term Expansion</h3>
 <ul>
 <li>[ ] Deterministic 2D/3D Noise</li>
 <li>[ ] Fixed-Point Math Library</li>
 </ul>
+<hr>
 <h2 id="2-token-verification">2. Token Verification</h2>
-<h3 id="priority-1-backend-performance--deployment-convenience">Priority 1: Backend Performance &amp; Deployment Convenience</h3>
+<h3 id="role-1">Role</h3>
+<p>Provides a backend template that verifies social login tokens/session tickets received from the Unity client.</p>
+<h3 id="current-weak-points--risks-1">Current Weak Points / Risks</h3>
 <ul>
-<li>[ ] JWKS in-memory caching (Token verification speed optimization)</li>
-<li>[ ] Unity-friendly deployment: SDK-less Self-Contained .exe and Visual Studio One-Click Publish Profile</li>
+<li>For Unity developers, running and deploying the backend is the largest adoption barrier.</li>
+<li>Deployment convenience, baseline security middleware, and error diagnostics should come before adding more provider features.</li>
+<li>If a provider already exists according to the changelog, the roadmap should not list it again as a new provider-addition task.</li>
 </ul>
-<h3 id="priority-2-logic-based-features-server-logic-expansion">Priority 2: Logic-based Features (Server Logic Expansion)</h3>
+<h3 id="priority-1-backend-reliability--deployment-convenience">Priority 1: Backend Reliability &amp; Deployment Convenience</h3>
 <ul>
-<li>[ ] Add Discord Social Login Token Verification API</li>
-<li>[ ] Apply IP-based Rate Limiting (Throttling) Middleware</li>
+<li>[ ] Strengthen JWKS in-memory cache tests</li>
+<li>[ ] Clean up self-contained executable and Visual Studio Publish Profile support</li>
+<li>[ ] Add baseline Rate Limiting / request-size limits / common error response rules</li>
+<li>[ ] Maintain <code>.NET 8</code> support and track <code>.NET 10</code> LTS compatibility path</li>
 </ul>
-<h3 id="priority-3-long-term--on-hold-web-fe--custom-auth-server">Priority 3: Long-term / On Hold (Web FE &amp; Custom Auth Server)</h3>
+<p><strong>Done Criteria:</strong></p>
 <ul>
-<li>[ ] Admin Dashboard Web App for token verification logs</li>
-<li>[ ] Custom JWT issuance (IdP) and Session Management System</li>
+<li>The server must run locally through <code>dotnet run</code> or a self-contained executable.</li>
+<li>JWKS cache refresh/expiration/failure cases must be observable through tests or logs.</li>
+<li>Invalid requests must return consistent error responses.</li>
 </ul>
+<h3 id="priority-2-provider-validation-hardening">Priority 2: Provider Validation Hardening</h3>
+<ul>
+<li>[ ] Organize provider-specific validation options</li>
+<li>[ ] Add structured audit-log format</li>
+<li>[ ] Improve Rate Limiting policies</li>
+</ul>
+<h3 id="priority-3-long-term-expansion-1">Priority 3: Long-term Expansion</h3>
+<ul>
+<li>[ ] Admin Dashboard web app for token verification logs</li>
+<li>[ ] Custom JWT issuance (IdP) and session management system</li>
+</ul>
+<hr>
 <h2 id="3-secure-save">3. Secure Save</h2>
-<h3 id="priority-1-core-architecture--api-optimization">Priority 1: Core Architecture &amp; API Optimization</h3>
+<h3 id="role-2">Role</h3>
+<p>Routes Cloud Save write operations through UGS Cloud Code validation to provide a server-authoritative save workflow.</p>
+<h3 id="current-weak-points--risks-2">Current Weak Points / Risks</h3>
 <ul>
-<li>[ ] Offline Transaction Queue and automatic synchronization</li>
-<li>[ ] Multi-key selective load functionality (Traffic optimization)</li>
+<li>The phrase &quot;offline save&quot; can be misleading. The intended meaning is not saving to the server while offline, but storing writes in a Pending Write Queue and syncing them after reconnection.</li>
+<li>UGS Cloud Code, Cloud Save, and Remote Config dependencies create many possible setup-failure points.</li>
+<li>Conflict handling must be explicit to preserve user trust in saved data.</li>
 </ul>
-<h3 id="priority-2-logic-based-features-cloud-script">Priority 2: Logic-based Features (Cloud Script)</h3>
+<h3 id="priority-1-pending-write-queue--load-optimization">Priority 1: Pending Write Queue &amp; Load Optimization</h3>
 <ul>
-<li>[ ] Regex and Whitelist validation rules in Cloud Code</li>
-<li>[ ] Local Unit Testing Utility for Cloud Code scripts</li>
+<li>[ ] Add Pending Write Queue and automatic synchronization</li>
+<li>[ ] Define retry/failure/conflict handling policy</li>
+<li>[ ] Add Multi-key selective load functionality</li>
 </ul>
-<h3 id="priority-3-long-term--on-hold-requires-ui--external-integration">Priority 3: Long-term / On Hold (Requires UI &amp; External integration)</h3>
+<p><strong>Done Criteria:</strong></p>
+<ul>
+<li>Writes made while offline must be processed in order after reconnection.</li>
+<li>Failed writes must remain visible to the user or be safely retried.</li>
+<li>Cloud Code validation failures and network failures must be distinguishable.</li>
+</ul>
+<h3 id="priority-2-validation-rule-expansion">Priority 2: Validation Rule Expansion</h3>
+<ul>
+<li>[ ] Add Regex and Whitelist validation rules</li>
+<li>[ ] Add Local Unit Testing Utility for Cloud Code scripts</li>
+</ul>
+<h3 id="priority-3-long-term-expansion-2">Priority 3: Long-term Expansion</h3>
 <ul>
 <li>[ ] In-game GM Save Editor UI component</li>
 <li>[ ] Custom backend integration module (non-UGS)</li>
 </ul>
+<hr>
 <h2 id="4-easypatcher">4. EasyPatcher</h2>
-<h3 id="priority-1-core-communication--architecture-improvements">Priority 1: Core Communication &amp; Architecture Improvements</h3>
+<h3 id="role-3">Role</h3>
+<p>Provides a lightweight Unity runtime patch system that downloads and verifies only changed files.</p>
+<h3 id="current-weak-points--risks-3">Current Weak Points / Risks</h3>
+<ul>
+<li>Binary Diffing is attractive but expensive and risky to maintain.</li>
+<li>File-level resume, verification, and retry flows must be solid before delta patching.</li>
+<li>Concurrent downloads are performance features, but they can amplify cache and failure-handling bugs if added too early.</li>
+</ul>
+<h3 id="priority-1-reliable-download-recovery">Priority 1: Reliable Download Recovery</h3>
 <ul>
 <li>[ ] HTTP Resumable Download support</li>
-<li>[ ] Multi-thread (Concurrent) Download support</li>
-<li>[ ] Add Custom Endpoint URL option to existing AWS S3 backend (Broadens support for S3-compatible cloud storages)</li>
+<li>[ ] SHA256/HMAC verification after download completion</li>
+<li>[ ] Add concurrent downloads only after the resumable flow is stable</li>
+<li>[ ] Add S3-compatible Custom Endpoint URL option</li>
 </ul>
-<h3 id="priority-2-logic-based-features-short-term">Priority 2: Logic-based Features (Short-term)</h3>
+<p><strong>Done Criteria:</strong></p>
 <ul>
-<li>[ ] Delta Patching (Binary Diffing) for large file optimization</li>
-<li>[ ] Manifest (version.json) GZip/Brotli compression support</li>
+<li>Interrupted downloads must resume from partial files.</li>
+<li>Resumed files must pass final hash/HMAC verification.</li>
+<li>Failed files must be retryable independently.</li>
 </ul>
-<h3 id="priority-3-long-term--on-hold-requires-ui--external-integration-1">Priority 3: Long-term / On Hold (Requires UI &amp; External integration)</h3>
+<h3 id="priority-2-patch-efficiency-optimization">Priority 2: Patch Efficiency Optimization</h3>
+<ul>
+<li>[ ] Manifest (version.json) GZip/Brotli compression support</li>
+<li>[ ] Delta Patching / Binary Diffing feasibility validation</li>
+<li>[ ] Keep Binary Diffing behind a feature flag or experiment branch before promoting it to a core feature</li>
+</ul>
+<h3 id="priority-3-long-term-expansion-3">Priority 3: Long-term Expansion</h3>
 <ul>
 <li>[ ] In-game patch notes UI component</li>
 <li>[ ] Native mobile OS background download integration</li>
 </ul>
+<hr>
 <h2 id="5-iapclient">5. IapClient</h2>
-<h3 id="priority-1-core-architecture--payment-reliability">Priority 1: Core Architecture &amp; Payment Reliability</h3>
+<h3 id="role-4">Role</h3>
+<p>Connects Unity IAP purchase results to backend validation before granting in-game rewards.</p>
+<h3 id="current-weak-points--risks-4">Current Weak Points / Risks</h3>
 <ul>
-<li>[ ] Local queueing and automatic retry for Pending Receipts</li>
-<li>[ ] Exponential Backoff network retry logic</li>
+<li>Payments have the highest failure cost. Duplicate reward prevention, loss prevention, and retry behavior matter more than extra features.</li>
+<li>Local receipt validation must never replace server validation. It should only be used as a pre-check or UX helper.</li>
+<li>Pending Receipt Queue must be designed together with transaction idempotency.</li>
 </ul>
-<h3 id="priority-2-logic-based-features-short-term-1">Priority 2: Logic-based Features (Short-term)</h3>
+<h3 id="priority-1-payment-loss-prevention--retry">Priority 1: Payment Loss Prevention &amp; Retry</h3>
+<ul>
+<li>[ ] Local queueing for Pending Receipts</li>
+<li>[ ] Exponential Backoff network retry logic</li>
+<li>[ ] Define transaction id / receipt-based idempotency rules</li>
+<li>[ ] Recover pending purchases after app restart</li>
+</ul>
+<p><strong>Done Criteria:</strong></p>
+<ul>
+<li>Rewards must not be lost when server validation or the network temporarily fails after purchase success.</li>
+<li>The same transaction must not grant duplicate rewards.</li>
+<li>Pending receipts must survive app restart and resume verification.</li>
+</ul>
+<h3 id="priority-2-subscription--local-validation-helpers">Priority 2: Subscription &amp; Local Validation Helpers</h3>
 <ul>
 <li>[ ] Subscription Status local caching with TTL</li>
 <li>[ ] Client-side Local Receipt Validation option</li>
 </ul>
-<h3 id="priority-3-long-term--on-hold-requires-ui--external-integration-2">Priority 3: Long-term / On Hold (Requires UI &amp; External integration)</h3>
+<h3 id="priority-3-long-term-expansion-4">Priority 3: Long-term Expansion</h3>
 <ul>
 <li>[ ] In-game storefront scrolling UI template</li>
-<li>[ ] Third-party app store (e.g., OneStore) verification API integration</li>
+<li>[ ] Third-party app store verification API integration (e.g., OneStore)</li>
 </ul>
+<hr>
 <h2 id="6-sociallogin--socialloginpro">6. SocialLogin &amp; SocialLoginPro</h2>
-<h3 id="priority-1-usability-improvements--editor-tooling">Priority 1: Usability Improvements &amp; Editor Tooling</h3>
+<h3 id="role-5">Role</h3>
+<p>SocialLogin provides a unified client-side interface for Apple, Facebook, Google, Steam, and Discord login flows.
+SocialLoginPro is a combined distribution package that includes SocialLogin and TokenVerification. It follows almost the same feature track as SocialLogin and should not become a separate duplicated implementation track.</p>
+<h3 id="current-weak-points--risks-5">Current Weak Points / Risks</h3>
+<ul>
+<li>Social login fails in many places: provider configuration, Manifest, Info.plist, Redirect URI, SDK availability, and build settings.</li>
+<li>Diagnostic tooling can provide more buyer value than adding another provider too early.</li>
+<li>SocialLoginPro should avoid duplicate code and remain a packaging/documentation/sample-level combination of SocialLogin and TokenVerification.</li>
+</ul>
+<h3 id="priority-1-core-usability--diagnostics">Priority 1: Core Usability &amp; Diagnostics</h3>
 <ul>
 <li>[ ] Auto-Login and Token Refresh Manager</li>
-<li>[ ] Editor Diagnostics Utility (Automated inspection of Manifest and Plugin configurations)</li>
+<li>[ ] Editor Diagnostics Utility</li>
+<li>[ ] Inspect Manifest, Info.plist, Redirect URI, and Provider configuration issues</li>
+<li>[ ] Display Soft Dependency activation state</li>
 </ul>
-<h3 id="priority-2-logic-based-features-testing-convenience">Priority 2: Logic-based Features (Testing Convenience)</h3>
+<p><strong>Done Criteria:</strong></p>
 <ul>
-<li>[ ] Mock Social Login Provider for Editor (Test UI/UX flows immediately without API integration)</li>
+<li>Missing setup must produce diagnostics before users hit compile errors or runtime failures.</li>
+<li>Required Provider settings must be visible in the Editor.</li>
+<li>SocialLoginPro must work as a SocialLogin + TokenVerification combination without a separate implementation roadmap.</li>
 </ul>
-<h3 id="priority-3-long-term--on-hold-requires-ui--console-integration">Priority 3: Long-term / On Hold (Requires UI &amp; Console integration)</h3>
+<h3 id="priority-2-testing-convenience">Priority 2: Testing Convenience</h3>
 <ul>
-<li>[ ] Animated 'Drop-in' Social Login UI prefab template</li>
+<li>[ ] Mock Social Login Provider for Editor</li>
+<li>[ ] Add sample flow for testing UI/UX without real providers</li>
+</ul>
+<h3 id="priority-3-long-term-expansion-5">Priority 3: Long-term Expansion</h3>
+<ul>
+<li>[ ] Animated Drop-in Social Login UI prefab template</li>
 <li>[ ] Console-specific platforms integration (Xbox Live, PSN, Epic Games)</li>
 </ul>
 

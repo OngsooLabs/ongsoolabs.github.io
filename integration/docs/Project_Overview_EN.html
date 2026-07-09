@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
-      <link rel="stylesheet" href="../public/main.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
+      <link rel="stylesheet" href="../public/main.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d"></script>
+      <script type="module" src="./../public/docfx.min.js?v=7978fc379801e7992a89565912e1d37d981fab4d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -73,16 +73,16 @@
 <h1 id="project-overview">Project Overview</h1>
 
 <h2 id="-project-description--identity">💡 Project Description &amp; Identity</h2>
-<p>OSL Integration is a <strong>Modular Backend Infrastructure &amp; Architecture Suite</strong> fully optimized for the Unity Asset Store, providing robust, production-ready modules for networking, security, and social login. It is designed to guarantee zero data loss and strict server-authoritative security for commercial games.</p>
+<p>OSL Integration is a <strong>Modular Backend Infrastructure &amp; Architecture Suite</strong> optimized for the Unity Asset Store, providing robust, production-ready modules for networking, security, social login, payment verification, patching, deterministic logic, and server-authoritative workflows. It is designed to reduce data-loss risks and strengthen backend-driven security for commercial Unity projects.</p>
 <h2 id="-goals--core-values">🎯 Goals &amp; Core Values</h2>
 <p>To provide developers with lightweight, server-authoritative, and modular solutions without relying on bloated third-party SDKs where possible.</p>
 <ul>
-<li><strong>Zero-Loss Reliability:</strong> Offline queueing, resumable downloads, and automatic sync to prevent any data or payment loss.</li>
-<li><strong>Server-Authoritative Security:</strong> Server-side IAP validation and Cloud Code validation to strictly prevent client-side tampering.</li>
-<li><strong>Unity Developer Friendly (DX):</strong> Editor diagnostic tooling and one-click server deployments tailored for pure Unity developers without backend knowledge.</li>
+<li><strong>Zero-Loss-Oriented Reliability:</strong> Offline queueing, resumable downloads, and automatic sync patterns to reduce data or payment loss in unstable environments.</li>
+<li><strong>Server-Authoritative Security:</strong> Server-side IAP validation, token verification, and Cloud Code validation to reduce client-side tampering risks.</li>
+<li><strong>Unity Developer Friendly (DX):</strong> Editor diagnostic tooling and one-click server deployment paths tailored for Unity developers without deep backend knowledge.</li>
 </ul>
 <h2 id="-direction-architecture">🏗️ Direction (Architecture)</h2>
-<p>The project follows a <strong>Hierarchical Core Architecture</strong> to prevent bloatware in the customer's project. Upper modules can only reference lower modules (uni-directional dependency).</p>
+<p>The project follows a <strong>Hierarchical Core Architecture</strong> to avoid unnecessary bloat in the customer's project. Upper modules can only reference lower modules (uni-directional dependency).</p>
 <ul>
 <li><strong>Layer 0: <code>OSL.Core</code> (Shared Utility):</strong> An ultra-lightweight common module used by all assets (e.g., OSLCrypto, OSLLogger).</li>
 <li><strong>Layer 1: <code>OSL.Auth.Base</code> (Domain Core):</strong> The authentication base that ties the social login modules together (<code>ISignin</code>, token verification).</li>
@@ -90,7 +90,7 @@
 </ul>
 <h2 id="-progress">📈 Progress</h2>
 <ul>
-<li><strong>Completed:</strong> Migration of legacy packages to the new OSL standard folder structure. Completed integrated roadmap planning for all 6 packages.</li>
+<li><strong>Completed:</strong> Migration of legacy packages to the new OSL standard folder structure. Completed integrated roadmap planning for <strong>7 deliverable packages organized into 6 roadmap tracks</strong>.</li>
 <li><strong>In Progress:</strong> Entered <strong>Phase 1 (Core Reliability &amp; DX)</strong> of the integrated roadmap, actively developing core architecture for each module (e.g., offline queueing, resumable downloads, editor diagnostic tooling).</li>
 </ul>
 <h2 id="-future-implementations">📝 Future Implementations</h2>
@@ -101,16 +101,16 @@ Our immediate overarching objectives are:</p>
 <li>Establishment of an automated <code>.unitypackage</code> export process via Editor scripts for seamless Asset Store publishing.</li>
 </ul>
 <h2 id="package-details-individual-modules">Package Details (Individual Modules)</h2>
-<p>Below are the detailed descriptions and specific directions for each package within the OSL Integration suite:</p>
+<p>OSL Integration currently contains <strong>7 deliverable packages</strong>. The roadmap is organized into <strong>6 major tracks</strong> because <code>SocialLoginPro</code> is treated as a bundled end-to-end product that combines <code>SocialLogin</code> and <code>TokenVerification</code>.</p>
 <h3 id="1-deterministic">1. Deterministic</h3>
 <ul>
-<li><strong>Description:</strong> A zero-dependency, zero-allocation deterministic RNG (Random Number Generator) suite.</li>
-<li><strong>Direction:</strong> Provides a reliable and mathematically consistent foundation for lockstep multiplayer, save-state rollback, and procedural generation without floating-point drift across devices.</li>
+<li><strong>Description:</strong> A zero-dependency, allocation-conscious deterministic RNG (Random Number Generator) suite.</li>
+<li><strong>Direction:</strong> Provides a reliable and mathematically consistent foundation for lockstep multiplayer, save-state rollback, and procedural generation across supported and tested platforms.</li>
 </ul>
 <h3 id="2-easypatcher">2. EasyPatcher</h3>
 <ul>
 <li><strong>Description:</strong> A lightweight, streaming patch distribution system for Unity.</li>
-<li><strong>Direction:</strong> Aims to replace heavy systems like Addressables for simple patch downloads. It allows developers to push updates via native REST APIs (AWS, GCP, Azure, Unity CCD) and securely download only changed files at runtime using AES/HMAC.</li>
+<li><strong>Direction:</strong> Aims to replace heavy systems like Addressables for simple patch downloads. It allows developers to push updates via native REST APIs (AWS, GCP, Azure, Unity CCD) and download only changed files at runtime with AES/HMAC-based integrity and payload-protection options.</li>
 </ul>
 <h3 id="3-iapclient">3. IapClient</h3>
 <ul>
@@ -120,7 +120,7 @@ Our immediate overarching objectives are:</p>
 <h3 id="4-securesave">4. SecureSave</h3>
 <ul>
 <li><strong>Description:</strong> A no-code, server-authoritative save system backed by Unity Gaming Services (UGS).</li>
-<li><strong>Direction:</strong> Eradicates client-side save manipulation. It routes all saves through UGS Cloud Code to validate data types, max deltas, and value clamps securely on the server.</li>
+<li><strong>Direction:</strong> Reduces client-side save manipulation risks by routing saves through UGS Cloud Code to validate data types, max deltas, and value clamps on the server.</li>
 </ul>
 <h3 id="5-sociallogin">5. SocialLogin</h3>
 <ul>
@@ -130,12 +130,12 @@ Our immediate overarching objectives are:</p>
 <h3 id="6-socialloginpro">6. SocialLoginPro</h3>
 <ul>
 <li><strong>Description:</strong> An end-to-end secure sign-in bundle.</li>
-<li><strong>Direction:</strong> Combines <code>SocialLogin</code> with the <code>TokenVerification</code> backend. It aims to provide a complete turnkey pipeline—from client-side OAuth popups to backend cryptographic JWT/ticket verification.</li>
+<li><strong>Direction:</strong> Combines <code>SocialLogin</code> with the <code>TokenVerification</code> backend. It provides a turnkey-style pipeline—from client-side OAuth popups to backend cryptographic JWT/ticket verification.</li>
 </ul>
 <h3 id="7-tokenverification">7. TokenVerification</h3>
 <ul>
 <li><strong>Description:</strong> A standalone <code>.NET 8</code> Web API server boilerplate and Unity client.</li>
-<li><strong>Direction:</strong> Provides developers with a ready-to-deploy backend server (ASP.NET Minimal API) to cryptographically verify OAuth identity tokens, defeating client-side spoofing attacks.</li>
+<li><strong>Direction:</strong> Provides developers with a ready-to-deploy backend server (ASP.NET Minimal API) to cryptographically verify OAuth identity tokens and reduce client-side spoofing risks.</li>
 </ul>
 
 </article>

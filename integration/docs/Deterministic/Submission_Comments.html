@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
-      <link rel="stylesheet" href="../../public/main.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
+      <link rel="stylesheet" href="../../public/main.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=7978fc379801e7992a89565912e1d37d981fab4d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -74,13 +74,13 @@
 
 <p>Hello Asset Store Review Team,</p>
 <p>Thank you for reviewing <strong>OSL Deterministic Core</strong>.
-This package provides a zero-dependency, zero-allocation deterministic random number generator suite.</p>
+This package provides a zero-dependency, allocation-conscious deterministic random number generator suite for Unity.</p>
 <p>To verify the functionality and claims of the asset, we recommend the following:</p>
 <ol>
-<li><strong>Tests:</strong> Please open <code>Window &gt; General &gt; Test Runner</code> and run all <strong>EditMode</strong> tests located in <code>Assets/OSL/Deterministic/Tests/Editor</code>. All tests should pass and validate the deterministic algorithms and zero-allocation constraints.</li>
-<li><strong>Demo Scene:</strong> Open the sample scene located in <code>Assets/OSL/Deterministic/Samples/LockstepDemo/</code>. Press Play to see two simulated instances running side-by-side using the exact same RNG seed. The UI banner will remain green (SYNC) as both instances calculate the exact same FNV-1a state hash every tick, proving pure determinism.</li>
+<li><strong>Tests:</strong> Please open <code>Window &gt; General &gt; Test Runner</code> and run all <strong>EditMode</strong> tests located in <code>Assets/OSL/Deterministic/Tests/Editor</code>. The tests validate deterministic output behavior, state round-trips, probability helpers, and core allocation-sensitive paths.</li>
+<li><strong>Demo Scene:</strong> Open the sample scene located in <code>Assets/OSL/Deterministic/Samples/LockstepDemo/</code>. Press Play to see two simulated instances running side-by-side using the same RNG seed. The UI banner should remain green (SYNC) as both instances calculate the same FNV-1a state hash every tick, demonstrating deterministic behavior in the included sample.</li>
 </ol>
-<p>The package does not contain any third-party SDKs, pre-compiled DLLs (other than standard Unity assemblies), or native plugins. It strictly uses pure .NET Standard 2.1 C# code and allocates zero garbage at runtime.</p>
+<p>The package does not contain third-party SDKs, pre-compiled DLLs (other than standard Unity assemblies), or native plugins. It uses pure .NET Standard 2.1 C# code.</p>
 <p>If you have any questions, please let us know.
 Thank you!</p>
 

@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
-      <link rel="stylesheet" href="../public/main.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
+      <link rel="stylesheet" href="../public/main.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d"></script>
+      <script type="module" src="./../public/docfx.min.js?v=7978fc379801e7992a89565912e1d37d981fab4d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -88,20 +88,23 @@
 <li><code>Folder_Management_Rules_EN.md</code>: This document.</li>
 </ul>
 <h3 id="22-package-directories-docspackagename">2.2. Package Directories (<code>/docs/{PackageName}/</code>)</h3>
-<p>Each isolated Unity asset package must have its own subdirectory. These folders contain store-ready documentation and submission metadata.
-<strong>Required Files:</strong></p>
+<p>Each isolated Unity asset package must have its own subdirectory. These folders contain store-ready documentation and submission metadata.</p>
+<p><strong>Required Files:</strong></p>
 <ol>
 <li><code>Summary.md</code>: Short description for the asset store. Must be under 200 characters.</li>
 <li><code>Description.md</code>: Long description including features and requirements.</li>
 <li><code>Technical_details.md</code>: Technical specifications and algorithms used.</li>
-<li><code>Changelog.md</code>: Release notes strictly following Semantic Versioning.</li>
+<li><code>Changelog.md</code>: Release notes following a consistent Semantic Versioning-style format.</li>
 <li><code>Submission_Comments.md</code>: Notes to the Asset Store reviewer.</li>
 </ol>
 <h2 id="3-maintenance-rules">3. Maintenance Rules</h2>
 <ul>
 <li>Always update the package <code>Changelog.md</code> before initiating an export for the Asset Store.</li>
 <li>All package-specific files must be written in English to comply with Unity Asset Store guidelines.</li>
-<li>Do not place binary files (images, PDFs) directly in these markdown directories unless strictly necessary for internal preview; prefer the project's actual <code>Documentation~</code> folder for user-facing PDFs.</li>
+<li>Do not place binary files (images, PDFs) directly in these markdown directories unless strictly necessary for internal preview; prefer the project's actual <code>Documentation/</code> or <code>Documentation~</code> folder for user-facing PDFs.</li>
+<li>Keep package-count terminology consistent: OSL Integration has <strong>7 deliverable packages</strong> organized into <strong>6 roadmap tracks</strong>, with <code>SocialLoginPro</code> treated as a bundled package combining <code>SocialLogin</code> and <code>TokenVerification</code>.</li>
+<li>Keep Unity and backend compatibility wording evidence-based. Prefer <code>Minimum Unity Version</code>, <code>Tested Unity Versions</code>, and supported <code>.NET LTS</code> language over broad absolute claims.</li>
+<li>Reviewer instructions must use the same menu names and file paths as the actual package, especially <code>Tools &gt; OSL &gt; ...</code>, <code>Samples/</code> or <code>Samples~/</code>, and <code>Server~/</code>.</li>
 </ul>
 
 </article>

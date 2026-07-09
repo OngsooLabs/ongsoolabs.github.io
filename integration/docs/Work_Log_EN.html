@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
-      <link rel="stylesheet" href="../public/main.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
+      <link rel="stylesheet" href="../public/main.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d"></script>
+      <script type="module" src="./../public/docfx.min.js?v=7978fc379801e7992a89565912e1d37d981fab4d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -80,10 +80,23 @@
 <li>Renamed <code>Docs</code> and <code>Documentation~</code> to <code>Documentation</code> for SocialLogin and Deterministic packages.</li>
 <li>Created <code>Documentation</code> folders and moved stray <code>README.md</code> and <code>.pdf</code> files for SocialLoginPro and EasyPatcher.</li>
 <li>Updated <code>Project_Rules_EN.md</code> and <code>Project_Rules_KO.md</code> to formally allow <code>Server~/</code> and global <code>Editor/</code> folder paths.</li>
-<li>Completed roadmap planning for all 6 packages (Deterministic, EasyPatcher, IapClient, SecureSave, SocialLogin, TokenVerification).</li>
+<li>Completed roadmap planning for 7 deliverable packages organized into 6 roadmap tracks (Deterministic, EasyPatcher, IapClient, SecureSave, SocialLogin, SocialLoginPro, TokenVerification).</li>
 <li>Documented the identity of the OSL Integration suite as a modular backend infrastructure optimized for the Unity Asset Store.</li>
 <li>Restructured and updated <code>Roadmap_KO.md</code> and <code>Roadmap_EN.md</code> with a new 3-phase Integrated Roadmap (Core Reliability, Advanced Logic, UI Expansion).</li>
 <li>Updated <code>Project_Overview_KO.md</code> and <code>Project_Overview_EN.md</code> to explicitly state the suite's goals and core values (Reliability, Security, DX) as an Asset Store optimized modular suite.</li>
+<li>Normalized package-count terminology: 7 deliverable packages across 6 roadmap tracks, with <code>SocialLoginPro</code> treated as a bundled package combining <code>SocialLogin</code> and <code>TokenVerification</code>.</li>
+<li>Added compatibility and claims guidance to avoid unsupported absolute claims such as &quot;every platform&quot;, &quot;perfect security&quot;, or &quot;guaranteed zero loss&quot;.</li>
+<li>Clarified <code>Samples/</code>, <code>Samples~/</code>, and <code>Server~/</code> usage rules for Asset Store and UPM-style package layouts.</li>
+<li>Softened package marketing and reviewer-facing language to use evidence-based wording such as &quot;supported and tested platforms&quot;, &quot;reduces risk&quot;, and &quot;detects tampering&quot;.</li>
+<li>Aligned reviewer instructions for SocialLoginPro and TokenVerification with standardized menu names and <code>Server~/</code> backend source paths.</li>
+<li>Expanded <code>Roadmap_KO.md</code> and <code>Roadmap_EN.md</code> with roadmap operating rules, Current Focus, and phase-level Done Criteria so agents can use the document as an execution guide.</li>
+<li>Added each project's role, current weak points/risks, priority implementation items, and Done Criteria.</li>
+<li>Clarified that SocialLoginPro is not a separate feature track; it is managed as a combined distribution package of <code>SocialLogin + TokenVerification</code>.</li>
+<li>Reordered Deterministic Core so state serialization, reproducibility tests, and sample validation come before Burst/Job optimization.</li>
+<li>Refined TokenVerification toward deployment convenience, JWKS caching, baseline Rate Limiting, security middleware, and provider validation hardening instead of duplicate provider-addition work.</li>
+<li>Clarified SecureSave offline behavior as a Pending Write Queue with reconnection sync, conflict handling, and failure policy.</li>
+<li>Positioned EasyPatcher Binary Diffing as a later experiment or feature-flagged item after resumable download, verification, and retry flows are stable.</li>
+<li>Defined IapClient Pending Receipt Queue and transaction idempotency as core Priority 1 completion criteria.</li>
 </ul>
 
 </article>

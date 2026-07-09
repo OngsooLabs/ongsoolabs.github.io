@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
-      <link rel="stylesheet" href="../../public/main.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
+      <link rel="stylesheet" href="../../public/main.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=7978fc379801e7992a89565912e1d37d981fab4d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -72,20 +72,23 @@
         <article data-uid="">
 <h1 id="description">Description</h1>
 
-<p>OSL Token Verification is a robust backend boilerplate built with ASP.NET Core Minimal APIs. It pairs with a Unity client manager to provide secure, server-side cryptographic validation for identity tokens and session tickets. Never trust a client-side login callback—always verify tokens on your server!</p>
+<p>OSL Token Verification is a robust backend boilerplate built with ASP.NET Core Minimal APIs. It pairs with a Unity client manager to provide secure, server-side cryptographic validation for identity tokens and session tickets. Do not rely only on client-side login callbacks—verify tokens on your server.</p>
 <h2 id="highlights">Highlights</h2>
 <ul>
 <li><strong>Ready-to-Deploy Backend:</strong> Includes the full <code>.NET</code> C# source code (<code>TokenVerificationServer</code>) that you can run locally in seconds or deploy to Azure, AWS, or any VPS.</li>
 <li><strong>Multi-Platform Support:</strong> Built-in validation controllers for Google, Facebook, Apple, Steam, and Discord.</li>
-<li><strong>High Performance:</strong> Implements Apple JWKS 12-hour in-memory caching to eliminate redundant external API requests and mitigate Apple server outages.</li>
-<li><strong>Security Hardened:</strong> Steam session tickets are strictly URL-encoded to prevent payload corruption, and Discord redirect parameters are server-validated to thwart CSRF tampering.</li>
+<li><strong>High Performance:</strong> Implements Apple JWKS 12-hour in-memory caching to reduce redundant external API requests and improve resilience during provider-side issues.</li>
+<li><strong>Security Hardened:</strong> Steam session tickets are strictly URL-encoded to prevent payload corruption, and Discord redirect parameters are server-validated to reduce CSRF tampering risk.</li>
 <li><strong>Unity Helper:</strong> Comes with <code>TokenVerifyManager</code> for frictionless HTTP POST communication and a lightweight <code>OnGUI</code> Demo Scene.</li>
 </ul>
 <h2 id="requirements">Requirements</h2>
 <ul>
-<li>Unity 2021.3 LTS or later</li>
-<li>.NET 8 SDK (to run the backend server)</li>
+<li>Minimum Unity Version: Unity 2021.3 LTS or later</li>
+<li>Tested Unity Versions: Keep this field updated per release validation</li>
+<li>Backend runtime: .NET 8 SDK</li>
 </ul>
+<h2 id="backend-support-policy">Backend Support Policy</h2>
+<p>The included backend currently targets <code>.NET 8</code> LTS. Future releases should track migration compatibility with the next supported .NET LTS version before <code>.NET 8</code> reaches end of support.</p>
 
 </article>
 

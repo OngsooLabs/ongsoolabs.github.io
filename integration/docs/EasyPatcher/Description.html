@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
-      <link rel="stylesheet" href="../../public/main.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
+      <link rel="stylesheet" href="../../public/main.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=7978fc379801e7992a89565912e1d37d981fab4d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -72,18 +72,19 @@
         <article data-uid="">
 <h1 id="description">Description</h1>
 
-<p>OSL Easy Patcher is a lightweight, streaming patch distribution system for Unity games. Upload your patch files directly from the Unity Editor to the cloud, and let players automatically download only the changed files at runtime — no Addressables, no complex setups, and no third-party SDKs required.</p>
+<p>OSL Easy Patcher is a lightweight, streaming patch distribution system for Unity games. Upload your patch files directly from the Unity Editor to the cloud, and let players automatically download only the changed files at runtime — no Addressables, no complex setups, and no bundled cloud SDKs required.</p>
 <h2 id="highlights">Highlights</h2>
 <ul>
 <li><strong>Automated Differential Downloads:</strong> Automatically compares <code>version.json</code> and downloads only the files that have changed.</li>
 <li><strong>Multiple Cloud Backends:</strong> Upload directly to Google Cloud Storage (GCS), AWS S3, Unity Cloud Content Delivery (CCD), Azure Blob Storage, or a Local Folder right from the Editor.</li>
-<li><strong>Robust Security:</strong> Secure your patch payload with AES-256 (CBC+PKCS7) encryption and HMAC tamper-proofing toggles on a per-file or folder basis.</li>
-<li><strong>Zero Third-Party SDKs:</strong> Communicates with AWS, GCS, and Azure purely through their native REST APIs. No bloated SDKs to bloat your build.</li>
+<li><strong>Integrity &amp; Payload Protection:</strong> Optional AES-256 (CBC+PKCS7) encryption and HMAC verification help detect corrupted or modified patch files and protect payload contents.</li>
+<li><strong>No Bundled Cloud SDKs:</strong> Communicates with AWS, GCS, and Azure through native REST APIs instead of bundling heavy cloud SDKs into the Unity package.</li>
 <li><strong>UI Agnostic:</strong> Comes with <code>OSLPatchUIController</code> which auto-detects TextMeshPro (<code>OSL_TMP_PRESENT</code>) with automatic legacy <code>UI.Text</code> fallback.</li>
 </ul>
 <h2 id="requirements">Requirements</h2>
 <ul>
-<li>Unity 2021.3 LTS or later (tested up to Unity 6)</li>
+<li>Minimum Unity Version: Unity 2021.3 LTS or later</li>
+<li>Tested Unity Versions: Keep this field updated per release validation</li>
 <li>Scripting runtime: .NET Standard 2.1</li>
 </ul>
 

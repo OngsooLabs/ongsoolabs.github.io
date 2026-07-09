@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
-      <link rel="stylesheet" href="../../public/main.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
+      <link rel="stylesheet" href="../../public/main.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=7978fc379801e7992a89565912e1d37d981fab4d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -77,12 +77,12 @@
 This bundle combines two modular solutions (<code>SocialLogin</code> and <code>TokenVerification</code>) to provide a complete, end-to-end authenticated login flow.</p>
 <p>To verify functionality:</p>
 <ol>
-<li>First, set up the client side by opening <code>Tools &gt; OSL &gt; Social Login Settings</code>. You can test the &quot;Discord&quot; provider directly in the Editor without importing any native plugins.</li>
-<li>Inside the package root, you will find <code>TokenVerificationServer_Dotnet_Source.zip</code> (or the equivalent server directory). You can run this .NET Web API locally (<code>dotnet run</code>).</li>
-<li>Point the <code>TokenVerifyManager</code> in your Unity scene to <code>http://localhost:5181/api/verify/discord</code> (or the respective port).</li>
-<li>Initiate a login. The Unity client will acquire the token and automatically forward it to the local Web API for cryptographic verification.</li>
+<li>First, set up the client side by opening <code>Tools &gt; OSL &gt; Social Login &gt; Setup</code>. You can test the &quot;Discord&quot; provider directly in the Editor without importing any native plugins.</li>
+<li>Inside the package root, find the backend source under <code>Assets/OSL/SocialLoginPro/Server~/</code> or the packaged <code>TokenVerification</code> backend source archive inside that folder. Run this .NET Web API locally with <code>dotnet run</code>.</li>
+<li>Point the <code>TokenVerifyManager</code> in your Unity scene to <code>http://localhost:5181/api/verify/discord</code> (or the configured local server address).</li>
+<li>Initiate a login. The Unity client will acquire the token and forward it to the local Web API for cryptographic verification.</li>
 </ol>
-<p>Please note that no massive third-party SDKs (e.g., Firebase, Google Play Services) are bundled directly inside this package to comply with distribution sizing. They are configured via &quot;Soft Dependencies&quot;.</p>
+<p>Please note that large third-party SDKs (e.g., Firebase, Google Play Services) are not bundled directly inside this package to comply with distribution sizing and licensing constraints. They are configured through soft dependencies.</p>
 <p>Thank you!</p>
 
 </article>

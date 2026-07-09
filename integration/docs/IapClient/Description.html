@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
-      <link rel="stylesheet" href="../../public/main.css?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
+      <link rel="stylesheet" href="../../public/main.css?v=7978fc379801e7992a89565912e1d37d981fab4d">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=acbaa636e4df87ef0b28c0acc2e1b4e901e7409d"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=7978fc379801e7992a89565912e1d37d981fab4d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -72,10 +72,10 @@
         <article data-uid="">
 <h1 id="description">Description</h1>
 
-<p>OSL IAP Client wraps Unity IAP and adds a critical server-side verification step. Instead of blindly trusting client-side purchase success callbacks, this asset ensures receipts are validated by your own backend server against Google Play and the Apple App Store before any in-game rewards are granted.</p>
+<p>OSL IAP Client wraps Unity IAP and adds a critical server-side verification step. Instead of blindly trusting client-side purchase success callbacks, this asset routes receipts to your backend server for validation against Google Play and the Apple App Store before any in-game rewards are granted.</p>
 <h2 id="highlights">Highlights</h2>
 <ul>
-<li><strong>Server-Authoritative:</strong> Prevents receipt forgery and replay attacks by forcing backend validation.</li>
+<li><strong>Server-Authoritative:</strong> Reduces receipt forgery and replay risks by forcing backend validation before reward delivery.</li>
 <li><strong>Seamless Integration:</strong> Wraps <code>com.unity.purchasing</code> without modifying it. Missing packages are handled gracefully with fallback stubs.</li>
 <li><strong>Backend Ready:</strong> Includes comprehensive documentation and a deployable backend reference for Google and Apple verification, database management, and webhook handling.</li>
 <li><strong>Demo Scene Included:</strong> A full testing environment with login simulation, consumable (Gold), and subscription (VIP) purchase flows.</li>
@@ -90,7 +90,8 @@
 </ol>
 <h2 id="requirements">Requirements</h2>
 <ul>
-<li>Unity 2021.3 LTS or newer</li>
+<li>Minimum Unity Version: Unity 2021.3 LTS or newer</li>
+<li>Tested Unity Versions: Keep this field updated per release validation</li>
 <li>Unity IAP (<code>com.unity.purchasing</code>)</li>
 </ul>
 
