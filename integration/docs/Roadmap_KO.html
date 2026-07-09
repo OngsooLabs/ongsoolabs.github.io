@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=cdac288ed150f4510cbfeed27ed978edb2b06e6b">
-      <link rel="stylesheet" href="../public/main.css?v=cdac288ed150f4510cbfeed27ed978edb2b06e6b">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=b5d6e99a43632a638695b82bf78cdc8eb61114d7">
+      <link rel="stylesheet" href="../public/main.css?v=b5d6e99a43632a638695b82bf78cdc8eb61114d7">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=cdac288ed150f4510cbfeed27ed978edb2b06e6b"></script>
+      <script type="module" src="./../public/docfx.min.js?v=b5d6e99a43632a638695b82bf78cdc8eb61114d7"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -98,11 +98,11 @@
 <h2 id="-current-focus">🎯 Current Focus</h2>
 <p>현재 가장 먼저 처리해야 할 실행 대상은 다음과 같습니다.</p>
 <ol>
-<li><p><strong>IapClient</strong></p>
+<li><p><strong><del>IapClient</del> (완료)</strong></p>
 <ul>
-<li>미처리 결제건(Pending Receipt) 로컬 큐잉</li>
-<li>지수 백오프 기반 재시도</li>
-<li>중복 보상 지급 방지를 위한 transaction id / receipt idempotency 기준 정리</li>
+<li><del>미처리 결제건(Pending Receipt) 로컬 큐잉</del></li>
+<li><del>지수 백오프 기반 재시도</del></li>
+<li><del>중복 보상 지급 방지를 위한 transaction id / receipt idempotency 기준 정리</del></li>
 </ul>
 </li>
 <li><p><strong>EasyPatcher</strong></p>
@@ -144,12 +144,18 @@
 <h3 id="phase-1-인프라-안정성-및-필수-사용성-확보-core-reliability--dx">Phase 1: 인프라 안정성 및 필수 사용성 확보 (Core Reliability &amp; DX)</h3>
 <p>목표: 각 패키지가 실제 유저 프로젝트에서 실패 상황을 견디고, 문제 원인을 빠르게 진단할 수 있게 만드는 단계입니다.</p>
 <ol>
-<li><p><strong>IapClient</strong></p>
+<li><p><strong><del>IapClient</del> (완료)</strong></p>
 <ul>
-<li>Pending Receipt Queue 구현</li>
-<li>지수 백오프 기반 자동 재시도</li>
-<li>transaction id / receipt idempotency 기준 정리</li>
-<li>앱 재시작 후 미처리 결제 복구 흐름 추가</li>
+<li><del>Pending Receipt Queue 구현</del></li>
+<li><del>자동 재시도 및 중복 보상 방지 흐름 정리</del></li>
+<li><del>결제 유실 위험 감소</del></li>
+</ul>
+</li>
+<li><p><strong>SecureSave</strong></p>
+<ul>
+<li>Pending Write Queue 구현</li>
+<li>자동 재시도 및 실패 복구 흐름 정리</li>
+<li>세이브 유실 위험 감소</li>
 </ul>
 </li>
 <li><p><strong>EasyPatcher</strong></p>
@@ -166,14 +172,6 @@
 <li>Self-contained 배포 프로필 정리</li>
 <li>기본 Rate Limiting 및 보안 미들웨어 기준 추가</li>
 <li><code>.NET 8</code> 유지와 <code>.NET 10</code> LTS 호환 경로 추적</li>
-</ul>
-</li>
-<li><p><strong>SecureSave</strong></p>
-<ul>
-<li>Pending Write Queue 구현</li>
-<li>재접속 후 자동 동기화</li>
-<li>재시도/실패/충돌 처리 정책 정의</li>
-<li>선택적 키(Multi-key) 로드 기능 추가</li>
 </ul>
 </li>
 <li><p><strong>SocialLogin / SocialLoginPro</strong></p>

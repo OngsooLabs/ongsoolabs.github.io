@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=cdac288ed150f4510cbfeed27ed978edb2b06e6b">
-      <link rel="stylesheet" href="../public/main.css?v=cdac288ed150f4510cbfeed27ed978edb2b06e6b">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=b5d6e99a43632a638695b82bf78cdc8eb61114d7">
+      <link rel="stylesheet" href="../public/main.css?v=b5d6e99a43632a638695b82bf78cdc8eb61114d7">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="../toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=cdac288ed150f4510cbfeed27ed978edb2b06e6b"></script>
+      <script type="module" src="./../public/docfx.min.js?v=b5d6e99a43632a638695b82bf78cdc8eb61114d7"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -97,6 +97,8 @@
 <li>SecureSave는 오프라인 저장 표현을 Pending Write Queue 기준으로 명확화하고, 재접속 동기화/충돌/실패 처리 기준을 추가</li>
 <li>EasyPatcher는 Binary Diffing을 즉시 핵심 기능으로 두지 않고, 이어받기/검증/재시도 안정화 후 실험 또는 Feature Flag 기반으로 접근하도록 정리</li>
 <li>IapClient는 Pending Receipt Queue와 transaction idempotency를 1순위 핵심 완료 기준으로 명확화</li>
+<li>IapClient 미처리 결제건(Pending Receipt) 영구 파일 로컬 큐잉 및 지수 백오프 기반 백그라운드 재시도 로직 구현</li>
+<li>IapClient 보상 중복 지급 방지(Idempotency) 로직 보완 및 앱 강제 종료 시 CancellationToken 기반 Task.Delay 안전 종료 처리</li>
 </ul>
 
 </article>
