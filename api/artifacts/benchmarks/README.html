@@ -80,6 +80,8 @@
 <li><code>reader-lock-candidate-batch-004.json</code>: 16 verified URLs for the final lock expansion batch.</li>
 <li><code>reader-seed-dataset.schema.json</code>: JSON Schema for benchmark dataset files.</li>
 <li><code>reader-lock-dataset-plan.md</code>: Category mix, promotion workflow, and exit criteria for the 100 URL lock dataset.</li>
+<li><code>reader-quality-labeled-validation.json</code>: 40 item internal labeled validation set for quality-score calibration.</li>
+<li><code>reader-quality-labeled-validation.schema.json</code>: JSON Schema for the labeled validation set.</li>
 </ul>
 <h2 id="dataset-intent">Dataset Intent</h2>
 <p>The seed dataset is not the final lock dataset. It exists to make the first Markdown regression runner reviewable before expanding coverage to 100 URLs.</p>
@@ -123,6 +125,8 @@
 <li>Dataset item failures report <code>id</code>, <code>url</code>, and the failed expectation.</li>
 </ul>
 <p>The runner must not log request bodies, response bodies, raw HTML, cookies, custom headers, proxy configuration, or extracted content.</p>
+<p>The runner also emits an internal candidate quality score and band distribution for triage. This score is not part of the public API contract and does not replace the pass/fail gate. Low <code>qualityBand</code> results should be reviewed as false positives, real regressions, or dataset expectation issues before changing extraction behavior. Missing <code>quality</code> metadata or missing <code>quality.signals</code> is treated as a review-level contract regression candidate.</p>
+<p>The labeled validation dataset is separate from the lock dataset. Use it to calibrate future public score promotion criteria; do not use it to weaken the lock dataset release gate.</p>
 <h2 id="local-runner">Local Runner</h2>
 <p>Run the scraper API locally, then execute:</p>
 <pre><code class="lang-powershell">.\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243
