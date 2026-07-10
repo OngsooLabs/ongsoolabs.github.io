@@ -2,17 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Changelog </title>
+      <title> </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
       <meta http-equiv="Pragma" content="no-cache">
       <meta http-equiv="Expires" content="0">
-      <meta name="title" content="Changelog ">
+      <meta name="title" content=" ">
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=253e2e92027845736a54df8f551dbc0ccc78b042">
-      <link rel="stylesheet" href="../../public/main.css?v=253e2e92027845736a54df8f551dbc0ccc78b042">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=f0321fbed1995f4f8ec0c3df114b0e2e7d6b77a5">
+      <link rel="stylesheet" href="../../public/main.css?v=f0321fbed1995f4f8ec0c3df114b0e2e7d6b77a5">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../releases/toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=253e2e92027845736a54df8f551dbc0ccc78b042"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=f0321fbed1995f4f8ec0c3df114b0e2e7d6b77a5"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -84,43 +84,31 @@
         </div>
 
         <article data-uid="">
-<h1 id="changelog">Changelog</h1>
 
-<p>All notable changes to this package are documented here.
-The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>.</p>
-<h2 id="110---2026-06-16">[1.1.0] - 2026-06-16</h2>
-<h3 id="added">Added</h3>
-<ul>
-<li><strong>Discord Sign-In Support (Zero-SDK)</strong>: Integrated a pure HTTP loopback auth provider with port fallback support (probing ports <code>50000</code>-<code>50009</code>), cryptographic CSRF protection, and automatic timeout handling.</li>
-<li>Centralized editor configuration in <a href="file:///c:/Project/OSLIntegration/OSL%20Integration/Assets/OSL/SocialLogin/Editor/SocialLoginSetup.cs">SocialLoginSetup.cs</a> for enabling Discord Sign-In (<code>OSL_DISCORD</code> define symbol) and setting credentials.</li>
-</ul>
-<h3 id="changed">Changed</h3>
-<ul>
-<li><strong>Fast Enter Play Mode Support</strong>: Removed static instance backing fields in <code>SocialLoginSettings</code> to comply with Unity Project Auditor rules.</li>
-<li><code>package.json</code> version bumped to <code>1.1.0</code> and description updated to include Discord support.</li>
-<li>Documentation updated (<a href="file:///c:/Project/OSLIntegration/OSL%20Integration/Assets/OSL/SocialLogin/Docs/README.md">README.md</a> and <a href="file:///c:/Project/OSLIntegration/articles/sociallogin.md">sociallogin.md</a>) with comprehensive Discord integration and loopback redirect setup guidelines.</li>
-</ul>
-<hr>
-<h2 id="101---2025-06-10">[1.0.1] - 2025-06-10</h2>
-<h3 id="added-1">Added</h3>
-<ul>
-<li>UPM compatibility configuration (<code>package.json</code>).</li>
-<li>Packaging guide for UPM installation.</li>
-</ul>
-<h3 id="fixed">Fixed</h3>
-<ul>
-<li>Google standalone PC local loopback handling to properly process redirect callback under high-latency network conditions.</li>
-</ul>
-<hr>
-<h2 id="100---2025-01-01">[1.0.0] - 2025-01-01</h2>
-<h3 id="added-2">Added</h3>
-<ul>
-<li>Initial release.</li>
-<li>Unified social login contract interfaces (<code>ISocialLoginProvider</code> and <code>ISignin</code>).</li>
-<li>Platform authentication adapters: Google (<code>GProvider</code>), Facebook (<code>FBProvider</code>), Apple (<code>AProvider</code>), and Steam (<code>StProvider</code>).</li>
-<li>Centralized configuration UI via the <code>SocialLoginSetup</code> editor window.</li>
-<li>Soft-dependency compilation architecture with assembly definitions using conditional define constraints.</li>
-</ul>
+<p>Changelog
+All notable changes to this package are documented here.
+The format is based on Keep a Changelog (<a href="https://keepachangelog.com/en/1.1.0/">https://keepachangelog.com/en/1.1.0/</a>).</p>
+<p>[1.1.0] - 2026-06-16</p>
+<p>Added
+Discord Sign-In Support (Zero-SDK): Integrated a pure HTTP loopback auth provider with port fallback support (probing ports 50000-50009), cryptographic CSRF protection, and automatic timeout handling.
+Centralized editor configuration in SocialLoginSetup.cs for enabling Discord Sign-In (OSL_DISCORD define symbol) and setting credentials.</p>
+<p>Changed
+Fast Enter Play Mode Support: Removed static instance backing fields in SocialLoginSettings to comply with Unity Project Auditor rules.
+package.json version bumped to 1.1.0 and description updated to include Discord support.
+Documentation updated (README.md and sociallogin.md) with comprehensive Discord integration and loopback redirect setup guidelines.</p>
+<p>[1.0.1] - 2025-06-10</p>
+<p>Added
+UPM compatibility configuration (package.json).
+Packaging guide for UPM installation.</p>
+<p>Fixed
+Google standalone PC local loopback handling to properly process redirect callback under high-latency network conditions.</p>
+<p>[1.0.0] - 2025-01-01</p>
+<p>Added
+Initial release.
+Unified social login contract interfaces (ISocialLoginProvider and ISignin).
+Platform authentication adapters: Google (GProvider), Facebook (FBProvider), Apple (AProvider), and Steam (StProvider).
+Centralized configuration UI via the SocialLoginSetup editor window.
+Soft-dependency compilation architecture with assembly definitions using conditional define constraints.</p>
 
 </article>
 

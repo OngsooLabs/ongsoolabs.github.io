@@ -2,17 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Changelog </title>
+      <title> </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
       <meta http-equiv="Pragma" content="no-cache">
       <meta http-equiv="Expires" content="0">
-      <meta name="title" content="Changelog ">
+      <meta name="title" content=" ">
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=253e2e92027845736a54df8f551dbc0ccc78b042">
-      <link rel="stylesheet" href="../../public/main.css?v=253e2e92027845736a54df8f551dbc0ccc78b042">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=f0321fbed1995f4f8ec0c3df114b0e2e7d6b77a5">
+      <link rel="stylesheet" href="../../public/main.css?v=f0321fbed1995f4f8ec0c3df114b0e2e7d6b77a5">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../releases/toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=253e2e92027845736a54df8f551dbc0ccc78b042"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=f0321fbed1995f4f8ec0c3df114b0e2e7d6b77a5"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -84,18 +84,27 @@
         </div>
 
         <article data-uid="">
-<h1 id="changelog">Changelog</h1>
 
-<h2 id="100---initial-release">[1.0.0] - Initial Release</h2>
-<h3 id="added">Added</h3>
-<ul>
-<li><strong>IapManager:</strong> Core wrapper for <code>com.unity.purchasing</code> with server-side validation routing.</li>
-<li><strong>BackendApiClient:</strong> Handles POST requests to the verification server with automatic retry logic.</li>
-<li><strong>IapSetupConfig:</strong> ScriptableObject for centralized environment and product catalog configuration.</li>
-<li><strong>Input System Support:</strong> Dynamic input module detection for backward and forward compatibility.</li>
-<li><strong>Demo Scene:</strong> Includes a complete consumable and subscription purchase flow.</li>
-<li><strong>Documentation:</strong> Extensive backend setup guides for Apple and Google verification.</li>
-</ul>
+<p>Changelog</p>
+<p>[1.1.0] - 2026-07-10</p>
+<p>Added
+Pending Receipt Queue: Implemented persistent file-based local queueing (osl_iap_pending_queue.json) for unverified transactions.
+Exponential Backoff: Added an intelligent background retry mechanism for the pending queue to recover from network interruptions without user intervention.
+Verification Failed Event: Added OnVerificationFailed event to notify the application when a receipt is permanently rejected by the server.</p>
+<p>Fixed
+Asset Store Validation: Replaced the UGUI-based IapDemoUI with a legacy OnGUI implementation to eliminate UnityEngine.UI soft-dependency errors (&quot;Missing Component&quot;) when validating the package in a clean environment.
+Fast Enter Play Mode: Ensured IapDemoConfig properly resets its cached static variables during SubsystemRegistration to support fast iterations.
+Duplicate Reward Prevention: Hardened idempotency rules to block duplicate item grants if the server inconsistently responds with ShouldGrantReward=true but ShouldConfirmPurchase=false.
+Task Cancellation: Ensured the background queue processor respects component lifecycle using CancellationTokenSource to prevent MissingReferenceException on app exit or scene change.
+Queue Recovery: Added automatic deletion of corrupted queue files to prevent endless parsing error loops on application start.</p>
+<p>[1.0.0] - Initial Release</p>
+<p>Added
+IapManager: Core wrapper for com.unity.purchasing with server-side validation routing.
+BackendApiClient: Handles POST requests to the verification server with automatic retry logic.
+IapSetupConfig: ScriptableObject for centralized environment and product catalog configuration.
+Input System Support: Dynamic input module detection for backward and forward compatibility.
+Demo Scene: Includes a complete consumable and subscription purchase flow.
+Documentation: Extensive backend setup guides for Apple and Google verification.</p>
 
 </article>
 

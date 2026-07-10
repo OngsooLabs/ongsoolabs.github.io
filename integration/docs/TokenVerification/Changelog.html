@@ -2,17 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Changelog </title>
+      <title> </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
       <meta http-equiv="Pragma" content="no-cache">
       <meta http-equiv="Expires" content="0">
-      <meta name="title" content="Changelog ">
+      <meta name="title" content=" ">
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=253e2e92027845736a54df8f551dbc0ccc78b042">
-      <link rel="stylesheet" href="../../public/main.css?v=253e2e92027845736a54df8f551dbc0ccc78b042">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=f0321fbed1995f4f8ec0c3df114b0e2e7d6b77a5">
+      <link rel="stylesheet" href="../../public/main.css?v=f0321fbed1995f4f8ec0c3df114b0e2e7d6b77a5">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../releases/toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=253e2e92027845736a54df8f551dbc0ccc78b042"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=f0321fbed1995f4f8ec0c3df114b0e2e7d6b77a5"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -84,39 +84,29 @@
         </div>
 
         <article data-uid="">
-<h1 id="changelog">Changelog</h1>
 
-<p>All notable changes to this package are documented here.
-The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>.</p>
-<h2 id="102---2026-06-22">[1.0.2] - 2026-06-22</h2>
-<h3 id="added">Added</h3>
-<ul>
-<li><strong>Discord Token Verification</strong>: Added server-side endpoint and cryptographic validation support for Discord authentication codes.</li>
-<li><strong>Apple JWKS Caching</strong>: Implemented a 12-hour in-memory cache for Apple's JSON Web Key Sets (JWKS) to avoid frequent external API calls.</li>
-<li><strong>Steam Ticket Transmission Safety</strong>: Escaped special characters in Steam session tickets via <code>Uri.EscapeDataString</code> to prevent payload corruption during HTTP transmission.</li>
-<li><strong>Discord Redirect Validation</strong>: Validates the OAuth redirection parameters against the server settings to prevent redirect manipulation.</li>
-<li><strong>Automated Source Packaging</strong>: Integrated editor script hook (<code>OSLAssetExporter</code>) to automatically zip the <code>.NET</code> backend project (<code>TokenVerificationServer</code>) into <code>Server_Dotnet_Source.zip</code> upon package export.</li>
-</ul>
-<h3 id="changed">Changed</h3>
-<ul>
-<li>Updated package description to reflect official support for Discord token verification.</li>
-<li>Standardized namespaces and client-side HTTP request payloads to ensure clean integration.</li>
-</ul>
-<hr>
-<h2 id="101---2026-05-27">[1.0.1] - 2026-05-27</h2>
-<h3 id="changed-1">Changed</h3>
-<ul>
-<li>Bumped <code>com.unity.ugui</code> package dependency version from <code>1.0.0</code> to <code>2.0.0</code>.</li>
-<li>Cleaned up verification documentation files.</li>
-</ul>
-<hr>
-<h2 id="100---2026-05-12">[1.0.0] - 2026-05-12</h2>
-<h3 id="added-1">Added</h3>
-<ul>
-<li>Initial release of the OSL Token Verification System.</li>
-<li>Standalone .NET Web API boilerplate (<code>TokenVerificationServer</code>) featuring ready-to-use validation controllers for Google, Facebook, Apple, and Steam.</li>
-<li>Client-side validation helper class <code>TokenVerifyManager</code> for easy HTTP integration inside Unity.</li>
-</ul>
+<p>Changelog
+All notable changes to this package are documented here.
+The format is based on Keep a Changelog (<a href="https://keepachangelog.com/en/1.1.0/">https://keepachangelog.com/en/1.1.0/</a>).</p>
+<p>[1.0.2] - 2026-06-22</p>
+<p>Added
+Discord Token Verification: Added server-side endpoint and cryptographic validation support for Discord authentication codes.
+Apple JWKS Caching: Implemented a 12-hour in-memory cache for Apple's JSON Web Key Sets (JWKS) to avoid frequent external API calls.
+Steam Ticket Transmission Safety: Escaped special characters in Steam session tickets via Uri.EscapeDataString to prevent payload corruption during HTTP transmission.
+Discord Redirect Validation: Validates the OAuth redirection parameters against the server settings to prevent redirect manipulation.
+Automated Source Packaging: Integrated editor script hook (OSLAssetExporter) to automatically zip the .NET backend project (TokenVerificationServer) into Server_Dotnet_Source.zip upon package export.</p>
+<p>Changed
+Updated package description to reflect official support for Discord token verification.
+Standardized namespaces and client-side HTTP request payloads to ensure clean integration.</p>
+<p>[1.0.1] - 2026-05-27</p>
+<p>Changed
+Bumped com.unity.ugui package dependency version from 1.0.0 to 2.0.0.
+Cleaned up verification documentation files.</p>
+<p>[1.0.0] - 2026-05-12</p>
+<p>Added
+Initial release of the OSL Token Verification System.
+Standalone .NET Web API boilerplate (TokenVerificationServer) featuring ready-to-use validation controllers for Google, Facebook, Apple, and Steam.
+Client-side validation helper class TokenVerifyManager for easy HTTP integration inside Unity.</p>
 
 </article>
 
