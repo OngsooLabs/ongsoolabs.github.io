@@ -156,9 +156,9 @@
 </ul>
 <p>Use these fields when you need more control:</p>
 <ul>
-<li><code>metadata</code>: Page title, language, word count, reading time, and available article metadata.</li>
+<li><code>metadata</code>: Page title, language, word count, reading time, and available article metadata. Word count includes a CJK and Hangul estimate for languages that do not rely on whitespace between words.</li>
 <li><code>usage</code>: Character count, token estimate, chunk count, and response credit metadata.</li>
-<li><code>quality</code>: v0 extraction signals for debugging and pipeline tuning. <code>score</code> and <code>grade</code> are intentionally <code>null</code> in v0.</li>
+<li><code>quality</code>: v0 extraction signals for debugging and pipeline tuning. <code>linkDensity</code> is based on visible Markdown link text, excluding image Markdown. <code>score</code> and <code>grade</code> are intentionally <code>null</code> in v0.</li>
 <li><code>execution</code>: Runtime details such as cache status, browser usage, retry count, and duration.</li>
 <li><code>chunks</code>: Optional overlapping chunks when <code>enable_chunking</code> is <code>true</code>.</li>
 </ul>
