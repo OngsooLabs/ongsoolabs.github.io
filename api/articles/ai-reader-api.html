@@ -126,7 +126,7 @@
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
 <td style="text-align: left;"><code>/v1/reader/document</code></td>
-<td style="text-align: left;">Pre-release: convert a public text-layer PDF URL to Markdown</td>
+<td style="text-align: left;">Public Beta: convert a public text-layer PDF URL to Markdown</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
@@ -219,7 +219,7 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
 }
 </code></pre>
 <p>When <code>output_format</code> is <code>json</code>, the response uses <code>content.article</code> instead of <code>content.value</code>.</p>
-<h3 id="pdf-document-reader-pre-release">PDF Document Reader (Pre-release)</h3>
+<h3 id="pdf-document-reader-public-beta">PDF Document Reader (Public Beta)</h3>
 <p><code>POST /v1/reader/document</code> accepts a public HTTPS URL for a text-layer PDF and always returns Markdown. It does not accept file uploads, DOCX, OCR, encrypted PDFs, or document generation requests.</p>
 <pre><code class="lang-json">{
   &quot;url&quot;: &quot;https://example.com/report.pdf&quot;,

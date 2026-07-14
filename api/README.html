@@ -111,7 +111,7 @@
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
 <td style="text-align: left;"><code>/v1/reader/document</code></td>
-<td style="text-align: left;">Pre-release: extract a public text-layer PDF URL as Markdown</td>
+<td style="text-align: left;">Public Beta: extract a public text-layer PDF URL as Markdown</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
@@ -204,8 +204,8 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
 }
 </code></pre>
 <p>Failures use the same versioned envelope with <code>status = failed</code>, an <code>error</code> object, zero usage, and stable error codes such as <code>INVALID_URL</code>, <code>INVALID_REQUEST</code>, and <code>UNSAFE_URL</code>.</p>
-<h3 id="pdf-document-reader-pre-release">PDF Document Reader (Pre-release)</h3>
-<p><code>POST /v1/reader/document</code> accepts a public HTTPS PDF URL and returns <code>content.format = &quot;markdown&quot;</code>. The beta supports text-layer PDFs only; it does not accept uploads, DOCX, OCR, encrypted PDFs, or document generation requests.</p>
+<h3 id="pdf-document-reader-public-beta">PDF Document Reader (Public Beta)</h3>
+<p><code>POST /v1/reader/document</code> accepts a public HTTPS PDF URL and returns <code>content.format = &quot;markdown&quot;</code>. The Public Beta supports text-layer PDFs only; it does not accept uploads, DOCX, OCR, encrypted PDFs, or document generation requests.</p>
 <pre><code class="lang-json">{
   &quot;url&quot;: &quot;https://example.com/report.pdf&quot;,
   &quot;tokenizer&quot;: &quot;openai&quot;,

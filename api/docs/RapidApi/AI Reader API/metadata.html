@@ -72,12 +72,12 @@
 <h2 id="short-description">Short Description</h2>
 <p>Convert public webpages and text-layer PDF URLs into clean, LLM-ready content for RAG, AI agents, and knowledge-base ingestion.</p>
 <h2 id="long-description">Long Description</h2>
-<p>AI Reader API turns messy public webpages into clean content your AI applications can use immediately. It also reads public HTTPS text-layer PDF URLs as Markdown in Pre-release. Most integrations start with the extracted <code>content</code> field, then use optional usage, quality, execution, and chunking metadata when they need cost visibility, debugging, or RAG pipeline tuning.</p>
+<p>AI Reader API turns messy public webpages into clean content your AI applications can use immediately. It also reads public HTTPS text-layer PDF URLs as Markdown in Public Beta. Most integrations start with the extracted <code>content</code> field, then use optional usage, quality, execution, and chunking metadata when they need cost visibility, debugging, or RAG pipeline tuning.</p>
 <p>Use it to power AI agents, RAG pipelines, web-content ingestion jobs, automated summarizers, documentation indexers, and knowledge-base builders without building your own scraper, boilerplate cleaner, response contract, tokenizer estimator, and chunking layer.</p>
 <h3 id="key-capabilities">Key Capabilities</h3>
 <ul>
 <li><strong>Webpage to LLM-Ready Content</strong>: Convert public URLs into clean Markdown, plain text, or structured JSON.</li>
-<li><strong>PDF URL to Markdown (Pre-release)</strong>: Read public HTTPS text-layer PDF URLs as Markdown with tokenizer and optional chunking controls. File uploads, DOCX, OCR, encrypted PDFs, and browser rendering are not supported.</li>
+<li><strong>PDF URL to Markdown (Public Beta)</strong>: Read public HTTPS text-layer PDF URLs as Markdown with tokenizer and optional chunking controls. File uploads, DOCX, OCR, encrypted PDFs, and browser rendering are not supported.</li>
 <li><strong>Boilerplate Removal</strong>: Filter common navigation, ads, scripts, footers, sidebars, and repeated layout text.</li>
 <li><strong>RAG-Friendly Chunking</strong>: Split extracted page content or raw text into overlapping chunks for embedding workflows.</li>
 <li><strong>Simple Response Path</strong>: Read extracted Markdown, text, or structured article content first.</li>
@@ -94,7 +94,7 @@
 <ul>
 <li><code>GET /v1/reader</code>: Convert a webpage using URL query parameters.</li>
 <li><code>POST /v1/reader</code>: Convert a webpage using JSON options.</li>
-<li><code>POST /v1/reader/document</code>: Read a public text-layer PDF URL and return Markdown (Pre-release).</li>
+<li><code>POST /v1/reader/document</code>: Read a public text-layer PDF URL and return Markdown (Public Beta).</li>
 <li><code>POST /v1/reader/chunk</code>: Split raw text into overlapping chunks.</li>
 </ul>
 <p>The public API is designed for safe processing of public webpages and text-layer PDF URLs. PDF reading is Markdown-only, limited to 10 MB and 100 pages, and charges one response credit only on success.</p>
