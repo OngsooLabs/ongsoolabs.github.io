@@ -82,9 +82,9 @@
 <li><strong>Simple Response Path</strong>: Read extracted Markdown, text, or structured article content first.</li>
 <li><strong>Optional Usage Metadata</strong>: Check character count, token estimate, chunk count, and response credit metadata when needed.</li>
 <li><strong>Optional Quality Metadata</strong>: Inspect v0 quality signals, confidence, and warnings for debugging or tuning.</li>
-<li><strong>Optional Execution Metadata</strong>: Check execution profile, browser usage, cache status, retry count, and duration.</li>
-<li><strong>Metadata Extraction</strong>: Return available title, author, published date, language, excerpt, lead image, word count, and reading time.</li>
-<li><strong>Standard Errors</strong>: Return stable error codes with retryability, recommended profile, and user-actionable guidance.</li>
+<li><strong>Optional Execution Metadata</strong>: Check the internal execution profile, browser usage, cache status, retry count, and duration. <code>fast</code> and <code>standard</code> are response metadata, not request options.</li>
+<li><strong>Metadata Extraction</strong>: Return available canonical URL, source name, verified published date, language, excerpt, lead image, word count, and reading time. Metadata is best-effort and omitted when unavailable or untrusted.</li>
+<li><strong>Standard Errors</strong>: Return stable error codes with retryability, recommended profile, and user-actionable guidance. For retryable <code>RENDER_REQUIRED</code>, <code>recommendedProfile = standard</code> means retry with <code>force_dynamic=true</code>.</li>
 <li><strong>Flexible Extraction Modes</strong>: Tune output for <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, or <code>generic</code> pages.</li>
 <li><strong>Hybrid Retrieval</strong>: Start with fast static retrieval and use dynamic rendering when needed.</li>
 <li><strong>RapidAPI-Managed Quota</strong>: RapidAPI controls public request quota, overage pricing, bandwidth platform fees, and subscription state.</li>

@@ -84,10 +84,11 @@
 <h1 id="error-code-guide">Error Code Guide</h1>
 
 <p>AI Reader API failures use a stable error envelope with <code>status = failed</code>, zero usage, and an <code>error</code> object that clients can handle consistently.</p>
+<p><code>execution.profile</code> reports the internal execution strategy used for the response and is not a request option. For a retryable <code>RENDER_REQUIRED</code> error, <code>recommendedProfile = &quot;standard&quot;</code> is a hint to retry the same request with <code>force_dynamic=true</code>. Clients cannot select <code>fast</code> or <code>standard</code> directly.</p>
 <h2 id="error-response-shape">Error Response Shape</h2>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
-  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-12&quot;,
   &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;https://example.com&quot;,
   &quot;status&quot;: &quot;failed&quot;,
@@ -146,7 +147,7 @@
 <td><code>RENDER_REQUIRED</code></td>
 <td style="text-align: right;">422</td>
 <td>Yes</td>
-<td>Retry with standard/dynamic rendering if available.</td>
+<td>Retry the same request with <code>force_dynamic=true</code>.</td>
 </tr>
 <tr>
 <td><code>BLOCKED_BY_SITE</code></td>

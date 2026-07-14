@@ -83,11 +83,11 @@
         <article data-uid="">
 <h1 id="ai-reader-api">AI Reader API</h1>
 
-<p><strong>AI Reader API</strong> converts web pages into clean Markdown, text, or structured JSON with metadata for LLM, RAG, search, and summarization workflows.</p>
+<p><strong>AI Reader API</strong> converts web pages and public text-layer PDF documents into clean AI-ready content for LLM, RAG, search, and summarization workflows.</p>
 <p><strong><a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">Available on RapidAPI</a></strong></p>
 <hr>
 <h2 id="how-it-works">How It Works</h2>
-<pre><code class="lang-text">Web page -&gt; Content extraction -&gt; Boilerplate removal -&gt; Markdown/text/JSON output -&gt; Usage, quality, and execution metadata
+<pre><code class="lang-text">Web page or PDF URL -&gt; Safe retrieval -&gt; Content extraction -&gt; Markdown/text/JSON output -&gt; Usage, quality, and execution metadata
 </code></pre>
 <h2 id="key-features">Key Features</h2>
 <ul>
@@ -122,6 +122,11 @@
 <td style="text-align: left;"><code>POST</code></td>
 <td style="text-align: left;"><code>/v1/reader</code></td>
 <td style="text-align: left;">Advanced options through a JSON body</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>POST</code></td>
+<td style="text-align: left;"><code>/v1/reader/document</code></td>
+<td style="text-align: left;">Pre-release: convert a public text-layer PDF URL to Markdown</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
@@ -160,7 +165,7 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
 <p><code>GET /v1/reader</code> and <code>POST /v1/reader</code> use a standardized v1 response envelope.</p>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
-  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-12&quot;,
   &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;https://example.com&quot;,
   &quot;finalUrl&quot;: &quot;https://example.com&quot;,
@@ -171,6 +176,11 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
   &quot;content&quot;: {
     &quot;format&quot;: &quot;markdown&quot;,
     &quot;value&quot;: &quot;# Example Domain\n\nClean content...&quot;
+  },
+  &quot;metadata&quot;: {
+    &quot;canonical_url&quot;: &quot;https://example.com/article&quot;,
+    &quot;source_name&quot;: &quot;Example Domain&quot;,
+    &quot;published_at&quot;: &quot;2026-07-12&quot;
   },
   &quot;usage&quot;: {
     &quot;characters&quot;: 147,
@@ -209,11 +219,22 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
 }
 </code></pre>
 <p>When <code>output_format</code> is <code>json</code>, the response uses <code>content.article</code> instead of <code>content.value</code>.</p>
+<h3 id="pdf-document-reader-pre-release">PDF Document Reader (Pre-release)</h3>
+<p><code>POST /v1/reader/document</code> accepts a public HTTPS URL for a text-layer PDF and always returns Markdown. It does not accept file uploads, DOCX, OCR, encrypted PDFs, or document generation requests.</p>
+<pre><code class="lang-json">{
+  &quot;url&quot;: &quot;https://example.com/report.pdf&quot;,
+  &quot;tokenizer&quot;: &quot;openai&quot;,
+  &quot;enable_chunking&quot;: false
+}
+</code></pre>
+<p>Every redirect is revalidated against the URL-safety policy. The beta limits downloads to 10 MB and parsing to 100 pages, does not use a browser, and returns <code>execution.profile = &quot;document&quot;</code> with <code>usage.credits = 1</code> on success. A partially text-layer PDF returns available text and a <code>PARTIAL_DOCUMENT_TEXT</code> warning; a PDF without any extractable text returns <code>DOCUMENT_NO_TEXT_LAYER</code>.</p>
+<p><code>metadata.canonical_url</code>, <code>metadata.source_name</code>, <code>metadata.published_at</code>, and <code>language</code> are best-effort page metadata. Missing or untrusted values are omitted. <code>published_at</code> uses structured JSON-LD, explicit article metadata, or a <code>&lt;time datetime&gt;</code> value; it is not inferred from page text. Language is omitted when it cannot be reliably detected. Author metadata is not part of the public v1 contract.</p>
 <h2 id="error-contract">Error Contract</h2>
 <p>Reader failures use the same versioned envelope and never charge credits.</p>
+<p><code>execution.profile</code> is internal execution metadata, not a client-controlled setting. <code>fast</code> reports a static path; <code>standard</code> reports a browser-oriented path, including dynamic site rules, <code>force_dynamic=true</code>, or static-to-browser fallback. When a retryable <code>RENDER_REQUIRED</code> error returns <code>recommendedProfile = &quot;standard&quot;</code>, retry with <code>force_dynamic=true</code>; do not send a profile field. Successful reads keep <code>usage.credits = 1</code> regardless of this metadata, browser use, or cache behavior.</p>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
-  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-12&quot;,
   &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;http://127.0.0.1&quot;,
   &quot;status&quot;: &quot;failed&quot;,
@@ -258,7 +279,7 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
 </ul>
 <p>RapidAPI controls public request quota, enabled plans, overage pricing, bandwidth platform fees, billing, and subscription state. In the current RapidAPI configuration, the Requests object counts any endpoint call as one request.</p>
 <h2 id="deployment-diagnostics">Deployment Diagnostics</h2>
-<p><code>GET /v1/diagnostics</code> is a low-cost smoke check for deployment verification. It is intended for direct platform and partner operations, not public RapidAPI traffic.</p>
+<p><code>GET /v1/diagnostics</code> is a low-cost smoke check for deployment verification. It is intended for direct platform and partner operations, not public RapidAPI traffic. It verifies API dependencies, cache behavior, TextProcessor connectivity, and Reader-to-Document-Parser reachability without returning internal service URLs, secrets, AWS identity details, Docker network details, or document content.</p>
 <p>The endpoint does not scrape an external webpage. It checks the API pipeline, reader service registration, required configuration, cache read/write behavior, and TextProcessor token-count connectivity.</p>
 <pre><code class="lang-http">GET /v1/diagnostics
 X-RapidAPI-Proxy-Secret: &lt;proxy-secret&gt;

@@ -97,13 +97,17 @@
 <p>Token counts and embedding costs are estimates intended for planning LLM and embedding workloads. OpenAI uses the closest native encoding; Claude, Gemini, and Llama counts are approximations.</p>
 <hr>
 <h2 id="public-endpoints">Public Endpoints</h2>
-<p>This RapidAPI listing exposes three public endpoints:</p>
+<p>This RapidAPI listing exposes four public endpoints:</p>
 <ul>
 <li><code>GET /v1/reader</code> - Convert a webpage using URL query parameters.</li>
 <li><code>POST /v1/reader</code> - Convert a webpage using JSON options.</li>
+<li><code>POST /v1/reader/document</code> - Pre-release: convert a public text-layer PDF URL to Markdown.</li>
 <li><code>POST /v1/reader/chunk</code> - Split raw text into overlapping chunks.</li>
 </ul>
 <p>The public API is designed for safe processing of public webpages and focuses on URL-based extraction, output formatting, token estimation, and chunking controls.</p>
+<h3 id="read-a-public-pdf-document-pre-release">Read a Public PDF Document (Pre-release)</h3>
+<p><code>POST /v1/reader/document</code> reads public HTTPS text-layer PDF URLs only. It always returns Markdown and supports the existing tokenizer and optional chunking controls. File uploads, DOCX, OCR, encrypted PDFs, document generation, browser rendering, and custom headers are not supported.</p>
+<p>The beta revalidates redirect targets against the URL safety policy, limits downloads to 10 MB and parsing to 100 pages, and charges one response credit only on success. <code>execution.profile</code> is <code>document</code>; <code>execution.usedBrowser</code> is always <code>false</code>. A document with no extractable text fails with <code>DOCUMENT_NO_TEXT_LAYER</code>; mixed text/image PDFs return extractable text and a <code>PARTIAL_DOCUMENT_TEXT</code> warning.</p>
 <hr>
 <h2 id="quick-start">Quick Start</h2>
 <h3 id="convert-a-webpage">Convert a Webpage</h3>
@@ -117,7 +121,7 @@
 <h3 id="example-response">Example Response</h3>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
-  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-12&quot;,
   &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;https://example.com/article-url&quot;,
   &quot;finalUrl&quot;: &quot;https://example.com/article-url&quot;,
@@ -154,9 +158,12 @@
 <li><code>usage.credits</code>: OngsooLabs reader response credit metadata.</li>
 <li><code>status</code>: <code>success</code> or <code>failed</code>.</li>
 </ul>
+<h3 id="execution-profile-and-render-retry">Execution Profile and Render Retry</h3>
+<p><code>execution.profile</code> is internal execution metadata, not a request selector. <code>fast</code> means the read completed through a static path. <code>standard</code> means the read used a browser-oriented path: a dynamic site rule, <code>force_dynamic=true</code>, or a static-to-browser fallback.</p>
+<p>When a retryable <code>RENDER_REQUIRED</code> error includes <code>recommendedProfile: &quot;standard&quot;</code>, retry the same request with <code>force_dynamic: true</code>. Do not add a profile field; clients cannot choose <code>fast</code> or <code>standard</code>. Static, browser, and cache-backed successful reads all return <code>usage.credits = 1</code>.</p>
 <p>Use these fields when you need more control:</p>
 <ul>
-<li><code>metadata</code>: Page title, language, word count, reading time, and available article metadata. Word count includes a CJK and Hangul estimate for languages that do not rely on whitespace between words.</li>
+<li><code>metadata</code>: Page title, language when reliably detected, word count, reading time, and available source metadata. Word count includes a CJK and Hangul estimate for languages that do not rely on whitespace between words.</li>
 <li><code>usage</code>: Character count, token estimate, chunk count, and response credit metadata.</li>
 <li><code>quality</code>: v0 extraction signals for debugging and pipeline tuning. <code>linkDensity</code> is based on visible Markdown link text, excluding image Markdown. <code>score</code> and <code>grade</code> are intentionally <code>null</code> in v0.</li>
 <li><code>execution</code>: Runtime details such as cache status, browser usage, retry count, and duration.</li>
@@ -243,7 +250,7 @@
 <p>The reader always returns a stable envelope. If you only need the extracted content, start with <code>content.value</code> and <code>usage.credits</code>; the remaining fields are advanced metadata for observability and tuning.</p>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
-  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-12&quot;,
   &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;https://example.com/article-url&quot;,
   &quot;finalUrl&quot;: &quot;https://example.com/article-url&quot;,
@@ -256,7 +263,8 @@
     &quot;value&quot;: &quot;# Headline\n\nThis is the cleaned main article content in markdown format...&quot;
   },
   &quot;metadata&quot;: {
-    &quot;author&quot;: &quot;John Doe&quot;,
+    &quot;canonical_url&quot;: &quot;https://example.com/article-url&quot;,
+    &quot;source_name&quot;: &quot;Example News&quot;,
     &quot;published_at&quot;: &quot;2026-06-30&quot;,
     &quot;language&quot;: &quot;en&quot;,
     &quot;excerpt&quot;: &quot;Short page description...&quot;,
@@ -304,7 +312,7 @@
 <p>When <code>output_format</code> is <code>json</code>, the response keeps the same <code>content</code> wrapper and fills <code>content.article</code> instead of <code>content.value</code>. Most JSON integrations can read <code>content.article.title</code> and <code>content.article.body</code> first, then ignore the advanced metadata unless needed.</p>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
-  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-12&quot;,
   &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;https://example.com/article-url&quot;,
   &quot;finalUrl&quot;: &quot;https://example.com/article-url&quot;,
@@ -362,7 +370,7 @@
 <p>When <code>enable_chunking</code> is <code>true</code>, the reader response includes <code>chunks</code>. Use this when you want ready-to-index segments for embeddings or retrieval.</p>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
-  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-12&quot;,
   &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;https://example.com/article-url&quot;,
   &quot;finalUrl&quot;: &quot;https://example.com/article-url&quot;,
@@ -474,7 +482,7 @@
 <h3 id="invalid-request">Invalid Request</h3>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
-  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-12&quot;,
   &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;&quot;,
   &quot;status&quot;: &quot;failed&quot;,
@@ -503,7 +511,7 @@
 <h3 id="unsupported-option">Unsupported Option</h3>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
-  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-12&quot;,
   &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;https://example.com/article-url&quot;,
   &quot;status&quot;: &quot;failed&quot;,
@@ -533,7 +541,7 @@
 <p>Some pages may block automated retrieval or fail to return usable content. In that case, the reader endpoint returns a non-2xx response with the standard error body.</p>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
-  &quot;schemaVersion&quot;: &quot;2026-07-01&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-12&quot;,
   &quot;apiVersion&quot;: &quot;v1&quot;,
   &quot;url&quot;: &quot;https://example.com/protected-page&quot;,
   &quot;status&quot;: &quot;failed&quot;,
