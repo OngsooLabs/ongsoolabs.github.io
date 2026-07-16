@@ -98,6 +98,8 @@
 <li><code>POST /v1/reader/chunk</code>: Split raw text into overlapping chunks.</li>
 </ul>
 <p>The public API is designed for safe processing of public webpages and text-layer PDF URLs. PDF reading is Markdown-only, limited to 10 MB and 100 pages, and charges one response credit only on success.</p>
+<h3 id="higher-volume-requests">Higher-Volume Requests</h3>
+<p>Batch, Crawl, and asynchronous job endpoints are not currently available. Users with higher-volume processing needs can contact the provider through the RapidAPI listing with their use case and expected volume. This is a request-for-feedback channel, not a commitment that an unimplemented feature is available or scheduled.</p>
 <h3 id="rapidapi-quota-and-policy-baseline">RapidAPI Quota and Policy Baseline</h3>
 <p>Successful reader calls return <code>usage.credits = 1</code> and failed reader calls return <code>usage.credits = 0</code> as response metadata. Public request quota, enabled plans, overage pricing, bandwidth platform fees, and currency pricing are controlled by the active RapidAPI plan.</p>
 <p>Users are responsible for complying with applicable laws and target-site terms. The API must not be used to bypass paywalls, authentication, authorization, bot protections, or technical access controls.</p>

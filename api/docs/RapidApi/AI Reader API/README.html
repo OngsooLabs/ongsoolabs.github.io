@@ -105,6 +105,8 @@
 <li><code>POST /v1/reader/chunk</code> - Split raw text into overlapping chunks.</li>
 </ul>
 <p>The public API is designed for safe processing of public webpages and focuses on URL-based extraction, output formatting, token estimation, and chunking controls.</p>
+<h3 id="higher-volume-requests">Higher-Volume Requests</h3>
+<p>Batch, Crawl, and asynchronous job endpoints are not currently available. If you need higher-volume processing, contact the provider through this RapidAPI listing with your use case and expected volume. This is a request-for-feedback channel, not a commitment that an unimplemented feature is available or scheduled.</p>
 <h3 id="read-a-public-pdf-document-public-beta">Read a Public PDF Document (Public Beta)</h3>
 <p><code>POST /v1/reader/document</code> reads public HTTPS text-layer PDF URLs only. It always returns Markdown and supports the existing tokenizer and optional chunking controls. File uploads, DOCX, OCR, encrypted PDFs, document generation, browser rendering, and custom headers are not supported.</p>
 <p>The Public Beta revalidates redirect targets against the URL safety policy, limits downloads to 10 MB and parsing to 100 pages, and charges one response credit only on success. <code>execution.profile</code> is <code>document</code>; <code>execution.usedBrowser</code> is always <code>false</code>. A document with no extractable text fails with <code>DOCUMENT_NO_TEXT_LAYER</code>; mixed text/image PDFs return extractable text and a <code>PARTIAL_DOCUMENT_TEXT</code> warning.</p>
