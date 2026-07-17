@@ -98,6 +98,30 @@
 <li><code>POST /v1/reader/chunk</code>: Split raw text into overlapping chunks.</li>
 </ul>
 <p>The public API is designed for safe processing of public webpages and text-layer PDF URLs. PDF reading is Markdown-only, limited to 10 MB and 100 pages, and charges one response credit only on success.</p>
+<h3 id="quick-start-first-successful-read">Quick Start: First Successful Read</h3>
+<ol>
+<li>Create or sign in to your RapidAPI account and subscribe to an available AI Reader API plan.</li>
+<li>Copy your <code>X-RapidAPI-Key</code> from the RapidAPI dashboard.</li>
+<li>Run this request. It uses <code>https://example.com/</code>, a public page intended for integration examples.</li>
+</ol>
+<pre><code class="lang-bash">curl --request POST \
+  --url https://ai-reader-api.p.rapidapi.com/v1/reader \
+  --header 'Content-Type: application/json' \
+  --header 'X-RapidAPI-Host: ai-reader-api.p.rapidapi.com' \
+  --header 'X-RapidAPI-Key: &lt;your-rapidapi-key&gt;' \
+  --data '{
+    &quot;url&quot;: &quot;https://example.com/&quot;,
+    &quot;output_format&quot;: &quot;markdown&quot;,
+    &quot;mode&quot;: &quot;generic&quot;,
+    &quot;enable_chunking&quot;: false
+  }'
+</code></pre>
+<ol start="4">
+<li>A successful request returns HTTP <code>200</code>, <code>status: &quot;success&quot;</code>, non-empty <code>content.value</code>, and <code>usage.credits: 1</code>.</li>
+</ol>
+<h3 id="mcp-reader-beta">MCP Reader Beta</h3>
+<p><code>POST /mcp</code> provides Streamable HTTP MCP access for supported native MCP clients through the RapidAPI subscription. The beta exposes one read-only tool, <code>reader_read_url</code>, which returns the canonical AI Reader response.</p>
+<p>This is not a browser-client feature or a GA commitment. RapidAPI public Origin/CORS handling and public client-disconnect propagation remain unresolved beta limitations; use the REST Reader endpoints for browser-facing integrations.</p>
 <h3 id="higher-volume-requests">Higher-Volume Requests</h3>
 <p>Batch, Crawl, and asynchronous job endpoints are not currently available. Users with higher-volume processing needs can contact the provider through the RapidAPI listing with their use case and expected volume. This is a request-for-feedback channel, not a commitment that an unimplemented feature is available or scheduled.</p>
 <h3 id="rapidapi-quota-and-policy-baseline">RapidAPI Quota and Policy Baseline</h3>
