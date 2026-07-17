@@ -154,6 +154,7 @@
 <li>Copy your <code>X-RapidAPI-Key</code> from the RapidAPI dashboard.</li>
 <li>Run this request. It uses <code>https://example.com/</code>, a public page intended for integration examples.</li>
 </ol>
+<h4 id="macos-or-linux">macOS or Linux</h4>
 <pre><code class="lang-bash">curl --request POST \
   --url https://ai-reader-api.p.rapidapi.com/v1/reader \
   --header 'Content-Type: application/json' \
@@ -165,6 +166,29 @@
     &quot;mode&quot;: &quot;generic&quot;,
     &quot;enable_chunking&quot;: false
   }'
+</code></pre>
+<h4 id="windows-powershell">Windows PowerShell</h4>
+<pre><code class="lang-powershell">$headers = @{
+  &quot;X-RapidAPI-Key&quot; = &quot;&lt;your-rapidapi-key&gt;&quot;
+  &quot;X-RapidAPI-Host&quot; = &quot;ai-reader-api.p.rapidapi.com&quot;
+}
+
+$body = @{
+  url = &quot;https://example.com/&quot;
+  output_format = &quot;markdown&quot;
+  mode = &quot;generic&quot;
+  enable_chunking = $false
+} | ConvertTo-Json
+
+$response = Invoke-RestMethod -Method Post `
+  -Uri &quot;https://ai-reader-api.p.rapidapi.com/v1/reader&quot; `
+  -Headers $headers `
+  -ContentType &quot;application/json&quot; `
+  -Body $body
+
+$response.status
+$response.content.value
+$response.usage.credits
 </code></pre>
 <ol start="4">
 <li>A successful request returns HTTP <code>200</code>, <code>status: &quot;success&quot;</code>, non-empty <code>content.value</code>, and <code>usage.credits: 1</code>.</li>
