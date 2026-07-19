@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=bfbaf339b7bb97fef68f9f63c35cdd2df0883903">
-      <link rel="stylesheet" href="../../public/main.css?v=bfbaf339b7bb97fef68f9f63c35cdd2df0883903">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=750e67c5b460b786e2818707358fd8fd1a980cb8">
+      <link rel="stylesheet" href="../../public/main.css?v=750e67c5b460b786e2818707358fd8fd1a980cb8">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../releases/toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=bfbaf339b7bb97fef68f9f63c35cdd2df0883903"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=750e67c5b460b786e2818707358fd8fd1a980cb8"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -86,7 +86,13 @@
         <article data-uid="">
 
 <p>Changelog</p>
-<p>[1.0.1] - 2026-06-15
+<p>[1.1.0] - 2026-07-18
+Fixed: StackOverflowException caused by circular dependency between OSLSaveManager and OSLSaveSyncWorker.
+Fixed: Infinite retry loop caused by Unity Cloud Code SDK's &quot;Array cannot be null&quot; parsing bug on 400 Bad Request responses.
+Fixed: Queue sync data loss risk when disk write fails.
+Changed: OSLSaveSyncWorker properly unwraps AggregateException for clearer logging.
+Changed: Improved IsValidationError to avoid false positives on transient auth errors.
+[1.0.1] - 2026-06-15
 Fixed: Resolved an issue where untyped values were coerced by Cloud Code before validation.
 Changed: Updated package.json tags and metadata for UPM compatibility.</p>
 <p>[1.0.0] - Initial Release
