@@ -139,8 +139,10 @@
 .\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243 -StopOnFirstFailure
 .\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243 -RapidApiProxySecret $env:RAPIDAPI_PROXY_SECRET
 .\scripts\run-reader-benchmark.ps1 -DryRun
+.\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243 -SummaryPath .\artifacts\benchmarks\results\reader-lock-summary.json
+.\scripts\run-quality-validation.ps1 -BaseUrl http://localhost:5243 -SummaryPath .\artifacts\benchmarks\results\reader-quality-summary.json
 </code></pre>
-<p>The script exits with code <code>0</code> when all selected items pass and <code>1</code> when any item fails.</p>
+<p>The script exits with code <code>0</code> when all selected items pass and <code>1</code> when any item fails. <code>-SummaryPath</code> writes only aggregate counts, distributions, the dataset filename, and a timestamp. It never writes target URLs, extracted content, credentials, or request headers.</p>
 
 </article>
 
