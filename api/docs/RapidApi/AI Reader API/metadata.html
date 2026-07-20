@@ -143,9 +143,9 @@ $response.usage.credits
 <ol start="4">
 <li>A successful request returns HTTP <code>200</code>, <code>status: &quot;success&quot;</code>, non-empty <code>content.value</code>, and <code>usage.credits: 1</code>.</li>
 </ol>
-<h3 id="mcp-reader-beta">MCP Reader Beta</h3>
-<p><code>POST /mcp</code> provides Streamable HTTP MCP access for supported native MCP clients through the RapidAPI subscription. The beta exposes one read-only tool, <code>reader_read_url</code>, which returns the canonical AI Reader response.</p>
-<p>This is not a browser-client feature or a GA commitment. RapidAPI public Origin/CORS handling and public client-disconnect propagation remain unresolved beta limitations; use the REST Reader endpoints for browser-facing integrations.</p>
+<h3 id="mcp-and-agent-integration-inquiries">MCP and Agent Integration Inquiries</h3>
+<p>Native Streamable HTTP MCP access is not available through the regular RapidAPI proxy. Use the REST Reader endpoints for supported RapidAPI integrations.</p>
+<p>RapidAPI-managed MCP use of published REST endpoints is a separate integration path; it does not forward this service's native <code>/mcp</code> transport. For future direct native MCP access or enterprise agent-integration inquiries, contact the provider through this RapidAPI listing with your use case and expected volume. This is a request-for-feedback channel, not a commitment that native MCP access is available or scheduled.</p>
 <h3 id="higher-volume-requests">Higher-Volume Requests</h3>
 <p>Batch, Crawl, and asynchronous job endpoints are not currently available. Users with higher-volume processing needs can contact the provider through the RapidAPI listing with their use case and expected volume. This is a request-for-feedback channel, not a commitment that an unimplemented feature is available or scheduled.</p>
 <h3 id="rapidapi-quota-and-policy-baseline">RapidAPI Quota and Policy Baseline</h3>

@@ -134,20 +134,15 @@
 <td style="text-align: left;">Split text into chunks for downstream AI processing</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>POST</code></td>
-<td style="text-align: left;"><code>/mcp</code></td>
-<td style="text-align: left;">Native-client beta: Streamable HTTP MCP access with the read-only <code>reader_read_url</code> tool</td>
-</tr>
-<tr>
 <td style="text-align: left;"><code>GET</code></td>
 <td style="text-align: left;"><code>/v1/diagnostics</code></td>
 <td style="text-align: left;">Deployment smoke diagnostics for direct platform operations</td>
 </tr>
 </tbody>
 </table>
-<h3 id="mcp-reader-beta">MCP Reader Beta</h3>
-<p><code>POST /mcp</code> provides Streamable HTTP MCP access for supported native MCP clients through the RapidAPI subscription. The beta exposes one read-only tool, <code>reader_read_url</code>, which returns the canonical AI Reader response.</p>
-<p>This is not a browser-client feature or a GA commitment. RapidAPI public Origin/CORS handling and public client-disconnect propagation remain unresolved beta limitations; use the REST Reader endpoints for browser-facing integrations.</p>
+<h3 id="mcp-and-agent-integration-inquiries">MCP and Agent Integration Inquiries</h3>
+<p>Native Streamable HTTP MCP access is not available through the regular RapidAPI proxy. Use the REST Reader endpoints for supported RapidAPI integrations.</p>
+<p>RapidAPI-managed MCP use of published REST endpoints is a separate integration path; it does not forward this service's native <code>/mcp</code> transport. For future direct native MCP access or enterprise agent-integration inquiries, contact the provider through the <a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">RapidAPI listing</a> with your use case and expected volume. This is a request-for-feedback channel, not a commitment that native MCP access is available or scheduled.</p>
 <h3 id="quick-start-first-successful-read">Quick Start: First Successful Read</h3>
 <ol>
 <li>Create or sign in to your RapidAPI account and subscribe to an available AI Reader API plan.</li>
