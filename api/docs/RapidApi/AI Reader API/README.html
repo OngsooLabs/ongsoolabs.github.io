@@ -206,11 +206,12 @@ $response.usage.credits
 <li><code>content.value</code>: The extracted Markdown or plain text when <code>output_format</code> is <code>markdown</code> or <code>text</code>.</li>
 <li><code>content.article</code>: The structured article object when <code>output_format</code> is <code>json</code>.</li>
 <li><code>usage.credits</code>: OngsooLabs reader response credit metadata.</li>
-<li><code>status</code>: <code>success</code> or <code>failed</code>.</li>
+<li><code>status</code>: <code>success</code>, <code>partial</code>, or <code>failed</code>.</li>
 </ul>
 <h3 id="execution-profile-and-render-retry">Execution Profile and Render Retry</h3>
 <p><code>execution.profile</code> is internal execution metadata, not a request selector. <code>fast</code> means the read completed through a static path. <code>standard</code> means the read used a browser-oriented path: a dynamic site rule, <code>force_dynamic=true</code>, or a static-to-browser fallback.</p>
-<p>When a retryable <code>RENDER_REQUIRED</code> error includes <code>recommendedProfile: &quot;standard&quot;</code>, retry the same request with <code>force_dynamic: true</code>. Do not add a profile field; clients cannot choose <code>fast</code> or <code>standard</code>. Static, browser, and cache-backed successful reads all return <code>usage.credits = 1</code>.</p>
+<p>When a static extraction does not meet the main-body quality gate, the reader automatically attempts browser rendering once before returning <code>partial</code>. If a retryable <code>RENDER_REQUIRED</code> error or <code>partial</code> response still includes <code>recommendedProfile: &quot;standard&quot;</code>, retry the same request with <code>force_dynamic: true</code>. Do not add a profile field; clients cannot choose <code>fast</code> or <code>standard</code>. Static, browser, and cache-backed successful reads all return <code>usage.credits = 1</code>.</p>
+<p>Static verification pages, including Cloudflare challenges, are treated as browser-fallback candidates. Cloudflare runtime scripts alone do not invalidate an otherwise usable extracted body; a remaining verification page without usable content is returned as <code>BLOCKED_BY_SITE</code>. Confirmed upstream 404/410 responses and RapidAPI soft 404 pages are returned as errors without browser fallback.</p>
 <p>Use these fields when you need more control:</p>
 <ul>
 <li><code>metadata</code>: Page title, language when reliably detected, word count, reading time, and available source metadata. Word count includes a CJK and Hangul estimate for languages that do not rely on whitespace between words.</li>
@@ -223,6 +224,7 @@ $response.usage.credits
 <p>The v1 launch credit model is intentionally simple:</p>
 <ul>
 <li>Successful <code>GET /v1/reader</code> and <code>POST /v1/reader</code> calls return <code>usage.credits = 1</code>.</li>
+<li>A <code>partial</code> response preserves the extracted content but returns <code>usage.credits = 0</code> and <code>error.code = &quot;PARTIAL_CONTENT&quot;</code> when the main body does not meet the quality gate.</li>
 <li>Failed reader calls return <code>usage.credits = 0</code>.</li>
 <li>Output format, reader mode, optional metadata, optional chunking, browser fallback, and cache validation do not change the launch credit value.</li>
 <li>RapidAPI counts endpoint calls through the Requests quota object.</li>
@@ -529,6 +531,34 @@ $response.usage.credits
 </code></pre>
 <hr>
 <h2 id="error-responses">Error Responses</h2>
+<h3 id="partial-content">Partial Content</h3>
+<p>The endpoint returns HTTP <code>200</code> with <code>status: &quot;partial&quot;</code> when it can return some extracted content but the main body is too short or only a metadata description was available. The reader automatically attempts browser rendering once after a partial static extraction; treat a remaining partial response as non-success for ingestion and billing purposes. If <code>error.retryable</code> is <code>true</code>, retry once with <code>force_dynamic: true</code>.</p>
+<pre><code class="lang-json">{
+  &quot;id&quot;: &quot;read_abc123&quot;,
+  &quot;schemaVersion&quot;: &quot;2026-07-12&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
+  &quot;url&quot;: &quot;https://example.com/thin-page&quot;,
+  &quot;finalUrl&quot;: &quot;https://example.com/thin-page&quot;,
+  &quot;status&quot;: &quot;partial&quot;,
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;PARTIAL_CONTENT&quot;,
+    &quot;message&quot;: &quot;The reader could not extract enough main-body content to meet the quality gate.&quot;,
+    &quot;retryable&quot;: true,
+    &quot;recommendedProfile&quot;: &quot;standard&quot;,
+    &quot;userActionable&quot;: true
+  },
+  &quot;content&quot;: {
+    &quot;format&quot;: &quot;markdown&quot;,
+    &quot;value&quot;: &quot;The limited extracted content.&quot;
+  },
+  &quot;usage&quot;: {
+    &quot;characters&quot;: 30,
+    &quot;tokens&quot;: 6,
+    &quot;chunks&quot;: 0,
+    &quot;credits&quot;: 0
+  }
+}
+</code></pre>
 <h3 id="invalid-request">Invalid Request</h3>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
