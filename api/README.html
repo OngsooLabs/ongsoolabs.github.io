@@ -198,7 +198,8 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
 }
 </code></pre>
 <h2 id="response-contract">Response Contract</h2>
-<p><code>GET /v1/reader</code> and <code>POST /v1/reader</code> use the Phase 1.5 v1 response contract.</p>
+<p><code>GET /v1/reader</code> and <code>POST /v1/reader</code> use the Phase 1.5 v1 response contract.
+<code>url</code> preserves the submitted URL, while <code>finalUrl</code> is the resolved URL after any upstream redirects. Cached responses preserve the resolved <code>finalUrl</code>.</p>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
   &quot;schemaVersion&quot;: &quot;2026-07-12&quot;,

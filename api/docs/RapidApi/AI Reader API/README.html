@@ -205,6 +205,7 @@ $response.usage.credits
 <ul>
 <li><code>content.value</code>: The extracted Markdown or plain text when <code>output_format</code> is <code>markdown</code> or <code>text</code>.</li>
 <li><code>content.article</code>: The structured article object when <code>output_format</code> is <code>json</code>.</li>
+<li><code>url</code> and <code>finalUrl</code>: The submitted URL and the resolved URL after any upstream redirects. Cached responses preserve the resolved <code>finalUrl</code>.</li>
 <li><code>usage.credits</code>: OngsooLabs reader response credit metadata.</li>
 <li><code>status</code>: <code>success</code>, <code>partial</code>, or <code>failed</code>.</li>
 </ul>
