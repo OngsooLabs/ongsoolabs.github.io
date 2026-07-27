@@ -87,6 +87,36 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "artifacts/benchmarks/quality-loop/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "artifacts/benchmarks/quality-loop/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "artifacts/benchmarks/quality-loop/improvement-plan-template.md",
+      "output": {
+        ".html": {
+          "relative_path": "artifacts/benchmarks/quality-loop/improvement-plan-template.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "artifacts/benchmarks/quality-loop/issue-template.md",
+      "output": {
+        ".html": {
+          "relative_path": "artifacts/benchmarks/quality-loop/issue-template.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "artifacts/benchmarks/reader-lock-dataset-plan.md",
       "output": {
         ".html": {
