@@ -72,7 +72,7 @@
 <h2 id="short-description">Short Description</h2>
 <p>Convert public webpages and text-layer PDF URLs into clean, LLM-ready content for RAG, AI agents, and knowledge-base ingestion.</p>
 <h2 id="long-description">Long Description</h2>
-<p>AI Reader API turns messy public webpages into clean content your AI applications can use immediately. It also reads public HTTPS text-layer PDF URLs as Markdown in Public Beta. Most integrations start with the extracted <code>content</code> field, then use optional usage, quality, execution, and chunking metadata when they need cost visibility, debugging, or RAG pipeline tuning.</p>
+<p><strong>URL → clean, LLM-ready Markdown + structured JSON.</strong> AI Reader API turns messy public webpages into readable main content for AI agents, RAG pipelines, and content-processing workflows. It also reads public HTTPS text-layer PDF URLs as Markdown in Public Beta. Most integrations start with the extracted <code>content</code> field, then use response metadata for source context, debugging, or pipeline tuning.</p>
 <p>Use it to power AI agents, RAG pipelines, web-content ingestion jobs, automated summarizers, documentation indexers, and knowledge-base builders without building your own scraper, boilerplate cleaner, response contract, tokenizer estimator, and chunking layer.</p>
 <h3 id="key-capabilities">Key Capabilities</h3>
 <ul>
@@ -84,7 +84,7 @@
 <li><strong>Optional Usage Metadata</strong>: Check character count, token estimate, chunk count, and response credit metadata when needed.</li>
 <li><strong>Optional Quality Metadata</strong>: Inspect v0 quality signals, confidence, and warnings for debugging or tuning.</li>
 <li><strong>Optional Execution Metadata</strong>: Check the internal execution profile, browser usage, cache status, retry count, and duration. <code>fast</code> and <code>standard</code> are response metadata, not request options.</li>
-<li><strong>Metadata Extraction</strong>: Return available canonical URL, source name, verified published date, language, excerpt, lead image, word count, and reading time. Metadata is best-effort and omitted when unavailable or untrusted.</li>
+<li><strong>Metadata Extraction</strong>: Return available canonical URL, source name, verified published date, language, excerpt, lead image, word count, and reading time. The page title is returned as top-level <code>title</code>. Metadata is best-effort and omitted when unavailable or untrusted.</li>
 <li><strong>Standard Errors</strong>: Return stable error codes with retryability, recommended profile, and user-actionable guidance. For retryable <code>RENDER_REQUIRED</code>, <code>recommendedProfile = standard</code> means retry with <code>force_dynamic=true</code>.</li>
 <li><strong>Flexible Extraction Modes</strong>: Tune output for <code>article</code>, <code>documentation</code>, <code>product</code>, <code>forum</code>, or <code>generic</code> pages.</li>
 <li><strong>Hybrid Retrieval</strong>: Start with fast static retrieval and use dynamic rendering when needed.</li>
@@ -97,7 +97,7 @@
 <li><code>POST /v1/reader/document</code>: Read a public text-layer PDF URL and return Markdown (Public Beta).</li>
 <li><code>POST /v1/reader/chunk</code>: Split raw text into overlapping chunks.</li>
 </ul>
-<p>The public API is designed for safe processing of public webpages and text-layer PDF URLs. PDF reading is Markdown-only, limited to 10 MB and 100 pages, and charges one response credit only on success.</p>
+<p>The public API is designed for safe processing of public webpages and text-layer PDF URLs. Submit a publicly accessible URL in one synchronous request. Pages requiring sign-in, payment, authentication, custom headers, cookies, or bypassing bot/security controls are not supported. PDF reading is Markdown-only, limited to 10 MiB and 100 pages, and charges one response credit only on success.</p>
 <h3 id="quick-start-first-successful-read">Quick Start: First Successful Read</h3>
 <ol>
 <li>Create or sign in to your RapidAPI account and subscribe to an available AI Reader API plan.</li>
@@ -149,10 +149,9 @@ $response.usage.credits
 <h3 id="higher-volume-requests">Higher-Volume Requests</h3>
 <p>Batch, Crawl, and asynchronous job endpoints are not currently available. Users with higher-volume processing needs can contact the provider through the RapidAPI listing with their use case and expected volume. This is a request-for-feedback channel, not a commitment that an unimplemented feature is available or scheduled.</p>
 <h3 id="rapidapi-quota-and-policy-baseline">RapidAPI Quota and Policy Baseline</h3>
-<p>Successful reader calls return <code>usage.credits = 1</code> and failed reader calls return <code>usage.credits = 0</code> as response metadata. Public request quota, enabled plans, overage pricing, bandwidth platform fees, and currency pricing are controlled by the active RapidAPI plan.</p>
+<p>Successful reader calls return <code>usage.credits = 1</code>, while failed and partial reader calls return <code>usage.credits = 0</code> as response metadata. <code>usage.credits</code> is separate from the RapidAPI plan request quota; a request may still count toward that quota when <code>usage.credits</code> is <code>0</code>. The active RapidAPI listing controls plan-specific request quota and commercial terms.</p>
 <p>Users are responsible for complying with applicable laws and target-site terms. The API must not be used to bypass paywalls, authentication, authorization, bot protections, or technical access controls.</p>
 <h2 id="rapidapi-pricing-plans">RapidAPI Pricing Plans</h2>
-<p>We offer the following subscription tiers on RapidAPI to suit your usage scale:</p>
 <table>
 <thead>
 <tr>
@@ -171,7 +170,7 @@ $response.usage.credits
 <td>100 / month (Hard Limit)</td>
 <td>N/A</td>
 <td>5 req / min</td>
-<td>10,240MB / month (+$0.001 per 1MB)</td>
+<td>10,240 MB / month (+$0.001 per 1 MB)</td>
 </tr>
 <tr>
 <td><strong>Pro</strong></td>
@@ -179,7 +178,7 @@ $response.usage.credits
 <td>5,000 / month</td>
 <td>+$0.002 / req</td>
 <td>20 req / min</td>
-<td>10,240MB / month (+$0.001 per 1MB)</td>
+<td>10,240 MB / month (+$0.001 per 1 MB)</td>
 </tr>
 <tr>
 <td><strong>Ultra</strong></td>
@@ -187,12 +186,13 @@ $response.usage.credits
 <td>20,000 / month</td>
 <td>+$0.0015 / req</td>
 <td>60 req / min</td>
-<td>10,240MB / month (+$0.001 per 1MB)</td>
+<td>10,240 MB / month (+$0.001 per 1 MB)</td>
 </tr>
 </tbody>
 </table>
+<p><code>Included Requests</code> is the RapidAPI plan request quota. It is separate from the API response field <code>usage.credits</code>.</p>
 <ul>
-<li><strong>Bandwidth Platform Fee</strong>: A baseline of 10,240 MB (10 GB) of transfer bandwidth is included per month across all tiers. Bandwidth usage beyond this limit will be charged at $0.001 per 1 MB.</li>
+<li><strong>Bandwidth Platform Fee</strong>: A baseline of 10,240 MB (10 GB) of transfer bandwidth is included per month across all tiers. Bandwidth usage beyond this limit is charged at $0.001 per 1 MB.</li>
 </ul>
 
 </article>

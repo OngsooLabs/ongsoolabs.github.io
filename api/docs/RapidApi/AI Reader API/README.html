@@ -69,17 +69,16 @@
         <article data-uid="">
 <h1 id="ai-reader-api-v10">AI Reader API (v1.0)</h1>
 
-<p>Turn messy webpages into clean, LLM-ready content.</p>
-<p><strong>AI Reader API extracts the meaningful body from public webpages and returns clean Markdown, plain text, or structured JSON for RAG pipelines, AI agents, knowledge bases, and automated web ingestion workflows.</strong></p>
-<p>Instead of sending noisy HTML to your LLM stack, use AI Reader API to remove common layout clutter, estimate token usage, and optionally split content into embedding-ready chunks in one request.</p>
+<p><strong>URL → clean, LLM-ready Markdown + structured JSON.</strong></p>
+<p>AI Reader API removes common webpage clutter and extracts readable main content from public webpages for AI agents, RAG pipelines, and content-processing workflows. It returns Markdown, plain text, or structured JSON together with optional source metadata.</p>
 <hr>
-<h2 id="why-use-ai-reader-api">Why Use AI Reader API?</h2>
+<h2 id="what-it-solves">What It Solves</h2>
 <p>Modern AI systems need clean source content, not full webpages packed with navigation, ads, scripts, footers, sidebars, and duplicate layout text. AI Reader API helps convert public web pages into a format that is easier to embed, summarize, index, search, and pass into LLM prompts.</p>
 <p>Use it when you need to:</p>
 <ul>
-<li>Build RAG pipelines from public articles, docs, forums, and product pages.</li>
-<li>Give AI agents a reliable way to read webpages before reasoning over them.</li>
-<li>Convert HTML pages into clean Markdown for LLM prompts and summaries.</li>
+<li>Let an AI agent read and process the content behind a URL.</li>
+<li>Clean webpage bodies before indexing them in a RAG ingestion pipeline.</li>
+<li>Convert article and documentation pages into Markdown or structured JSON.</li>
 <li>Prepare web content for vector databases such as Pinecone, Qdrant, Milvus, Weaviate, or pgvector.</li>
 <li>Split long pages into overlapping chunks for embedding ingestion.</li>
 </ul>
@@ -112,10 +111,11 @@
 <p>Batch, Crawl, and asynchronous job endpoints are not currently available. If you need higher-volume processing, contact the provider through this RapidAPI listing with your use case and expected volume. This is a request-for-feedback channel, not a commitment that an unimplemented feature is available or scheduled.</p>
 <h3 id="read-a-public-pdf-document-public-beta">Read a Public PDF Document (Public Beta)</h3>
 <p><code>POST /v1/reader/document</code> reads public HTTPS text-layer PDF URLs only. It always returns Markdown and supports the existing tokenizer and optional chunking controls. File uploads, DOCX, OCR, encrypted PDFs, document generation, browser rendering, and custom headers are not supported.</p>
-<p>The Public Beta revalidates redirect targets against the URL safety policy, limits downloads to 10 MB and parsing to 100 pages, and charges one response credit only on success. <code>execution.profile</code> is <code>document</code>; <code>execution.usedBrowser</code> is always <code>false</code>. A document with no extractable text fails with <code>DOCUMENT_NO_TEXT_LAYER</code>; mixed text/image PDFs return extractable text and a <code>PARTIAL_DOCUMENT_TEXT</code> warning.</p>
+<p>The Public Beta revalidates redirect targets against the URL safety policy, limits downloads to 10 MiB and parsing to 100 pages, and charges one response credit only on success. <code>execution.profile</code> is <code>document</code>; <code>execution.usedBrowser</code> is always <code>false</code>. A document with no extractable text fails with <code>DOCUMENT_NO_TEXT_LAYER</code>; mixed text/image PDFs return extractable text and a <code>PARTIAL_DOCUMENT_TEXT</code> warning.</p>
 <hr>
 <h2 id="quick-start">Quick Start</h2>
 <h3 id="convert-a-webpage">Convert a Webpage</h3>
+<p><strong>Input boundary:</strong> Submit a publicly accessible URL in one synchronous request. Pages that require sign-in, payment, authentication, custom headers, cookies, or bypassing bot/security controls are not supported. Batch, crawl, and asynchronous-job endpoints are not available.</p>
 <ol>
 <li>Create or sign in to your RapidAPI account and subscribe to an available AI Reader API plan.</li>
 <li>Copy your <code>X-RapidAPI-Key</code> from the RapidAPI dashboard.</li>
@@ -160,6 +160,19 @@ $response.usage.credits
 <ol start="4">
 <li>A successful request returns HTTP <code>200</code>, <code>status: &quot;success&quot;</code>, non-empty <code>content.value</code>, and <code>usage.credits: 1</code>.</li>
 </ol>
+<h3 id="practical-example-a-public-documentation-page">Practical Example: A Public Documentation Page</h3>
+<p>Use the public IANA example-domains page when you want to confirm an extraction beyond <code>example.com</code>:</p>
+<pre><code class="lang-json">{
+  &quot;url&quot;: &quot;https://www.iana.org/help/example-domains&quot;,
+  &quot;output_format&quot;: &quot;markdown&quot;,
+  &quot;mode&quot;: &quot;article&quot;,
+  &quot;output&quot;: {
+    &quot;links&quot;: true
+  }
+}
+</code></pre>
+<p>The source page contains site navigation and outbound links in addition to its explanatory body. The locked Reader regression dataset verifies this URL as a successful public read with Markdown containing <code>Example Domains</code>, at least 200 extracted characters, and no <code>&lt;script</code> or <code>Access Denied</code> text. Read <code>metadata.word_count</code>, <code>metadata.reading_time_minutes</code>, <code>quality.confidence</code>, and <code>execution</code> from the returned response; source-derived values can change when the public page changes.</p>
+<p>If a URL cannot yield enough main-body content, the API returns <code>status: &quot;partial&quot;</code> with <code>PARTIAL_CONTENT</code>; treat it as unsuitable for normal ingestion and inspect the error details before retrying.</p>
 <p>The JSON body alone is shown below for the RapidAPI endpoint playground.</p>
 <pre><code class="lang-json">{
   &quot;url&quot;: &quot;https://example.com/&quot;,
@@ -215,7 +228,7 @@ $response.usage.credits
 <p>Static verification pages, including Cloudflare challenges, are treated as browser-fallback candidates. Cloudflare runtime scripts alone do not invalidate an otherwise usable extracted body; a remaining verification page without usable content is returned as <code>BLOCKED_BY_SITE</code>. Confirmed upstream 404/410 responses and RapidAPI soft 404 pages are returned as errors without browser fallback.</p>
 <p>Use these fields when you need more control:</p>
 <ul>
-<li><code>metadata</code>: Page title, language when reliably detected, word count, reading time, and available source metadata. Word count includes a CJK and Hangul estimate for languages that do not rely on whitespace between words.</li>
+<li><code>metadata</code>: Available source metadata plus word count and reading time. The page title is the top-level <code>title</code> field; it is not <code>metadata.title</code>. Word count includes a CJK and Hangul estimate for languages that do not rely on whitespace between words.</li>
 <li><code>usage</code>: Character count, token estimate, chunk count, and response credit metadata.</li>
 <li><code>quality</code>: v0 extraction signals for debugging and pipeline tuning. <code>linkDensity</code> is based on visible Markdown link text, excluding image Markdown. <code>score</code> and <code>grade</code> are intentionally <code>null</code> in v0.</li>
 <li><code>execution</code>: Runtime details such as cache status, browser usage, retry count, and duration.</li>
@@ -227,11 +240,10 @@ $response.usage.credits
 <li>Successful <code>GET /v1/reader</code> and <code>POST /v1/reader</code> calls return <code>usage.credits = 1</code>.</li>
 <li>A <code>partial</code> response preserves the extracted content but returns <code>usage.credits = 0</code> and <code>error.code = &quot;PARTIAL_CONTENT&quot;</code> when the main body does not meet the quality gate.</li>
 <li>Failed reader calls return <code>usage.credits = 0</code>.</li>
-<li>Output format, reader mode, optional metadata, optional chunking, browser fallback, and cache validation do not change the launch credit value.</li>
-<li>RapidAPI counts endpoint calls through the Requests quota object.</li>
-<li>RapidAPI also manages bandwidth platform fees separately from reader response credits.</li>
+<li>Output format, reader mode, optional metadata, optional chunking, browser fallback, and cache validation do not change the launch credit value.
+<code>usage.credits</code> is a reader-processing value returned by the API. It is separate from your RapidAPI plan's request quota; a request may still count toward that quota even when <code>usage.credits</code> is <code>0</code>.</li>
 </ul>
-<p>Your active RapidAPI plan controls gateway quota, hard limits, overage pricing, bandwidth fees, and currency pricing.</p>
+<p>Your active RapidAPI plan controls the applicable request quota, limits, and commercial terms. Check the active RapidAPI listing for plan-specific details.</p>
 <hr>
 <h2 id="1-get-v1reader">1. GET <code>/v1/reader</code></h2>
 <p>Convert and analyze a target webpage using query parameters. This is convenient for simple integrations, browser testing, and quick API calls.</p>
@@ -250,7 +262,7 @@ $response.usage.credits
 <li><strong>chunk_size_tokens</strong> (integer): Target chunk size in tokens. Default: <code>500</code>.</li>
 <li><strong>overlap_size_tokens</strong> (integer): Token overlap between chunks. Default: <code>100</code>.</li>
 <li><strong>output_content</strong> (boolean): Include cleaned content or article body. Default: <code>true</code>.</li>
-<li><strong>output_metadata</strong> (boolean): Include metadata and metrics. Default: <code>true</code>.</li>
+<li><strong>output_metadata</strong> (boolean): Include extracted page metadata, <code>word_count</code>, and <code>reading_time_minutes</code>. It does not control <code>usage</code>, <code>quality</code>, or <code>execution</code>. Default: <code>true</code>.</li>
 <li><strong>output_tables</strong> (boolean): Include markdown tables. Default: <code>true</code>.</li>
 <li><strong>output_code_blocks</strong> (boolean): Include code blocks. Default: <code>true</code>.</li>
 <li><strong>output_images</strong> (boolean): Include image markdown. Default: <code>false</code>.</li>
@@ -293,7 +305,7 @@ $response.usage.credits
 <li><strong>overlap_size_tokens</strong> (integer): Token overlap between chunks. Default: <code>100</code>.</li>
 <li><strong>output</strong> (object): Fine-grained output options.</li>
 <li><strong>output.content</strong> (boolean): Include cleaned content or article body. Default: <code>true</code>.</li>
-<li><strong>output.metadata</strong> (boolean): Include metadata and metrics. Default: <code>true</code>.</li>
+<li><strong>output.metadata</strong> (boolean): Include extracted page metadata, <code>word_count</code>, and <code>reading_time_minutes</code>. It does not control <code>usage</code>, <code>quality</code>, or <code>execution</code>. Default: <code>true</code>.</li>
 <li><strong>output.tables</strong> (boolean): Include markdown tables. Default: <code>true</code>.</li>
 <li><strong>output.codeBlocks</strong> (boolean): Include code blocks. Default: <code>true</code>.</li>
 <li><strong>output.images</strong> (boolean): Include image markdown. Default: <code>false</code>.</li>
@@ -534,6 +546,7 @@ $response.usage.credits
 <h2 id="error-responses">Error Responses</h2>
 <h3 id="partial-content">Partial Content</h3>
 <p>The endpoint returns HTTP <code>200</code> with <code>status: &quot;partial&quot;</code> when it can return some extracted content but the main body is too short or only a metadata description was available. The reader automatically attempts browser rendering once after a partial static extraction; treat a remaining partial response as non-success for ingestion and billing purposes. If <code>error.retryable</code> is <code>true</code>, retry once with <code>force_dynamic: true</code>.</p>
+<p>The following is an abridged response. A partial response still includes <code>metadata</code>, <code>quality</code>, and <code>execution</code>.</p>
 <pre><code class="lang-json">{
   &quot;id&quot;: &quot;read_abc123&quot;,
   &quot;schemaVersion&quot;: &quot;2026-07-12&quot;,
@@ -552,11 +565,36 @@ $response.usage.credits
     &quot;format&quot;: &quot;markdown&quot;,
     &quot;value&quot;: &quot;The limited extracted content.&quot;
   },
+  &quot;title&quot;: &quot;Thin Page&quot;,
+  &quot;metadata&quot;: {
+    &quot;word_count&quot;: 4,
+    &quot;reading_time_minutes&quot;: 1
+  },
   &quot;usage&quot;: {
     &quot;characters&quot;: 30,
     &quot;tokens&quot;: 6,
     &quot;chunks&quot;: 0,
     &quot;credits&quot;: 0
+  },
+  &quot;quality&quot;: {
+    &quot;version&quot;: &quot;qv0&quot;,
+    &quot;score&quot;: null,
+    &quot;grade&quot;: null,
+    &quot;confidence&quot;: &quot;low&quot;,
+    &quot;signals&quot;: {
+      &quot;contentLength&quot;: 30,
+      &quot;markdownLength&quot;: 30
+    },
+    &quot;warnings&quot;: [
+      &quot;content_below_quality_gate&quot;
+    ]
+  },
+  &quot;execution&quot;: {
+    &quot;profile&quot;: &quot;fast&quot;,
+    &quot;usedBrowser&quot;: false,
+    &quot;cache&quot;: &quot;miss&quot;,
+    &quot;retryCount&quot;: 0,
+    &quot;durationMs&quot;: 2
   }
 }
 </code></pre>
@@ -581,7 +619,7 @@ $response.usage.credits
     &quot;credits&quot;: 0
   },
   &quot;execution&quot;: {
-    &quot;profile&quot;: &quot;standard&quot;,
+    &quot;profile&quot;: &quot;fast&quot;,
     &quot;usedBrowser&quot;: false,
     &quot;cache&quot;: &quot;miss&quot;,
     &quot;retryCount&quot;: 0,
@@ -610,7 +648,7 @@ $response.usage.credits
     &quot;credits&quot;: 0
   },
   &quot;execution&quot;: {
-    &quot;profile&quot;: &quot;generic&quot;,
+    &quot;profile&quot;: &quot;fast&quot;,
     &quot;usedBrowser&quot;: false,
     &quot;cache&quot;: &quot;miss&quot;,
     &quot;retryCount&quot;: 0,
