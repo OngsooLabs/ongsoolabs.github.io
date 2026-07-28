@@ -97,7 +97,7 @@
 <li><code>POST /v1/reader/document</code>: Read a public text-layer PDF URL and return Markdown (Public Beta).</li>
 <li><code>POST /v1/reader/chunk</code>: Split raw text into overlapping chunks.</li>
 </ul>
-<p>The public API is designed for safe processing of public webpages and text-layer PDF URLs. Submit a publicly accessible URL in one synchronous request. Pages requiring sign-in, payment, authentication, custom headers, cookies, or bypassing bot/security controls are not supported. PDF reading is Markdown-only, limited to 10 MiB and 100 pages, and charges one response credit only on success.</p>
+<p>The public API is designed for safe processing of public webpages and text-layer PDF URLs. Submit a publicly accessible URL in one synchronous request. Pages requiring sign-in, payment, authentication, custom headers, cookies, or bypassing bot/security controls are not supported. PDF reading is Markdown-only, limited to 10 MiB and 100 pages, and charges one response credit only on success. An upstream PDF URL that returns <code>404</code> or <code>410</code> produces HTTP <code>404</code> with <code>status: &quot;failed&quot;</code>, <code>error.code: &quot;UPSTREAM_NOT_FOUND&quot;</code>, <code>error.retryable: false</code>, and <code>usage.credits: 0</code>; it indicates a missing target PDF, not a Reader service outage.</p>
 <h3 id="quick-start-first-successful-read">Quick Start: First Successful Read</h3>
 <ol>
 <li>Create or sign in to your RapidAPI account and subscribe to an available AI Reader API plan.</li>
