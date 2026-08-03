@@ -83,6 +83,8 @@
 <li>Only deterministic snapshot failures become <code>REGRESSION</code> automatically.</li>
 <li>The runner proposes an improvement candidate only after the same case has a product-quality candidate classification in at least two retained runs. It never edits issues, corpus files, source code, Git state, or deployment configuration.</li>
 <li>Promote or replace a Lock URL only through human review after repeated stable runs. Replace blocked or unstable pages rather than weakening an expectation.</li>
+<li>Discovery removal candidates are report-only. Mark a candidate as <code>low_observation_value</code> after an access-block or permanent-not-found result on three consecutive retained dates. Mark it as <code>saturated_observation</code> after PASS on seven consecutive retained dates. Multiple runs on the same date count once, using the latest result.</li>
+<li>A removal candidate is never removed automatically and is never promoted to Lock automatically. Delete it from Discovery only after explicit human approval; preserve the retained run history as evidence.</li>
 </ul>
 <h2 id="daily-execution">Daily execution</h2>
 <p>Run the script from the repository root:</p>
