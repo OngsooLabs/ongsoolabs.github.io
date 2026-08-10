@@ -140,9 +140,11 @@
 .\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243 -RapidApiProxySecret $env:RAPIDAPI_PROXY_SECRET
 .\scripts\run-reader-benchmark.ps1 -DryRun
 .\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243 -SummaryPath .\artifacts\benchmarks\results\reader-lock-summary.json
+.\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243 -TelemetryLogPath .\artifacts\benchmarks\quality-loop\runs\&lt;run-id&gt;\logs\reader.stdout.log -ResultPath .\artifacts\benchmarks\results\reader-lock-acquisition.json
 .\scripts\run-quality-validation.ps1 -BaseUrl http://localhost:5243 -SummaryPath .\artifacts\benchmarks\results\reader-quality-summary.json
 </code></pre>
-<p>The script exits with code <code>0</code> when all selected items pass and <code>1</code> when any item fails. <code>-SummaryPath</code> writes only aggregate counts, distributions, the dataset filename, and a timestamp. It never writes target URLs, extracted content, credentials, or request headers.</p>
+<p>The script exits with code <code>0</code> when all selected items pass and <code>1</code> when any item fails. <code>-TelemetryLogPath</code> is optional; when supplied, the runner correlates <code>ScrapeMetric</code> stdout by response <code>id</code>/<code>requestId</code>. Missing or duplicate metrics are reported as unavailable/partial telemetry and do not change benchmark pass/fail behavior.</p>
+<p><code>-SummaryPath</code> writes only aggregate counts, distributions, sanitized acquisition aggregates, the dataset filename, and a timestamp. <code>-ResultPath</code> writes an optional <code>reader-benchmark-run.v1</code> detail record with case IDs, SHA-256 URL fingerprints, request IDs, public execution facts, and sanitized acquisition facts. Neither output writes target URLs, extracted content, credentials, request headers, cookies, or raw log lines.</p>
 
 </article>
 
