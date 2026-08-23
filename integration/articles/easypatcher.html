@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=0ce2af74dedfd983374a9c4e9100432199c91821">
-      <link rel="stylesheet" href="../public/main.css?v=0ce2af74dedfd983374a9c4e9100432199c91821">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=3ba877f028f28739a7b724d428119e3753f57e8f">
+      <link rel="stylesheet" href="../public/main.css?v=3ba877f028f28739a7b724d428119e3753f57e8f">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=0ce2af74dedfd983374a9c4e9100432199c91821"></script>
+      <script type="module" src="./../public/docfx.min.js?v=3ba877f028f28739a7b724d428119e3753f57e8f"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -86,8 +86,7 @@
         <article data-uid="">
 <h1 id="osl-easy-patcher">OSL Easy Patcher</h1>
 
-<p>A lightweight patch distribution system for Unity games.
-Upload patch files from the Editor and let players download changed files at runtime.</p>
+<p>A lightweight Unity patcher for teams that need runtime content updates without adopting a full Addressables workflow. It downloads only changed files and can continue partial transfers when the host supports HTTP Range requests.</p>
 <hr>
 <h2 id="table-of-contents">Table of Contents</h2>
 <ol>
@@ -104,11 +103,12 @@ Upload patch files from the Editor and let players download changed files at run
 </ol>
 <hr>
 <h2 id="overview">Overview</h2>
-<p>OSL Easy Patcher provides an editor-assisted patch workflow and a runtime component that checks for changed files before continuing into your game's loading flow.</p>
+<p>OSL Easy Patcher compares a remote <code>version.json</code> manifest with the local cache, downloads only missing or changed files, and retries failures per file. Its Editor uploader supports Local Folder, Google Cloud Storage, AWS S3, Unity CCD, and Azure Blob Storage without bundling the corresponding cloud SDKs.</p>
 <h2 id="who-should-use-this">Who Should Use This</h2>
 <p>Use OSL Easy Patcher when your Unity project needs:</p>
 <ul>
 <li>Runtime delivery of changed files</li>
+<li>Resume support for interrupted large files on HTTP Range-capable hosts</li>
 <li>A lightweight patching workflow controlled from the Unity Editor</li>
 <li>Manifest-based patch checks</li>
 <li>A custom loader hook for your own asset loading strategy</li>
@@ -128,8 +128,16 @@ Upload patch files from the Editor and let players download changed files at run
 <td>2021.3 LTS or later</td>
 </tr>
 <tr>
+<td>Tested Unity versions</td>
+<td>2021.3.45f2 and 6000.3.12f1 (package-isolation import and compile)</td>
+</tr>
+<tr>
 <td>.NET Standard</td>
 <td>2.1</td>
+</tr>
+<tr>
+<td>HTTP host</td>
+<td>Range request support required for partial-file resume</td>
 </tr>
 <tr>
 <td>TextMeshPro <em>(optional)</em></td>
@@ -217,7 +225,7 @@ public class MyCustomLoader : IOSLLoader
 <p><strong>Q: Where are patch files cached on the player's device?</strong><br>
 A: <code>Application.persistentDataPath/OSL/EasyPatcher/</code> by default.</p>
 <p><strong>Q: What happens if the download is interrupted?</strong><br>
-A: The local manifest is only written after all files are verified. On the next launch, the version check can retry incomplete work.</p>
+A: A later run can continue the partial file when the HTTP host honors Range requests. If the host ignores Range, the integrity check can reject the appended file and retry it from the beginning.</p>
 <p><strong>Q: Can I patch non-AssetBundle files?</strong><br>
 A: Yes. The patch system transfers files, and loading is handled by your <code>IOSLLoader</code> implementation.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>

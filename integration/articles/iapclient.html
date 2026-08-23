@@ -2,17 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>IapClient </title>
+      <title>OSL IAP Client </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
       <meta http-equiv="Pragma" content="no-cache">
       <meta http-equiv="Expires" content="0">
-      <meta name="title" content="IapClient ">
+      <meta name="title" content="OSL IAP Client ">
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=0ce2af74dedfd983374a9c4e9100432199c91821">
-      <link rel="stylesheet" href="../public/main.css?v=0ce2af74dedfd983374a9c4e9100432199c91821">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=3ba877f028f28739a7b724d428119e3753f57e8f">
+      <link rel="stylesheet" href="../public/main.css?v=3ba877f028f28739a7b724d428119e3753f57e8f">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=0ce2af74dedfd983374a9c4e9100432199c91821"></script>
+      <script type="module" src="./../public/docfx.min.js?v=3ba877f028f28739a7b724d428119e3753f57e8f"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -84,18 +84,19 @@
         </div>
 
         <article data-uid="">
-<h1 id="iapclient">IapClient</h1>
+<h1 id="osl-iap-client">OSL IAP Client</h1>
 
-<p>IapClient is a Unity package that helps integrate in-app purchase (IAP) functionality into a Unity project.</p>
+<p>OSL IAP Client connects Unity IAP v5 pending orders to Apple/Google backend verification before rewards are granted. It persists unresolved receipts across app restarts and uses the included .NET 8 starter's transaction records to reduce duplicate rewards.</p>
 <h2 id="overview">Overview</h2>
-<p>The package provides a Unity-side purchase flow for Google Play and Apple App Store purchases, along with editor tooling and configuration assets for common setup tasks.</p>
+<p>Use this package when a client purchase callback is not enough evidence to grant currency, items, or subscription access. The client queues purchase data, sends it to your backend, and follows explicit grant and confirmation flags returned after provider verification.</p>
 <h2 id="features">Features</h2>
 <ul>
-<li>Google Play and Apple App Store purchase flow integration</li>
-<li>Product catalog configuration through <code>IapSetupConfig</code></li>
-<li>Unity Services Core and Unity IAP based setup</li>
-<li>Basic editor-side testing utilities</li>
-<li>Runtime events for purchase-related game logic</li>
+<li>Apple App Store and Google Play verification before reward delivery</li>
+<li>Persistent <code>osl_iap_pending_queue.json</code> recovery after temporary failures or app restart</li>
+<li>Configurable exponential backoff with 10 attempts by default</li>
+<li>Backend idempotency that confirms <code>AlreadyProcessed</code> orders without granting twice</li>
+<li>Product catalog, environment, endpoint, timeout, and retry configuration through <code>IapSetupConfig</code></li>
+<li>Included .NET 8 ASP.NET Core starter with SQLite/Dapper persistence</li>
 </ul>
 <h2 id="prerequisites">Prerequisites</h2>
 <table>
@@ -107,16 +108,27 @@
 </thead>
 <tbody>
 <tr>
+<td>Unity</td>
+<td>2021.3 LTS minimum; 2021.3.45f2 and 6000.3.12f1 import/compile tested</td>
+</tr>
+<tr>
 <td>Unity Purchasing</td>
-<td><code>com.unity.purchasing</code></td>
+<td><code>com.unity.purchasing</code> 5.0.0 tested</td>
 </tr>
 <tr>
 <td>Unity Services Core</td>
-<td><code>com.unity.services.core</code></td>
+<td><code>com.unity.services.core</code> 1.14.0 tested</td>
+</tr>
+<tr>
+<td>Backend</td>
+<td>.NET 8 SDK/runtime</td>
 </tr>
 </tbody>
 </table>
 <p>If either package is missing, runtime IAP functionality is not available.</p>
+<blockquote>
+<p>The backend source is a starter. Configure hosting, HTTPS, secrets, monitoring, account integration, and reward delivery for your project. The default queue limit is 10 attempts; exhausted receipts are reported through <code>OnVerificationFailed</code>, so zero-loss behavior is not guaranteed.</p>
+</blockquote>
 <h2 id="installation">Installation</h2>
 <ol>
 <li>Search for <strong>OSL IAP Client</strong> on the Unity Asset Store, or open it directly at <a href="https://assetstore.unity.com/packages/slug/375176">Unity Asset Store (OSL IAP Client)</a>, then click <strong>Add to My Assets</strong>.</li>
@@ -148,7 +160,8 @@
 
 void OnItemGranted(string productId)
 {
-    Debug.Log($&quot;Purchase event received: {productId}&quot;);
+    // Grant only from this verified event and persist your own reward record.
+    Debug.Log($&quot;Verified purchase event received: {productId}&quot;);
 }
 </code></pre>
 <h2 id="editor-test-tool">Editor Test Tool</h2>

@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=0ce2af74dedfd983374a9c4e9100432199c91821">
-      <link rel="stylesheet" href="../public/main.css?v=0ce2af74dedfd983374a9c4e9100432199c91821">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=3ba877f028f28739a7b724d428119e3753f57e8f">
+      <link rel="stylesheet" href="../public/main.css?v=3ba877f028f28739a7b724d428119e3753f57e8f">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=0ce2af74dedfd983374a9c4e9100432199c91821"></script>
+      <script type="module" src="./../public/docfx.min.js?v=3ba877f028f28739a7b724d428119e3753f57e8f"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -86,7 +86,7 @@
         <article data-uid="">
 <h1 id="osl-secure-save">OSL Secure Save</h1>
 
-<p>A Unity Gaming Services based save helper for projects that want validated Cloud Save write flows.</p>
+<p>A UGS Cloud Save workflow for projects that want package API writes checked by Cloud Code before storage.</p>
 <blockquote>
 <p><strong>Clarification:</strong> OSL Secure Save is not a local encrypted save-file package. It is designed around Unity Cloud Save and Cloud Code based validation.</p>
 </blockquote>
@@ -105,12 +105,13 @@
 </ol>
 <hr>
 <h2 id="overview">Overview</h2>
-<p>OSL Secure Save provides a Unity-side API for save reads and writes that can be validated through Unity Gaming Services.</p>
+<p>OSL Secure Save routes <code>OSLSaveManager</code> writes through <code>osl_master_save</code>, where per-key type, range, delta, and operation rules are checked before accepted values are stored. Reads use Cloud Save's Default access class directly.</p>
 <h2 id="who-should-use-this">Who Should Use This</h2>
 <p>Use OSL Secure Save when your project needs:</p>
 <ul>
 <li>Unity Cloud Save based player data storage</li>
 <li>Unity Cloud Code based write validation</li>
+<li>Per-key type, range, maximum delta, and allowed-operation rules</li>
 <li>Simple typed save helpers for common player data values</li>
 <li>A sample scene for checking the basic save flow</li>
 </ul>
@@ -126,7 +127,11 @@
 <tbody>
 <tr>
 <td>Unity</td>
-<td>2022.3 LTS or later</td>
+<td>2021.3 LTS or later</td>
+</tr>
+<tr>
+<td>Tested Unity versions</td>
+<td>2021.3.45f2 and 6000.3.12f1 (package-isolation import and compile)</td>
 </tr>
 <tr>
 <td>com.unity.services.cloudcode</td>
@@ -146,7 +151,10 @@
 </tr>
 </tbody>
 </table>
-<p>This module has a newer Unity baseline than some other OSL packages because it depends on current Unity Gaming Services workflows.</p>
+<p>Remote Config is optional and is used for remotely managed rule JSON.</p>
+<blockquote>
+<p>Validation applies to writes made through the package Cloud Code path. The included script writes to Cloud Save's Default access class; avoid or separately restrict direct client write paths. This package is not a complete anti-cheat system or a local save-file system.</p>
+</blockquote>
 <hr>
 <h2 id="ugs-project-setup">UGS Project Setup</h2>
 <ol>
