@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="favicon.ico">
-      <link rel="stylesheet" href="public/docfx.min.css?v=3ba877f028f28739a7b724d428119e3753f57e8f">
-      <link rel="stylesheet" href="public/main.css?v=3ba877f028f28739a7b724d428119e3753f57e8f">
+      <link rel="stylesheet" href="public/docfx.min.css?v=4f3b2c6a446e7424a8862a27d0ccfb5b142600d2">
+      <link rel="stylesheet" href="public/main.css?v=4f3b2c6a446e7424a8862a27d0ccfb5b142600d2">
       <meta name="docfx:navrel" content="toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./public/docfx.min.js?v=3ba877f028f28739a7b724d428119e3753f57e8f"></script>
+      <script type="module" src="./public/docfx.min.js?v=4f3b2c6a446e7424a8862a27d0ccfb5b142600d2"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -72,19 +72,18 @@
         <article data-uid="">
 <h1 id="ongsoo-labs-integration-framework-documentation">Ongsoo Labs Integration Framework Documentation</h1>
 
-<p>Ongsoo Labs' official technical documentation for the Unity asset integration framework.
-This website is powered by DocFX and provides integration guides, package manuals, and generated API references for the OSL Unity asset ecosystem.</p>
+<p>Unity integrations for teams that want to add runtime patching, verified purchases, validated Cloud Save writes, social sign-in, and reproducible RNG without building every workflow from scratch.
+Each package works independently and shares common runtime and integration patterns through OSL.Core.</p>
 <h2 id="asset-ecosystem">Asset Ecosystem</h2>
-<p>The Ongsoo Labs integration framework is designed so each module can work independently while still sharing common runtime, configuration, and integration patterns through OSL.Core.
-Browse the asset guides below by category.</p>
+<p>Choose the problem you need to solve, then import only the relevant package and its required dependencies.</p>
 <ul>
-<li><a href="articles/deterministic.html">Deterministic</a>: Deterministic RNG, weighted draws, shuffling, and replay-friendly random state management</li>
-<li><a href="articles/easypatcher.html">EasyPatcher</a>: Runtime patch distribution, manifest generation, download verification, and custom loader integration</li>
-<li><a href="articles/sociallogin.html">SocialLogin</a>: Multi-platform authentication adapters for Google, Apple, Facebook, Steam, Discord, and related backend verification flows</li>
-<li><a href="articles/iapclient.html">IapClient</a>: In-app purchase client workflow with backend receipt verification and duplicate reward protection</li>
-<li><a href="articles/securesave.html">SecureSave</a>: Server-authoritative Cloud Code and Cloud Save workflow for validated player data writes</li>
-<li><a href="articles/tokenverification.html">Token Verification</a>: Unity client and .NET backend template for server-side social token verification</li>
-<li><a href="articles/socialloginpro.html">Social Login Pro</a>: Composite SocialLogin and TokenVerification package for an end-to-end sign-in workflow</li>
+<li><a href="articles/deterministic.html">Deterministic</a>: Reproducible deterministic RNG for replay/lockstep-friendly logic, weighted gacha and pity, and repeatable tests</li>
+<li><a href="articles/easypatcher.html">EasyPatcher</a>: A lightweight runtime patcher that downloads only changed files and resumes interrupted transfers when the host supports HTTP Range, without requiring a full Addressables workflow</li>
+<li><a href="articles/sociallogin.html">SocialLogin</a>: One Unity social login interface with selectively enabled Google, Apple, Facebook, Steam, and Discord integrations, centralized setup, and build automation</li>
+<li><a href="articles/iapclient.html">IapClient</a>: A Unity IAP v5 client and .NET 8 backend starter that verifies Apple/Google purchases before rewards, restores pending receipts after restart, and reduces duplicate grants</li>
+<li><a href="articles/securesave.html">SecureSave</a>: A UGS Cloud Code workflow that applies type, range, delta, and operation rules to package API writes before accepted data reaches Cloud Save</li>
+<li><a href="articles/tokenverification.html">Token Verification</a>: A Unity client and .NET 8 backend starter for checking social login results through JWT or provider API verification</li>
+<li><a href="articles/socialloginpro.html">Social Login Pro</a>: An end-to-end workflow connecting multi-provider Unity sign-in to verification on your own .NET 8 backend starter</li>
 </ul>
 <h2 id="documentation-structure">Documentation Structure</h2>
 <ul>
@@ -105,7 +104,7 @@ Browse the asset guides below by category.</p>
 <li>.NET Standard 2.1 compatible project settings</li>
 <li>Assembly Definition (<code>.asmdef</code>) based project structure recommended</li>
 </ul>
-<p>Some modules require newer Unity or Unity Gaming Services packages. Always check the <strong>Requirements</strong> section in each module guide before importing a package into production projects.</p>
+<p>Some modules require additional Unity Registry packages, UGS services, provider SDKs, or a .NET 8 backend runtime. Check each module guide for exact required and optional dependencies before importing it into your project.</p>
 
 </article>
 
