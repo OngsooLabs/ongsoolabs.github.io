@@ -2,12 +2,12 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>API Reference </title>
+      <title>OSL Token Verification </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
       <meta http-equiv="Pragma" content="no-cache">
       <meta http-equiv="Expires" content="0">
-      <meta name="title" content="API Reference ">
+      <meta name="title" content="OSL Token Verification ">
       
       
       <link rel="icon" href="../favicon.ico">
@@ -19,7 +19,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/blob/main/api/index.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/OngsooLabs/Integration/blob/main/articles/tokenverification.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,26 +84,40 @@
         </div>
 
         <article data-uid="">
-<h1 id="api-reference">API Reference</h1>
+<h1 id="osl-token-verification">OSL Token Verification</h1>
 
-<p>This section provides entry points to the Ongsoo Labs API documentation.</p>
-<h2 id="module-api-documents">Module API Documents</h2>
+<p>OSL Token Verification provides a Unity client manager and a .NET 8 backend template for verifying supported social-provider tokens outside the game client.</p>
+<h2 id="overview">Overview</h2>
+<p>Use this package when a Unity project needs a server-side verification step after a social login flow. The Unity client sends the provider token to a backend endpoint, and the backend template returns the verification result for the game to handle.</p>
+<h2 id="included-components">Included Components</h2>
 <ul>
-<li><a href="../articles/easypatcher.html">EasyPatcher API and usage details</a></li>
-<li><a href="../articles/sociallogin.html">SocialLogin API and usage details</a></li>
-<li><a href="../articles/iapclient.html">IapClient API and usage details</a></li>
-<li><a href="../articles/securesave.html">SecureSave API and usage details</a></li>
+<li><code>TokenVerifyManager</code> for Unity-side verification requests</li>
+<li>A sample scene at <code>Assets/OSL/TokenVerification/Samples/Scene/DemoScene.unity</code></li>
+<li>A .NET server source archive at <code>Assets/OSL/TokenVerification/Server~/Server_Dotnet_Source.zip</code></li>
 </ul>
-<h2 id="notes">Notes</h2>
+<h2 id="basic-setup">Basic Setup</h2>
+<ol>
+<li>Import <strong>OSL Token Verification</strong> into the Unity project.</li>
+<li>Extract <code>Server_Dotnet_Source.zip</code> to a local working folder and configure its server-side settings.</li>
+<li>Start the extracted .NET project with <code>dotnet run</code>.</li>
+<li>Open the sample scene, set the <code>TokenVerifyManager</code> server URL, and run a verification request with a valid provider token.</li>
+</ol>
+<h2 id="requirements">Requirements</h2>
 <ul>
-<li>When metadata generation from the integration repository is available, this section is expanded with class-level API pages.</li>
-<li>If class-level pages are not present, use the module guides above as the canonical API entry points.</li>
+<li>Unity 2021.3 or later</li>
+<li>.NET 8 SDK for the included backend template</li>
+<li>Provider credentials configured only in the extracted server project</li>
+</ul>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="sociallogin.html">Social Login</a></li>
+<li><a href="socialloginpro.html">Social Login Pro</a></li>
 </ul>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/OngsooLabs/Integration/blob/main/api/index.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/OngsooLabs/Integration/blob/main/articles/tokenverification.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

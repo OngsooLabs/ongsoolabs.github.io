@@ -96,6 +96,16 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "articles/socialloginpro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/socialloginpro.html"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Toc",
       "source_relative_path": "articles/toc.yml",
       "output": {
@@ -104,6 +114,16 @@
         },
         ".html": {
           "relative_path": "articles/toc.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/tokenverification.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/tokenverification.html"
         }
       },
       "version": ""
