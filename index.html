@@ -8,12 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script>
         // Smart Redirect Logic
-        // If the user visits a path like /articles/... or /api/... that belonged to the old OSLIntegration docs,
+        // If the user visits a legacy root path that belonged to the old OSLIntegration docs,
         // we redirect them to /integration/...
         (function() {
             var path = window.location.pathname;
             // Paths that used to be at the root for OSLIntegration
-            var oldPaths = ['/articles/', '/api/', '/images/'];
+            var oldPaths = ['/articles/', '/images/'];
             
             // If the path starts with any of the old paths, redirect to /integration
             for (var i = 0; i < oldPaths.length; i++) {
@@ -64,7 +64,7 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
                     </div>
                     <h2>OngsooLabs API</h2>
-                    <p>Backend services and API references. Scalable infrastructure and microservices documentation.</p>
+                    <p>AI Reader API documentation and official access channels through RapidAPI and OngsooLabs.com.</p>
                 </div>
                 <div class="card-glow"></div>
             </a>
