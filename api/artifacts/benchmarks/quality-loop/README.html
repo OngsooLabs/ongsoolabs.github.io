@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Reader Quality Improvement Loop </title>
+      <title>Reader Regression and Challenge Loops </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Reader Quality Improvement Loop ">
+      <meta name="title" content="Reader Regression and Challenge Loops ">
       
       
       <link rel="icon" href="../../../favicon.ico">
@@ -67,39 +67,79 @@
         </div>
 
         <article data-uid="">
-<h1 id="reader-quality-improvement-loop">Reader Quality Improvement Loop</h1>
+<h1 id="reader-regression-and-challenge-loops">Reader Regression and Challenge Loops</h1>
 
-<p>This directory keeps the reviewable inputs and templates for the Reader quality loop.</p>
+<p>This directory keeps the reviewable inputs, history, and templates for two separate Reader quality responsibilities:</p>
+<ul>
+<li>the Regression Loop protects behavior that already works;</li>
+<li>the Challenge Loop discovers realistic public web structures that the Reader does not yet handle well.</li>
+</ul>
 <h2 id="corpus-roles">Corpus roles</h2>
 <ul>
-<li><code>live-core.json</code> selects 12 representative cases from the existing 100 URL lock dataset. It is a daily observation sample; it does not change the release gate.</li>
-<li><code>discovery-candidates.json</code> is a human-reviewed exploration queue. Add up to three public candidates for each of <code>news</code>, <code>technical-documentation</code>, and <code>product-page</code>; do not add them to the lock dataset automatically.</li>
-<li><code>snapshot-manifest.json</code> records the existing deterministic Reader test fixtures. No raw external HTML is captured yet. Add an external snapshot only after its storage and reuse are approved.</li>
+<li><code>live-core.json</code> selects 12 representative cases from the fixed 100 URL Lock. It is a daily observation sample and does not change the release gate.</li>
+<li><code>discovery-candidates.json</code> is the active Challenge pool. It contains 1-12 public HTTPS URLs, with at most four each for <code>news</code>, <code>technical-documentation</code>, and <code>product-page</code>.</li>
+<li><code>challenge-history.json</code> is the persistent fingerprint-only registry for active, observed, and retired Challenge URLs. It prevents a retired URL from returning under a new case ID without retaining raw URLs.</li>
+<li><code>snapshot-manifest.json</code> records deterministic Reader fixtures. Prefer a minimized synthetic fixture for a confirmed pattern. Capturing external HTML requires separate source-rights, privacy, retention, and reuse approval.</li>
+<li><code>reader-lock-dataset.json</code> remains the fixed 100 URL release gate. Challenge URLs are never promoted into or exchanged with the Lock automatically.</li>
 </ul>
-<h2 id="safety-and-promotion-rules">Safety and promotion rules</h2>
+<h2 id="challenge-admission-contract">Challenge admission contract</h2>
+<p>Reader success is not an admission requirement. A weekly intake may add a candidate only when all of the following are true:</p>
 <ul>
-<li>The runner stores case IDs and SHA-256 URL fingerprints, not raw URLs, response bodies, request bodies, cookies, headers, or extracted content.</li>
-<li>A Live failure is an observation, not a product regression by itself. <code>BLOCKED_BY_SITE</code>, <code>UPSTREAM_NOT_FOUND</code>, and <code>UPSTREAM_ERROR_PAGE</code> are external failures; timeouts and fetch failures are infrastructure candidates.</li>
-<li>Only deterministic snapshot failures become <code>REGRESSION</code> automatically.</li>
-<li>The runner proposes an improvement candidate only after the same case has a product-quality candidate classification in at least two retained runs. It never edits issues, corpus files, source code, Git state, or deployment configuration.</li>
-<li>Promote or replace a Lock URL only through human review after repeated stable runs. Replace blocked or unstable pages rather than weakening an expectation.</li>
-<li>Discovery removal candidates are report-only. Mark a candidate as <code>low_observation_value</code> after an access-block or permanent-not-found result on three consecutive retained dates. Mark it as <code>saturated_observation</code> after PASS on seven consecutive retained dates. Multiple runs on the same date count once, using the latest result.</li>
-<li>A removal candidate is never removed automatically and is never promoted to Lock automatically. Delete it from Discovery only after explicit human approval; preserve the retained run history as evidence.</li>
+<li>it is a realistic public HTTPS page in the supported Reader scope;</li>
+<li>it does not require login, CAPTCHA, a clear paywall, or access to personal or sensitive user data;</li>
+<li>it does not target private, loopback, link-local, or otherwise unsafe network assets;</li>
+<li>its normalized URL fingerprint is absent from the active, observed, retired, and Lock histories;</li>
+<li>a browser or equivalent independent source confirms that real content exists;</li>
+<li>ground truth is written before the Reader result is inspected.</li>
 </ul>
+<p>Ground truth records <code>sourceObservedAt</code>, short expected title/content markers, optional structural expectations, and an evidence note. It never stores full HTML or extracted content. Existing v1 entries are explicitly marked <code>historical-human-review</code> and should be refreshed during a later weekly intake; new entries use <code>browser</code> evidence.</p>
+<p>The initial controlled Challenge tags are:</p>
+<ul>
+<li><code>js-heavy</code></li>
+<li><code>long-document</code></li>
+<li><code>code-and-table</code></li>
+<li><code>multilingual</code></li>
+<li><code>redirect-canonical</code></li>
+<li><code>navigation-heavy</code></li>
+<li><code>partial-content-risk</code></li>
+<li><code>browser-fallback</code></li>
+</ul>
+<p>Do not add a tag without an observable selection or evaluation meaning. Balance technical coverage before filling category capacity, and leave slots empty rather than weakening safety or test-value requirements.</p>
+<h2 id="failure-classification-and-recurrence">Failure classification and recurrence</h2>
+<ul>
+<li><code>BLOCKED_BY_SITE</code>, <code>UPSTREAM_NOT_FOUND</code>, and <code>UPSTREAM_ERROR_PAGE</code> remain external observations when normal content cannot be compared.</li>
+<li>Local health, runner, Browser process, transport, and test-execution failures remain infrastructure observations.</li>
+<li>Missing expected content, partial main content, wrong title/canonical URL, lost code blocks/tables, forbidden block content, or a bad fallback outcome can be product-quality candidates when independent ground truth remains available.</li>
+<li>A site structure change is not automatically external. If a browser still exposes normal content and only Reader extraction fails, classify it as a product-quality candidate.</li>
+<li>Only deterministic failures become <code>REGRESSION</code> automatically.</li>
+</ul>
+<p>Each product-quality observation records a controlled <code>failurePatternId</code>, such as <code>partial_main_content</code>, <code>missing_expected_content</code>, <code>wrong_title</code>, <code>wrong_canonical</code>, <code>code_block_loss</code>, or <code>table_loss</code>. The runner proposes human review after either:</p>
+<ul>
+<li>the same URL repeats the same pattern in retained history; or</li>
+<li>the same controlled pattern appears on at least two different Challenge URLs.</li>
+</ul>
+<p>Legacy runs without pattern IDs remain eligible only for same-case recurrence. Cross-URL recurrence never relies on free-form semantic similarity.</p>
 <h2 id="daily-execution">Daily execution</h2>
-<p>Run the script from the repository root:</p>
+<p>Run from the repository root:</p>
 <pre><code class="lang-powershell">powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-reader-quality-loop.ps1
 </code></pre>
-<p>It runs the solution tests, ensures the local Reader health endpoint is available, executes the daily Live core and any approved discovery candidates, writes a structured run record, and writes a Markdown report under <code>runs/&lt;run-id&gt;/</code>.</p>
-<p>Each <code>reader-quality-run.v3</code> <code>run.json</code> and <code>report.md</code> includes a work assessment. Work is required only for a deterministic regression, an environment failure that prevented completion, or a repeated product-quality candidate. The assessment includes its reason and the related run/report paths; issue and improvement-plan templates are listed only when human review should create follow-up work.</p>
-<p>Each v3 case also preserves the public execution facts (<code>usedBrowser</code>, <code>cache</code>, <code>durationMs</code>) and a sanitized acquisition record correlated by response <code>id</code>/<code>requestId</code>: initial strategy, static attempt/outcome, actual Browser execution, Browser reason, per-stage duration, and dynamic attempt count. <code>automaticBrowserFallback</code> is true only when the Browser reason starts with <code>static_</code>; a cache hit that retains historical <code>usedBrowser=true</code> remains distinct from an actual Browser execution.</p>
-<p>The runner correlates this record only when it starts the local Reader itself and has that run's <code>logs/reader.stdout.log</code>. An already-running server or a missing/duplicate metric is recorded as <code>unavailable</code> or <code>partial</code>; it does not change case classification, <code>workRequired</code>, the Lock dataset, or exit behavior.</p>
-<p>The <code>runs/</code> directory is intentionally reviewable and is not committed automatically. A scheduled run leaves its results for a human to inspect and commit deliberately if they should become durable project history.</p>
-<h2 id="weekly-expansion">Weekly expansion</h2>
-<p>Use the existing full lock command for the weekly Live gate:</p>
-<pre><code class="lang-powershell">powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-reader-benchmark.ps1 -BaseUrl http://localhost:5243 -DatasetPath .\artifacts\benchmarks\reader-lock-dataset.json
+<p>The runner validates the v2 Challenge inputs and history, runs solution tests unless skipped, checks local Reader health, executes Live core and active Challenge cases, and writes <code>reader-quality-run.v4</code> JSON plus a Markdown report under <code>runs/&lt;run-id&gt;/</code>.</p>
+<p>The report may propose an improvement review, but the loop never edits product code, creates issues, commits, pushes, deploys, changes authentication/payment/security/database configuration, mutates the Lock, retires a Challenge, or captures an external snapshot automatically.</p>
+<h2 id="weekly-challenge-discovery">Weekly Challenge discovery</h2>
+<p>Once per verified calendar week, discover approximately three to six new candidates across the three content categories, prioritizing under-covered Challenge tags and domains. This is an adjustable operating default, not a quota. Add only vacant active slots, update <code>discovery-candidates.json</code> and <code>challenge-history.json</code> together, and include independent ground-truth evidence in the run summary.</p>
+<p>Do not pre-run the Reader as an admission gate. The next complete daily loop is the first Reader quality observation for a newly admitted Challenge.</p>
+<h2 id="retirement-and-durable-regression">Retirement and durable regression</h2>
+<ul>
+<li><code>low_observation_value</code>: access block or permanent-not-found result on three consecutive retained dates.</li>
+<li><code>saturated_observation</code>: PASS on seven consecutive retained dates with no new variation.</li>
+</ul>
+<p>Removal signals are report-only. Retire a candidate only after explicit human approval, keep its fingerprint in <code>challenge-history.json</code>, and never promote it into the Lock automatically.</p>
+<p>For a confirmed product-quality candidate, first reproduce the pattern with a minimized deterministic fixture when possible. Raw external HTML capture stays approval-gated. Product code changes require separate human authorization and must be verified with the target fixture, the original Live URL, and the full 100 URL Lock.</p>
+<h2 id="full-lock-gate">Full Lock gate</h2>
+<p>Run the full Lock weekly and before/after Reader behavior changes, not as part of every daily observation:</p>
+<pre><code class="lang-powershell">powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-reader-quality-loop.ps1 -RunFullLock
 </code></pre>
-<p>After the weekly run, summarize the retained daily <code>run.json</code> files by category, status, and duration. This initial change intentionally does not register a weekly automation.</p>
+<p>The runner keeps the local Reader alive for the optional gate, writes a sanitized <code>full-lock-summary.json</code> beside the daily run, and sets <code>fullLockStatus</code> to <code>PASS</code> or <code>FAIL</code>. A failed Lock gate requires human triage and makes the scheduled run fail.</p>
 
 </article>
 

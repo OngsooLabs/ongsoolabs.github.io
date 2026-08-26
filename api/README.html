@@ -69,8 +69,14 @@
         <article data-uid="">
 <h1 id="ai-reader-api">AI Reader API</h1>
 
-<p><strong>AI Reader API</strong> is a public Ongsoo Labs service for converting web pages and public text-layer PDF documents into clean AI-ready content with usage, quality, and execution metadata.</p>
-<p>Public access is available through <a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">RapidAPI</a>. Direct calls to <code>https://api.ongsoolabs.com</code> are reserved for platform and partner integrations unless separately arranged.</p>
+<p><strong>AI Reader API</strong> is a public service built and operated by <a href="https://ongsoolabs.com/">OngsooLabs</a> for converting web pages and public text-layer PDF documents into clean AI-ready content with usage, quality, and execution metadata.</p>
+<p>AI Reader API has two official access channels at the same level:</p>
+<ul>
+<li><a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">RapidAPI</a> uses a RapidAPI account, subscription, API key, request quota, and billing.</li>
+<li><a href="https://ongsoolabs.com/docs/ai-reader">OngsooLabs.com</a> uses an OngsooLabs account, Direct API key, credits, and billing.</li>
+</ul>
+<p>Both channels use the same core Reader execution and response contract. Accounts, credentials, quotas or credits, billing, and entitlements remain separate and do not transfer between channels. The Quick Start below uses RapidAPI credentials.</p>
+<p>Official resources: <a href="https://ongsoolabs.com/examples/reader">Reader sample</a>, <a href="https://ongsoolabs.com/docs/ai-reader">API guide</a>, and <a href="https://ongsoolabs.com/support">support</a>.</p>
 <hr>
 <h2 id="overview">Overview</h2>
 <pre><code class="lang-text">Web page or PDF URL -&gt; Safe retrieval -&gt; Content extraction -&gt; Markdown/text/JSON output -&gt; Usage, quality, and execution metadata
@@ -86,14 +92,20 @@
 </ul>
 <hr>
 <h2 id="authentication">Authentication</h2>
-<p>Use the <code>X-RapidAPI-Key</code> and <code>X-RapidAPI-Host</code> values shown in your RapidAPI dashboard.</p>
+<p>Use the credentials issued by the channel you selected:</p>
+<ul>
+<li><strong>RapidAPI</strong>: Send the <code>X-RapidAPI-Key</code> and <code>X-RapidAPI-Host</code> values shown in your RapidAPI dashboard.</li>
+<li><strong>OngsooLabs.com</strong>: Sign in to OngsooLabs, create a Direct API key in the Dashboard, and send it as <code>X-API-Key</code>.</li>
+</ul>
+<p>A RapidAPI key cannot authenticate an OngsooLabs Direct request, and a Direct API key cannot authenticate a RapidAPI request.</p>
 <hr>
 <h2 id="api-endpoints">API Endpoints</h2>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">Method</th>
-<th style="text-align: left;">Path</th>
+<th style="text-align: left;">RapidAPI path</th>
+<th style="text-align: left;">OngsooLabs Direct path</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
@@ -101,30 +113,30 @@
 <tr>
 <td style="text-align: left;"><code>GET</code></td>
 <td style="text-align: left;"><code>/v1/reader</code></td>
+<td style="text-align: left;"><code>/api/v1/reader</code></td>
 <td style="text-align: left;">Text conversion and analysis using URL parameters</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
 <td style="text-align: left;"><code>/v1/reader</code></td>
+<td style="text-align: left;"><code>/api/v1/reader</code></td>
 <td style="text-align: left;">Advanced options through a JSON body</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
 <td style="text-align: left;"><code>/v1/reader/document</code></td>
+<td style="text-align: left;"><code>/api/v1/reader/document</code></td>
 <td style="text-align: left;">Public Beta: extract a public text-layer PDF URL as Markdown</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>POST</code></td>
 <td style="text-align: left;"><code>/v1/reader/chunk</code></td>
+<td style="text-align: left;"><code>/api/v1/reader/chunk</code></td>
 <td style="text-align: left;">Split text into chunks for downstream AI processing</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>GET</code></td>
-<td style="text-align: left;"><code>/v1/diagnostics</code></td>
-<td style="text-align: left;">Deployment smoke diagnostics for direct platform operations</td>
 </tr>
 </tbody>
 </table>
+<p>The public prefixes and authentication headers differ by channel; the core Reader request and response behavior remains aligned. <code>GET /v1/diagnostics</code> is an authenticated deployment diagnostic for platform operations and is not a customer access-channel endpoint.</p>
 <h3 id="mcp-and-agent-integration-inquiries">MCP and Agent Integration Inquiries</h3>
 <p>Native Streamable HTTP MCP access is not available through the regular RapidAPI proxy. Use the REST Reader endpoints for supported RapidAPI integrations.</p>
 <p>RapidAPI-managed MCP use of published REST endpoints is a separate integration path; it does not forward this service's native <code>/mcp</code> transport. For future direct native MCP access or enterprise agent-integration inquiries, contact the provider through the <a href="https://rapidapi.com/ongsoodev/api/ai-reader-api">RapidAPI listing</a> with your use case and expected volume. This is a request-for-feedback channel, not a commitment that native MCP access is available or scheduled.</p>
@@ -256,6 +268,8 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
 }
 </code></pre>
 <p>Failures use the same versioned envelope with <code>status = failed</code>, an <code>error</code> object, zero usage, and stable error codes such as <code>INVALID_URL</code>, <code>INVALID_REQUEST</code>, and <code>UNSAFE_URL</code>.</p>
+<h3 id="capacity-rejection">Capacity Rejection</h3>
+<p>When the shared Reader execution limit is full, <code>/v1/reader</code>, <code>/v1/reader/document</code>, and <code>/v1/reader/chunk</code> return HTTP <code>429</code> with <code>error.code = &quot;RATE_LIMIT_EXCEEDED&quot;</code>, <code>error.retryable = true</code>, and a positive <code>Retry-After</code> response header. The request is rejected immediately; it is not queued. Clients should wait for the stated header value before retrying. The configured concurrency value is an operational safeguard, not a published throughput commitment.</p>
 <h3 id="pdf-document-reader-public-beta">PDF Document Reader (Public Beta)</h3>
 <p><code>POST /v1/reader/document</code> accepts a public HTTPS PDF URL and returns <code>content.format = &quot;markdown&quot;</code>. The Public Beta supports text-layer PDFs only; it does not accept uploads, DOCX, OCR, encrypted PDFs, or document generation requests.</p>
 <pre><code class="lang-json">{
@@ -281,7 +295,7 @@ X-RapidAPI-Host: &lt;your-rapidapi-host&gt;
 <hr>
 <h2 id="deployment-diagnostics">Deployment Diagnostics</h2>
 <p><code>GET /v1/diagnostics</code> is a low-cost smoke check for deployment verification. It is intended for direct platform and partner operations, not public RapidAPI traffic.</p>
-<p>The endpoint does not scrape an external webpage. It checks API and Reader service registration, sanitized required-configuration state, cache read/write behavior, TextProcessor token-count connectivity, and Reader-to-Document-Parser worker reachability. It never returns internal service URLs, secrets, AWS identity details, Docker network details, or document content.</p>
+<p>The endpoint does not scrape an external webpage. It checks API and Reader service registration, sanitized required-configuration state, cache read/write behavior, TextProcessor token-count connectivity, and Reader-to-Document-Parser worker reachability. When Direct Gateway is enabled, it also verifies that the configured JWKS can be read and that an ephemeral idempotency receipt can be claimed, read, and released. It never returns internal service URLs, secrets, receipt identifiers or nonces, AWS identity details, Docker network details, or document content.</p>
 <pre><code class="lang-http">GET /v1/diagnostics
 X-RapidAPI-Proxy-Secret: &lt;proxy-secret&gt;
 </code></pre>
@@ -295,7 +309,10 @@ X-RapidAPI-Proxy-Secret: &lt;proxy-secret&gt;
     { &quot;name&quot;: &quot;reader_service&quot;, &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;Reader service dependency is registered.&quot;, &quot;durationMs&quot;: 0 },
     { &quot;name&quot;: &quot;configuration&quot;, &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;Required deployment configuration is present.&quot;, &quot;durationMs&quot;: 0 },
     { &quot;name&quot;: &quot;cache&quot;, &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;Cache read/write round trip succeeded.&quot;, &quot;durationMs&quot;: 2 },
-    { &quot;name&quot;: &quot;text_processor&quot;, &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;TextProcessor token count check succeeded.&quot;, &quot;durationMs&quot;: 22 }
+    { &quot;name&quot;: &quot;direct_jwks&quot;, &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;Direct Gateway JWKS contains an approved signing key.&quot;, &quot;durationMs&quot;: 8 },
+    { &quot;name&quot;: &quot;direct_receipt_store&quot;, &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;Direct receipt store write/read/delete round trip succeeded.&quot;, &quot;durationMs&quot;: 3 },
+    { &quot;name&quot;: &quot;text_processor&quot;, &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;TextProcessor token count check succeeded.&quot;, &quot;durationMs&quot;: 22 },
+    { &quot;name&quot;: &quot;document_parser&quot;, &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;Document Parser worker health check succeeded.&quot;, &quot;durationMs&quot;: 4 }
   ]
 }
 </code></pre>

@@ -71,6 +71,8 @@
 
 <p><strong>URL → clean, LLM-ready Markdown + structured JSON.</strong></p>
 <p>AI Reader API removes common webpage clutter and extracts readable main content from public webpages for AI agents, RAG pipelines, and content-processing workflows. It returns Markdown, plain text, or structured JSON together with optional source metadata.</p>
+<p>AI Reader API is built and operated by <a href="https://ongsoolabs.com/">OngsooLabs</a>. Official resources include the <a href="https://ongsoolabs.com/examples/reader">Reader sample</a>, <a href="https://ongsoolabs.com/docs/ai-reader">API guide</a>, and <a href="https://ongsoolabs.com/support">support</a>.</p>
+<p>RapidAPI manages its own subscriptions, credentials, request quotas, and billing. OngsooLabs Direct uses separate accounts, API keys, credits, and billing. Credentials and entitlements do not transfer between the two channels. The Quick Start in this listing continues to use RapidAPI credentials.</p>
 <hr>
 <h2 id="what-it-solves">What It Solves</h2>
 <p>Modern AI systems need clean source content, not full webpages packed with navigation, ads, scripts, footers, sidebars, and duplicate layout text. AI Reader API helps convert public web pages into a format that is easier to embed, summarize, index, search, and pass into LLM prompts.</p>
@@ -259,8 +261,8 @@ $response.usage.credits
 <li><strong>force_dynamic</strong> (boolean): Force browser rendering instead of static retrieval. Default: <code>false</code>.</li>
 <li><strong>disable_css</strong> (boolean, nullable): Override site-rule CSS loading during dynamic rendering.</li>
 <li><strong>enable_chunking</strong> (boolean): Include overlapping chunks in the response. Default: <code>false</code>.</li>
-<li><strong>chunk_size_tokens</strong> (integer): Target chunk size in tokens. Default: <code>500</code>.</li>
-<li><strong>overlap_size_tokens</strong> (integer): Token overlap between chunks. Default: <code>100</code>.</li>
+<li><strong>chunk_size_tokens</strong> (integer): Target chunk size in tokens, from <code>16</code> through <code>8192</code>. Default: <code>500</code>.</li>
+<li><strong>overlap_size_tokens</strong> (integer): Token overlap between chunks. Must be non-negative and smaller than <code>chunk_size_tokens</code>. Default: <code>100</code>.</li>
 <li><strong>output_content</strong> (boolean): Include cleaned content or article body. Default: <code>true</code>.</li>
 <li><strong>output_metadata</strong> (boolean): Include extracted page metadata, <code>word_count</code>, and <code>reading_time_minutes</code>. It does not control <code>usage</code>, <code>quality</code>, or <code>execution</code>. Default: <code>true</code>.</li>
 <li><strong>output_tables</strong> (boolean): Include markdown tables. Default: <code>true</code>.</li>
@@ -301,8 +303,8 @@ $response.usage.credits
 <li><strong>force_dynamic</strong> (boolean): Force browser rendering instead of static retrieval. Default: <code>false</code>.</li>
 <li><strong>disable_css</strong> (boolean, nullable): Override site-rule CSS loading during dynamic rendering.</li>
 <li><strong>enable_chunking</strong> (boolean): Include overlapping chunks in the response. Default: <code>false</code>.</li>
-<li><strong>chunk_size_tokens</strong> (integer): Target chunk size in tokens. Default: <code>500</code>.</li>
-<li><strong>overlap_size_tokens</strong> (integer): Token overlap between chunks. Default: <code>100</code>.</li>
+<li><strong>chunk_size_tokens</strong> (integer): Target chunk size in tokens, from <code>16</code> through <code>8192</code>. Default: <code>500</code>.</li>
+<li><strong>overlap_size_tokens</strong> (integer): Token overlap between chunks. Must be non-negative and smaller than <code>chunk_size_tokens</code>. Default: <code>100</code>.</li>
 <li><strong>output</strong> (object): Fine-grained output options.</li>
 <li><strong>output.content</strong> (boolean): Include cleaned content or article body. Default: <code>true</code>.</li>
 <li><strong>output.metadata</strong> (boolean): Include extracted page metadata, <code>word_count</code>, and <code>reading_time_minutes</code>. It does not control <code>usage</code>, <code>quality</code>, or <code>execution</code>. Default: <code>true</code>.</li>
@@ -516,14 +518,15 @@ $response.usage.credits
 </code></pre>
 <h3 id="request-body-parameters-1">Request Body Parameters</h3>
 <ul>
-<li><strong>text</strong> (string, required): Raw text to split.</li>
+<li><strong>text</strong> (string, required): Raw text to split. Maximum: <code>1,000,000</code> characters.</li>
 <li><strong>tokenizer</strong> (string): <code>openai</code>, <code>claude</code>, <code>gemini</code>, or <code>llama</code>. Default: <code>openai</code>.</li>
 <li><strong>use_tokens</strong> (boolean): Use token-based chunking when <code>true</code>; use character-based chunking when <code>false</code>. Default: <code>true</code>.</li>
-<li><strong>chunk_size_tokens</strong> (integer): Target chunk size in tokens. Default: <code>500</code>.</li>
-<li><strong>overlap_size_tokens</strong> (integer): Token overlap between chunks. Default: <code>100</code>.</li>
-<li><strong>chunk_size</strong> (integer): Target chunk size in characters when <code>use_tokens</code> is <code>false</code>. Default: <code>1000</code>.</li>
-<li><strong>overlap_size</strong> (integer): Character overlap when <code>use_tokens</code> is <code>false</code>. Default: <code>200</code>.</li>
+<li><strong>chunk_size_tokens</strong> (integer): Target chunk size in tokens, from <code>16</code> through <code>8192</code>. Default: <code>500</code>.</li>
+<li><strong>overlap_size_tokens</strong> (integer): Token overlap between chunks. Must be non-negative and smaller than <code>chunk_size_tokens</code>. Default: <code>100</code>.</li>
+<li><strong>chunk_size</strong> (integer): Target chunk size in characters when <code>use_tokens</code> is <code>false</code>, from <code>64</code> through <code>65536</code>. Default: <code>1000</code>.</li>
+<li><strong>overlap_size</strong> (integer): Character overlap when <code>use_tokens</code> is <code>false</code>. Must be non-negative and smaller than <code>chunk_size</code>. Default: <code>200</code>.</li>
 </ul>
+<p>Requests that would produce more than <code>2,048</code> chunks fail with HTTP <code>400</code> and <code>error.code = &quot;INVALID_REQUEST&quot;</code> before a chunk array is created. Text or parameter limits use the same non-retryable error contract and return <code>usage.credits = 0</code>.</p>
 <h3 id="response-example">Response Example</h3>
 <pre><code class="lang-json">[
   {
@@ -544,6 +547,8 @@ $response.usage.credits
 </code></pre>
 <hr>
 <h2 id="error-responses">Error Responses</h2>
+<h3 id="capacity-rejection">Capacity Rejection</h3>
+<p>If the shared Reader execution limit is full, the Reader, document, and chunk endpoints return HTTP <code>429</code> immediately instead of queuing the request. The standard failure envelope sets <code>error.code</code> to <code>RATE_LIMIT_EXCEEDED</code> and <code>error.retryable</code> to <code>true</code>; the response includes a positive <code>Retry-After</code> header in seconds. Wait for that duration before retrying. This is capacity protection, not a per-customer quota response.</p>
 <h3 id="partial-content">Partial Content</h3>
 <p>The endpoint returns HTTP <code>200</code> with <code>status: &quot;partial&quot;</code> when it can return some extracted content but the main body is too short or only a metadata description was available. The reader automatically attempts browser rendering once after a partial static extraction; treat a remaining partial response as non-success for ingestion and billing purposes. If <code>error.retryable</code> is <code>true</code>, retry once with <code>force_dynamic: true</code>.</p>
 <p>The following is an abridged response. A partial response still includes <code>metadata</code>, <code>quality</code>, and <code>execution</code>.</p>
