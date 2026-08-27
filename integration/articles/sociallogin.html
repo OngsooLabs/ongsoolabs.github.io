@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=0ed594fef0b3a3601d40b29f6e5cb3ce21f7bb57">
-      <link rel="stylesheet" href="../public/main.css?v=0ed594fef0b3a3601d40b29f6e5cb3ce21f7bb57">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=8bdc875530a0ebbd9cce8d8bc95b9b9b8a7d7067">
+      <link rel="stylesheet" href="../public/main.css?v=8bdc875530a0ebbd9cce8d8bc95b9b9b8a7d7067">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=0ed594fef0b3a3601d40b29f6e5cb3ce21f7bb57"></script>
+      <script type="module" src="./../public/docfx.min.js?v=8bdc875530a0ebbd9cce8d8bc95b9b9b8a7d7067"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -103,17 +103,18 @@
 <li><strong>Centralized Editor Setup</strong>: Manage provider setup through an editor window.</li>
 <li><strong>Soft Dependencies</strong>: Provider-specific code can be excluded when the related SDK is not imported.</li>
 <li><strong>Build Support</strong>: Platform-specific build settings can be prepared through package tooling.</li>
+<li><strong>Secure Defaults</strong>: Google Windows PKCE/state handling, default timeout, and duplicate suppression are internal to the normal login flow.</li>
 </ul>
 <h2 id="requirements">Requirements</h2>
 <ul>
 <li>Unity 2021.3 LTS minimum</li>
-<li>Unity 2021.3.45f2 and 6000.3.12f1 tested for package-isolation import and compile</li>
+<li>Unity 2021.3.45f2 and 6000.3.12f1 tested for package-isolation import and compile, including Google and Discord define paths together</li>
 <li>Provider-specific credentials, dashboard configuration, and vendor SDK/runtime prerequisites</li>
 <li>Steam: included Windows x64 runtime path and a running, signed-in Steam client</li>
 <li>Discord loopback: Unity Editor and Windows standalone code path with registered ports 50000-50009</li>
 </ul>
 <blockquote>
-<p>Credentials returned to the Unity client still require backend verification before they are used to create a trusted game session. Conditional compilation isolates provider code, but the project's chosen vendor SDKs and included bridge/native files must still be reviewed for each build target.</p>
+<p>Credentials returned to the Unity client still require backend verification before they are used to create a trusted game session. Conditional compilation isolates provider code, but the project's chosen vendor SDKs and included bridge/native files must still be reviewed for each build target. Local compilation does not verify a provider-console configuration or a live account flow.</p>
 </blockquote>
 <h2 id="getting-started">Getting Started</h2>
 <ol>
@@ -129,19 +130,18 @@
 <ul>
 <li>Open <strong>Tools &gt; OSL &gt; Social Login Setup</strong>.</li>
 <li>Enable the providers you plan to use.</li>
-<li>Enter the provider settings required by your project.</li>
-<li>Click <strong>Apply Settings</strong>.</li>
+<li>Enter the ID required for the active build target, click <strong>Validate</strong>, then click <strong>Apply</strong>.</li>
 </ul>
 </li>
 <li><strong>Usage Example</strong>:
-<pre><code class="lang-csharp">var googleProvider = new GProvider();
-googleProvider.Signin((result) =&gt;
+<pre><code class="lang-csharp">private async void SignInGoogle()
 {
-    if (result.IsSuccess)
+    var result = await SocialLoginManager.Instance.LoginAsync(ProviderKind.G);
+    if (result.Success)
     {
-        Debug.Log(&quot;Login succeeded.&quot;);
+        SubmitCredentialToBackend(result.Token);
     }
-});
+}
 </code></pre>
 </li>
 </ol>
@@ -162,6 +162,7 @@ googleProvider.Signin((result) =&gt;
 <ul>
 <li>Supported on iOS, Android, WebGL, and Standalone PC depending on the selected integration path.</li>
 <li>Mobile integrations may require dependency resolution through standard Unity mobile dependency tools.</li>
+<li>Windows Setup requires a Desktop Client ID only. Do not put a client secret in Unity; the package handles PKCE S256 and state validation.</li>
 </ul>
 <h3 id="steamworks">Steamworks</h3>
 <ul>
