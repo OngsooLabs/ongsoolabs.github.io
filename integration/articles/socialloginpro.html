@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=8bdc875530a0ebbd9cce8d8bc95b9b9b8a7d7067">
-      <link rel="stylesheet" href="../public/main.css?v=8bdc875530a0ebbd9cce8d8bc95b9b9b8a7d7067">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=2ca53d9cc7bd96ee0a363f92b8578dc28ac5ee21">
+      <link rel="stylesheet" href="../public/main.css?v=2ca53d9cc7bd96ee0a363f92b8578dc28ac5ee21">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=8bdc875530a0ebbd9cce8d8bc95b9b9b8a7d7067"></script>
+      <script type="module" src="./../public/docfx.min.js?v=2ca53d9cc7bd96ee0a363f92b8578dc28ac5ee21"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -89,6 +89,13 @@
 <p>OSL Social Login Pro connects multi-provider sign-in in Unity to verification on your own .NET 8 backend starter. It bundles OSL Social Login, OSL Token Verification, and OSL Core so the credential handoff does not need to be designed from scratch.</p>
 <h2 id="overview">Overview</h2>
 <p>Use Social Login Pro when a project needs both the Unity-side provider adapters and a server-side verification starting point. The included modules remain separate assemblies, while the export packages the client integration and five provider-specific backend paths together.</p>
+<h2 id="social-login-120-included">Social Login 1.2.0 Included</h2>
+<p>Social Login Pro <code>1.3.0</code> includes Social Login <code>1.2.0</code>. The existing basic
+login and <code>SocialLoginResult.Token</code> handoff remain available; typed credentials
+are optional advanced controls. Google Windows handles PKCE S256 and <code>state</code>
+inside the package without a Unity client secret, and the default timeout,
+cancellation, callback cleanup, and duplicate-request protection do not add
+setup fields for basic use.</p>
 <h2 id="included-workflow">Included Workflow</h2>
 <ol>
 <li>Configure the required provider in <strong>Tools &gt; OSL &gt; Social Login Setup</strong>.</li>
@@ -96,6 +103,9 @@
 <li>Configure and run the extracted .NET 8 backend project.</li>
 <li>Send the token obtained by Social Login to <code>TokenVerifyManager</code> for server-side verification.</li>
 </ol>
+<p>For the basic client flow, setup asks only for the active target's required
+identifier. Provider-specific PKCE, state, callback, and default timeout
+handling stay inside Social Login rather than becoming extra setup fields.</p>
 <h2 id="requirements">Requirements</h2>
 <ul>
 <li>Unity 2021.3 LTS minimum</li>

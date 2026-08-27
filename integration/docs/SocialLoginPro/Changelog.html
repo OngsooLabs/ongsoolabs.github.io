@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=8bdc875530a0ebbd9cce8d8bc95b9b9b8a7d7067">
-      <link rel="stylesheet" href="../../public/main.css?v=8bdc875530a0ebbd9cce8d8bc95b9b9b8a7d7067">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=2ca53d9cc7bd96ee0a363f92b8578dc28ac5ee21">
+      <link rel="stylesheet" href="../../public/main.css?v=2ca53d9cc7bd96ee0a363f92b8578dc28ac5ee21">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../releases/toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=8bdc875530a0ebbd9cce8d8bc95b9b9b8a7d7067"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=2ca53d9cc7bd96ee0a363f92b8578dc28ac5ee21"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -88,6 +88,16 @@
 <p>Changelog
 All notable changes to this package are documented here.
 The format is based on Keep a Changelog (<a href="https://keepachangelog.com/en/1.1.0/">https://keepachangelog.com/en/1.1.0/</a>).</p>
+<p>[1.3.0] - 2026-08-28</p>
+<p>Changed</p>
+<ul>
+<li>Included SocialLogin <code>1.2.0</code>: typed credentials as an optional advanced
+contract, Google Windows PKCE S256 and <code>state</code> validation, Unity client
+secret removal, default timeout/cancellation, callback cleanup, duplicate
+request protection, and actionable setup validation. The basic
+<code>LoginAsync(ProviderKind)</code> and <code>SocialLoginResult.Token</code> handoff remain
+compatible.</li>
+</ul>
 <p>[1.2.2] - 2026-08-23</p>
 <p>Changed
 Reworked product and customer documentation around the client sign-in to backend verification workflow. Clarified provider-specific verification, platform limits, and the boundary between the included starter and a production deployment.</p>
