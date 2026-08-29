@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=373cea4cb7fba0dba2e0d854a47d75a77736b8a8">
-      <link rel="stylesheet" href="../../public/main.css?v=373cea4cb7fba0dba2e0d854a47d75a77736b8a8">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=2484069d4865999c3009f4ee8f94031629aa9a73">
+      <link rel="stylesheet" href="../../public/main.css?v=2484069d4865999c3009f4ee8f94031629aa9a73">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../releases/toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=373cea4cb7fba0dba2e0d854a47d75a77736b8a8"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=2484069d4865999c3009f4ee8f94031629aa9a73"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -88,6 +88,26 @@
 <p>Changelog
 All notable changes to this package are documented here.
 The format is based on Keep a Changelog (<a href="https://keepachangelog.com/en/1.1.0/">https://keepachangelog.com/en/1.1.0/</a>).</p>
+<p>[2.0.0] - 2026-08-29</p>
+<p>Changed</p>
+<ul>
+<li>Included TokenVerification <code>2.0.0</code>, which migrates the bundled backend starter from .NET 8 to .NET 10. Existing .NET 8 deployments must remain on SocialLoginPro <code>1.3.0</code> or migrate their backend before upgrading.</li>
+<li>Updated the Unity verification client to parse stable error codes and correlation IDs, serialize request bodies with <code>JsonUtility</code>, and avoid logging raw provider responses, credentials, or verified identities.</li>
+<li>Preserved the existing five verification endpoint paths, successful response fields, basic <code>LoginAsync(ProviderKind)</code>, and <code>SocialLoginResult.Token</code> handoff.</li>
+</ul>
+<p>Added</p>
+<ul>
+<li>Added exact deny-by-default CORS configuration, Development-only Swagger, per-IP rate limiting, request-size and provider-timeout bounds, <code>/healthz</code>, structured errors, and correlation ID handling to the included backend starter.</li>
+<li>Added .NET 10 setup and migration guidance plus dependency-free Kestrel smoke tests in the bundled server source archive.</li>
+</ul>
+<p>Security</p>
+<ul>
+<li>Removed raw provider bodies and exception details from client-visible failures and constrained server and Unity logs to non-sensitive diagnostic metadata.</li>
+</ul>
+<p>Fixed</p>
+<ul>
+<li>Normalized the included <code>TokenVerifyManager.cs</code> to consistent CRLF line endings without changing its logical content, addressing the file condition reported by the Asset Store Validator. A fresh Validator run is still required to confirm that the warning is cleared.</li>
+</ul>
 <p>[1.3.0] - 2026-08-28</p>
 <p>Changed</p>
 <ul>

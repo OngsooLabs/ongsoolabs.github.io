@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=373cea4cb7fba0dba2e0d854a47d75a77736b8a8">
-      <link rel="stylesheet" href="../../public/main.css?v=373cea4cb7fba0dba2e0d854a47d75a77736b8a8">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=2484069d4865999c3009f4ee8f94031629aa9a73">
+      <link rel="stylesheet" href="../../public/main.css?v=2484069d4865999c3009f4ee8f94031629aa9a73">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../releases/toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=373cea4cb7fba0dba2e0d854a47d75a77736b8a8"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=2484069d4865999c3009f4ee8f94031629aa9a73"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -88,6 +88,28 @@
 <p>Changelog
 All notable changes to this package are documented here.
 The format is based on Keep a Changelog (<a href="https://keepachangelog.com/en/1.1.0/">https://keepachangelog.com/en/1.1.0/</a>).</p>
+<p>[2.0.0] - 2026-08-29</p>
+<p>Changed</p>
+<ul>
+<li>Migrated the backend starter from .NET 8 to .NET 10 and updated Google.Apis.Auth to 1.76.0, Swashbuckle.AspNetCore to 10.2.3, and System.IdentityModel.Tokens.Jwt to 8.22.0.</li>
+<li>Replaced permissive CORS with an exact, configurable, deny-by-default origin allowlist and limited Swagger UI to Development.</li>
+<li>Standardized failure responses around stable error codes and correlation IDs while preserving the existing verification endpoint paths and successful response fields.</li>
+</ul>
+<p>Added</p>
+<ul>
+<li>Added per-IP fixed-window rate limiting, request body limits, provider API timeouts, <code>/healthz</code>, and <code>X-Correlation-ID</code> handling.</li>
+<li>Added a dependency-free Kestrel smoke-test project covering Production and Development defaults, including CORS, Swagger, request-size, rate-limit, timeout, correlation, and credential-redaction behavior.</li>
+<li>Added server setup and 1.1.2-to-2.0 migration guides to the canonical source archive.</li>
+</ul>
+<p>Security</p>
+<ul>
+<li>Removed raw provider response bodies and exception details from client errors, and constrained server and Unity client logs to provider, error code, status, and correlation metadata without credentials or identities.</li>
+<li>Replaced manual Unity request JSON interpolation with <code>JsonUtility</code> serialization so credential characters cannot break request payload structure.</li>
+</ul>
+<p>Fixed</p>
+<ul>
+<li>Normalized <code>TokenVerifyManager.cs</code> to consistent CRLF line endings without changing its logical content, addressing the file condition reported by the Asset Store Validator. A fresh Validator run is still required to confirm that the warning is cleared.</li>
+</ul>
 <p>[1.1.2] - 2026-08-23</p>
 <p>Changed
 Repositioned the package as a Unity client and .NET 8 backend verification starter. Distinguished Google/Apple token validation from Facebook/Steam/Discord provider API checks and removed unverified production-deployment claims.</p>
