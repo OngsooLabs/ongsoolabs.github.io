@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=9f5dc23bda1b567a4e37ca96e6d32da93da878b9">
-      <link rel="stylesheet" href="../public/main.css?v=9f5dc23bda1b567a4e37ca96e6d32da93da878b9">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=6047f8acdf4722ced0c8c5268095b2b80fbd572d">
+      <link rel="stylesheet" href="../public/main.css?v=6047f8acdf4722ced0c8c5268095b2b80fbd572d">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=9f5dc23bda1b567a4e37ca96e6d32da93da878b9"></script>
+      <script type="module" src="./../public/docfx.min.js?v=6047f8acdf4722ced0c8c5268095b2b80fbd572d"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -113,6 +113,7 @@
 <li>Unity Cloud Code based write validation</li>
 <li>Per-key type, range, maximum delta, and allowed-operation rules</li>
 <li>Simple typed save helpers for common player data values</li>
+<li>Durable local pending-write recovery with bounded retry and dead-letter inspection</li>
 <li>A sample scene for checking the basic save flow</li>
 </ul>
 <hr>
@@ -200,14 +201,24 @@ await OSLSaveManager.Instance.SetInt(&quot;level&quot;, 5);
 await OSLSaveManager.Instance.SetString(&quot;playerName&quot;, &quot;Hero&quot;);
 await OSLSaveManager.Instance.SetBool(&quot;tutorialDone&quot;, true);
 </code></pre>
+<p>Queued success means the operation was persisted locally. <code>OSLSaveResult.FailureKind</code> classifies validation, transient, permanent, configuration, serialization, and local-storage failures.</p>
 <h3 id="read-operations">Read operations</h3>
 <pre><code class="lang-csharp">int gold = await OSLSaveManager.Instance.GetAsync&lt;int&gt;(&quot;gold&quot;, 0);
 string name = await OSLSaveManager.Instance.GetAsync&lt;string&gt;(&quot;playerName&quot;, &quot;Unknown&quot;);
 Dictionary&lt;string, object&gt; all = await OSLSaveManager.Instance.LoadAllAsync();
 </code></pre>
+<h3 id="queue-recovery">Queue recovery</h3>
+<p>The versioned queue uses authenticated encryption, temporary-file replacement, a last-known-good backup, and corrupted-file quarantine. Transient delivery failures retry up to five failed attempts by default. Other terminal failures remain as dead letters:</p>
+<pre><code class="lang-csharp">foreach (PendingSaveOp operation in OSLSaveManager.Instance.GetDeadLetters())
+{
+    OSLSaveManager.Instance.RetryDeadLetter(operation.Id);
+    // Or explicitly resolve and remove it with RemoveDeadLetter(operation.Id).
+}
+</code></pre>
+<p>Projects that require platform-backed keys can implement <code>IOSLQueueKeyProvider</code> and call <code>OSLSaveManager.CreateWithQueueKeyProvider(...)</code> before first accessing <code>Instance</code>. The default provider preserves legacy queue access but is not a server-side trust boundary.</p>
 <hr>
 <h2 id="demo-scene">Demo Scene</h2>
-<p><code>Assets/OSL/SecureSave/Demo/OSLBasicUsageSample.cs</code> provides an interactive OnGUI demo.</p>
+<p><code>Assets/OSL/SecureSave/Samples/OSLBasicUsageSample.cs</code> provides an interactive OnGUI demo.</p>
 <ol>
 <li>Create an empty scene and attach <code>OSLBasicUsageSample</code> to a GameObject.</li>
 <li>Enter Play mode and use the on-screen buttons to test sign-in and sample save operations.</li>
@@ -242,6 +253,11 @@ Dictionary&lt;string, object&gt; all = await OSLSaveManager.Instance.LoadAllAsyn
 <td>Compile errors after import</td>
 <td>Dependency package is missing</td>
 <td>Resolve Unity package dependencies and recompile.</td>
+</tr>
+<tr>
+<td>A queued operation stops retrying</td>
+<td>It failed permanently or exhausted five transient attempts</td>
+<td>Inspect <code>GetDeadLetters()</code>, correct the cause, then retry or explicitly remove it.</td>
 </tr>
 </tbody>
 </table>
