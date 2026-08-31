@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=6047f8acdf4722ced0c8c5268095b2b80fbd572d">
-      <link rel="stylesheet" href="../../public/main.css?v=6047f8acdf4722ced0c8c5268095b2b80fbd572d">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=4275f3e57362c7e16582e52762aa48ab478ab1b0">
+      <link rel="stylesheet" href="../../public/main.css?v=4275f3e57362c7e16582e52762aa48ab478ab1b0">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../releases/toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=6047f8acdf4722ced0c8c5268095b2b80fbd572d"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=4275f3e57362c7e16582e52762aa48ab478ab1b0"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -88,6 +88,19 @@
 <p>Changelog
 All notable changes to this package are documented here.
 The format is based on Keep a Changelog (<a href="https://keepachangelog.com/en/1.1.0/">https://keepachangelog.com/en/1.1.0/</a>).</p>
+<p>[1.4.0] - Unreleased</p>
+<p>Added</p>
+<ul>
+<li>Optional GZip and Brotli <code>version.json</code> sidecars with explicit runtime preference and uncompressed fallback.</li>
+<li>An optional path-style S3-compatible upload endpoint while preserving the existing AWS S3 virtual-host endpoint by default.</li>
+<li>Editor tests for manifest compression, sidecar generation, legacy settings compatibility, endpoint encoding, and invalid endpoint rejection.</li>
+<li>An 8 MiB limit for remote and decompressed manifest data before JSON parsing.</li>
+</ul>
+<p>Compatibility</p>
+<ul>
+<li>Plain <code>version.json</code>, <code>local_version.json</code>, patch payload URLs, and the existing two-argument <code>OSLPatchManager</code> constructor remain unchanged.</li>
+<li>EP-13A path, partial-file, atomic-download, and resume hardening are not included in this change.</li>
+</ul>
 <p>[1.2.2] - 2026-08-23</p>
 <p>Changed
 Reworked Asset Store, package, public article, and customer guide messaging around changed-file downloads, HTTP Range resume behavior, per-file retries, and cloud-SDK-free upload integrations. Added exact import-and-compile-tested Unity versions and clarified resume and client-side protection limits.</p>

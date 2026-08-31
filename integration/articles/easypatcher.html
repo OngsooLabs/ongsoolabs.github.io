@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css?v=6047f8acdf4722ced0c8c5268095b2b80fbd572d">
-      <link rel="stylesheet" href="../public/main.css?v=6047f8acdf4722ced0c8c5268095b2b80fbd572d">
+      <link rel="stylesheet" href="../public/docfx.min.css?v=4275f3e57362c7e16582e52762aa48ab478ab1b0">
+      <link rel="stylesheet" href="../public/main.css?v=4275f3e57362c7e16582e52762aa48ab478ab1b0">
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js?v=6047f8acdf4722ced0c8c5268095b2b80fbd572d"></script>
+      <script type="module" src="./../public/docfx.min.js?v=4275f3e57362c7e16582e52762aa48ab478ab1b0"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -86,7 +86,7 @@
         <article data-uid="">
 <h1 id="osl-easy-patcher">OSL Easy Patcher</h1>
 
-<p>A lightweight Unity patcher for teams that need runtime content updates without adopting a full Addressables workflow. It downloads only changed files and can continue partial transfers when the host supports HTTP Range requests.</p>
+<p>A lightweight Unity patcher for teams that need runtime content updates without adopting a full Addressables workflow. It downloads only changed files, supports optional compressed manifests, and can continue partial transfers when the host supports HTTP Range requests.</p>
 <hr>
 <h2 id="table-of-contents">Table of Contents</h2>
 <ol>
@@ -103,7 +103,7 @@
 </ol>
 <hr>
 <h2 id="overview">Overview</h2>
-<p>OSL Easy Patcher compares a remote <code>version.json</code> manifest with the local cache, downloads only missing or changed files, and retries failures per file. Its Editor uploader supports Local Folder, Google Cloud Storage, AWS S3, Unity CCD, and Azure Blob Storage without bundling the corresponding cloud SDKs.</p>
+<p>OSL Easy Patcher compares a remote manifest with the local cache, downloads only missing or changed files, and retries failures per file. The uploader can keep plain <code>version.json</code> beside optional GZip/Brotli sidecars and supports Local Folder, Google Cloud Storage, AWS S3 or a path-style S3-compatible endpoint, Unity CCD, and Azure Blob Storage without bundling the corresponding cloud SDKs.</p>
 <h2 id="who-should-use-this">Who Should Use This</h2>
 <p>Use OSL Easy Patcher when your Unity project needs:</p>
 <ul>
@@ -111,6 +111,8 @@
 <li>Resume support for interrupted large files on HTTP Range-capable hosts</li>
 <li>A lightweight patching workflow controlled from the Unity Editor</li>
 <li>Manifest-based patch checks</li>
+<li>Optional GZip/Brotli manifest sidecars with plain JSON fallback</li>
+<li>Optional path-style S3-compatible Editor upload endpoint</li>
 <li>A custom loader hook for your own asset loading strategy</li>
 </ul>
 <hr>
@@ -129,7 +131,7 @@
 </tr>
 <tr>
 <td>Tested Unity versions</td>
-<td>2021.3.45f2 and 6000.3.12f1 (package-isolation import and compile)</td>
+<td>2021.3.45f2 and 6000.3.12f1 (EasyPatcher EditMode tests and package-isolation import/compile)</td>
 </tr>
 <tr>
 <td>.NET Standard</td>
@@ -197,8 +199,12 @@
 <td>Selects the configured upload destination.</td>
 </tr>
 <tr>
+<td><strong>Manifest Compression</strong></td>
+<td>Keeps plain JSON and optionally adds GZip, Brotli, or both sidecars.</td>
+</tr>
+<tr>
 <td><strong>Generate Manifest &amp; Upload</strong></td>
-<td>Generates a manifest and sends files through the selected workflow.</td>
+<td>Generates the manifest artifacts and sends files through the selected workflow.</td>
 </tr>
 </tbody>
 </table>
@@ -206,7 +212,7 @@
 <h2 id="runtime-setup">Runtime Setup</h2>
 <ol>
 <li>Add the <code>OSLPatchUIController</code> component to a GameObject in your loading scene.</li>
-<li>Assign the <strong>Remote Base URL</strong>, <strong>Progress Slider</strong>, <strong>Status Text</strong>, and <strong>Size Text</strong> fields.</li>
+<li>Assign the <strong>Remote Base URL</strong>, <strong>Manifest Compression</strong> preference, <strong>Progress Slider</strong>, <strong>Status Text</strong>, and <strong>Size Text</strong> fields.</li>
 <li>Set the <strong>Loader</strong> field to an <code>OSLSimpleBundleLoader</code> instance or your custom <code>IOSLLoader</code> implementation.</li>
 </ol>
 <hr>
@@ -228,6 +234,8 @@ A: <code>Application.persistentDataPath/OSL/EasyPatcher/</code> by default.</p>
 A: A later run can continue the partial file when the HTTP host honors Range requests. If the host ignores Range, the integrity check can reject the appended file and retry it from the beginning.</p>
 <p><strong>Q: Can I patch non-AssetBundle files?</strong><br>
 A: Yes. The patch system transfers files, and loading is handled by your <code>IOSLLoader</code> implementation.</p>
+<p><strong>Q: Are compressed manifests required?</strong>
+A: No. The uploader always keeps <code>version.json</code>, and compressed runtime modes fall back to that plain manifest.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <table>
 <thead>
