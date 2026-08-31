@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=d61b5f8a1f351911c4c63ca89d3d97223c7776f3">
-      <link rel="stylesheet" href="../../public/main.css?v=d61b5f8a1f351911c4c63ca89d3d97223c7776f3">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=80bdc3069fdda5a3b874426cfe4804cf60362764">
+      <link rel="stylesheet" href="../../public/main.css?v=80bdc3069fdda5a3b874426cfe4804cf60362764">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../releases/toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=d61b5f8a1f351911c4c63ca89d3d97223c7776f3"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=80bdc3069fdda5a3b874426cfe4804cf60362764"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -88,9 +88,16 @@
 <p>Changelog
 All notable changes to this package are documented here.
 The format is based on Keep a Changelog (<a href="https://keepachangelog.com/en/1.1.0/">https://keepachangelog.com/en/1.1.0/</a>).</p>
-<p>[1.4.0] - Unreleased</p>
+<p>[1.4.0] - Unreleased (Release pending)</p>
+<p>Release status</p>
+<ul>
+<li>EP-13A and EP-14A implementation, documentation, Unity EditMode validation, and package-isolation validation are complete for this candidate.</li>
+<li><code>.unitypackage</code> export and the date-confirmed repository release gate remain pending. No Asset Store submission, review, approval, or public release is claimed.</li>
+</ul>
 <p>Added</p>
 <ul>
+<li>EP-13A runtime download hardening: manifest path safety, verified <code>.part</code> promotion, safe Range fallback, cancellation/stall handling, streaming SHA-256/HMAC verification, and atomic local-manifest updates.</li>
+<li>An additive <code>StartDownloadAsync(CancellationToken)</code> overload while preserving the existing <code>StartDownloadAsync()</code> call.</li>
 <li>Optional GZip and Brotli <code>version.json</code> sidecars with explicit runtime preference and uncompressed fallback.</li>
 <li>An optional path-style S3-compatible upload endpoint while preserving the existing AWS S3 virtual-host endpoint by default.</li>
 <li>Editor tests for manifest compression, sidecar generation, legacy settings compatibility, endpoint encoding, and invalid endpoint rejection.</li>
@@ -99,7 +106,7 @@ The format is based on Keep a Changelog (<a href="https://keepachangelog.com/en/
 <p>Compatibility</p>
 <ul>
 <li>Plain <code>version.json</code>, <code>local_version.json</code>, patch payload URLs, and the existing two-argument <code>OSLPatchManager</code> constructor remain unchanged.</li>
-<li>EP-13A path, partial-file, atomic-download, and resume hardening are not included in this change.</li>
+<li>EP-13A validation passed in Unity <code>6000.3.12f1</code> EasyPatcher EditMode (<code>87/87</code>, failed/skipped <code>0</code>), including traversal, Range response, validator, cancellation/stall, SHA/HMAC-mismatch non-exposure of final/<code>.part</code>/<code>.meta</code>, and atomic I/O-failure cases.</li>
 </ul>
 <p>[1.2.2] - 2026-08-23</p>
 <p>Changed
