@@ -11,8 +11,8 @@
       
       
       <link rel="icon" href="../../favicon.ico">
-      <link rel="stylesheet" href="../../public/docfx.min.css?v=2ae3ca13fd856923b01e8398528f58eb9919e8c8">
-      <link rel="stylesheet" href="../../public/main.css?v=2ae3ca13fd856923b01e8398528f58eb9919e8c8">
+      <link rel="stylesheet" href="../../public/docfx.min.css?v=1e4def2fef2065c67747a1b90c8afd20f4c72787">
+      <link rel="stylesheet" href="../../public/main.css?v=1e4def2fef2065c67747a1b90c8afd20f4c72787">
       <meta name="docfx:navrel" content="../../toc.html">
       <meta name="docfx:tocrel" content="../../releases/toc.html">
       
@@ -33,7 +33,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js?v=2ae3ca13fd856923b01e8398528f58eb9919e8c8"></script>
+      <script type="module" src="./../../public/docfx.min.js?v=1e4def2fef2065c67747a1b90c8afd20f4c72787"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -88,15 +88,16 @@
 <p>Changelog
 All notable changes to this package are documented here.
 The format is based on Keep a Changelog (<a href="https://keepachangelog.com/en/1.1.0/">https://keepachangelog.com/en/1.1.0/</a>).</p>
-<p>[1.4.0] - Unreleased (Release pending)</p>
+<p>[1.4.0] - 2026-09-03</p>
 <p>Release status</p>
 <ul>
-<li>EP-13A and EP-14A implementation, documentation, Unity EditMode validation, and package-isolation validation are complete for this candidate.</li>
-<li><code>.unitypackage</code> export and the date-confirmed repository release gate remain pending. No Asset Store submission, review, approval, or public release is claimed.</li>
+<li>Runtime download hardening, compressed manifests, S3-compatible Editor uploads, documentation, Unity EditMode validation, package-isolation validation, and the repository release gate are complete.</li>
+<li>Exported <code>OSL Easy Patcher 1.4.0.unitypackage</code> contains 30 assets (26 EasyPatcher and 4 shared Core assets); Tests are excluded. SHA-256: <code>8FB8A78361999A08989457E0B46C2657A03BA55F6AFDDC10FB34F47D11769A33</code>.</li>
+<li>Version <code>1.4.0</code> is publicly released on the Unity Asset Store as of 2026-09-03.</li>
 </ul>
 <p>Added</p>
 <ul>
-<li>EP-13A runtime download hardening: manifest path safety, verified <code>.part</code> promotion, safe Range fallback, cancellation/stall handling, streaming SHA-256/HMAC verification, and atomic local-manifest updates.</li>
+<li>Runtime download hardening: manifest path safety, verified <code>.part</code> promotion, safe Range fallback, cancellation/stall handling, streaming SHA-256/HMAC verification, and atomic local-manifest updates.</li>
 <li>An additive <code>StartDownloadAsync(CancellationToken)</code> overload while preserving the existing <code>StartDownloadAsync()</code> call.</li>
 <li>Optional GZip and Brotli <code>version.json</code> sidecars with explicit runtime preference and uncompressed fallback.</li>
 <li>An optional path-style S3-compatible upload endpoint while preserving the existing AWS S3 virtual-host endpoint by default.</li>
@@ -106,7 +107,7 @@ The format is based on Keep a Changelog (<a href="https://keepachangelog.com/en/
 <p>Compatibility</p>
 <ul>
 <li>Plain <code>version.json</code>, <code>local_version.json</code>, patch payload URLs, and the existing two-argument <code>OSLPatchManager</code> constructor remain unchanged.</li>
-<li>EP-13A validation passed in Unity <code>6000.3.12f1</code> EasyPatcher EditMode (<code>87/87</code>, failed/skipped <code>0</code>), including traversal, Range response, validator, cancellation/stall, SHA/HMAC-mismatch non-exposure of final/<code>.part</code>/<code>.meta</code>, and atomic I/O-failure cases.</li>
+<li>Unity <code>6000.3.12f1</code> EasyPatcher EditMode validation passed (<code>87/87</code>, failed/skipped <code>0</code>), including traversal, Range response, validator, cancellation/stall, SHA/HMAC-mismatch non-exposure of final/<code>.part</code>/<code>.meta</code>, and atomic I/O-failure cases.</li>
 </ul>
 <p>[1.2.2] - 2026-08-23</p>
 <p>Changed
